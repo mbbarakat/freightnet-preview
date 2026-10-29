@@ -1,0 +1,2108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A0D1C">
+<title>Freight Net SARL · Design A: Signal (preview)</title>
+<meta name="description" content="Website design preview for Freight Net SARL. Dark and industrial, with night photography and a shipping-manifest feel.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Freight Net SARL · Design A: Signal (preview)">
+<meta property="og:description" content="Website design preview for Freight Net SARL. Dark and industrial, with night photography and a shipping-manifest feel.">
+<meta property="og:url" content="https://mbbarakat.github.io/freightnet-preview/signal/">
+<meta property="og:image" content="https://mbbarakat.github.io/freightnet-preview/img/og-signal.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../img/icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';}}catch(e){}})();</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Archivo:wght@400;500;600;700&amp;family=Cairo:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;800&amp;family=Noto+Kufi+Arabic:wght@700;800&amp;display=swap">
+<style>
+body{margin:0;background:#0A0D1C}
+
+/* ============ 1. TOKENS ============ */
+.sg-root{
+  --bg:#0A0D1C; --bg-2:#11152A; --bg-3:#1A1F38;
+  --line:#272D4A; --line-2:#3A4166; --field:#626A96;
+  --text:#F2F2F5; --soft:#D3D6E2; --muted:#A3A8BD;
+  --red:#C7354A; --red-h:#AE2C40; --red-t:#F0687A; --ink:#0A0D1C;
+  --navy:#373D74; --crimson:#A2303C;
+  --f-display:"Archivo Black","Archivo",system-ui,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --f-brand:"Montserrat","Archivo",sans-serif;
+  --f-code:"Archivo Black","Archivo",system-ui,sans-serif;
+  --f-ar:"Cairo","Archivo",system-ui,sans-serif;
+  --gutter:clamp(16px,4.4cqi,64px);
+  --maxw:1312px;
+  --head-h:76px;
+  container:sg / inline-size;
+  position:relative;
+  background:var(--bg); color:var(--text);
+  font:400 16px/1.6 var(--f-body);
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+.sg-root[dir="rtl"]{
+  --f-display:"Noto Kufi Arabic","Cairo",system-ui,sans-serif;
+  --f-body:"Cairo",system-ui,sans-serif;
+  line-height:1.75;
+}
+:where(.sg-root) *,:where(.sg-root) *::before,:where(.sg-root) *::after{box-sizing:border-box}
+:where(.sg-root) :where(img){display:block;max-width:100%}
+:where(.sg-root) :where(h1,h2,h3,p,ul,ol,dl,dd,figure){margin:0}
+:where(.sg-root) :where(ul,ol){padding:0;list-style:none}
+:where(.sg-root) :where(a){color:inherit}
+:where(.sg-root) :where(button,input,select,textarea){font:inherit;color:inherit}
+:where(.sg-root) :where(button,a,select,input,textarea,label){touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.sg-root :focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.sg-root [tabindex="-1"]:focus{outline:none}
+.sg-vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.sg-pin{unicode-bidi:plaintext;direction:ltr;overflow-wrap:anywhere}
+.sg-ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.sg-ico{width:20px;height:20px;flex:none;display:block}
+.sg-ico--sm{width:16px;height:16px}
+.sg-root[dir="rtl"] .sg-flip{transform:scaleX(-1)}
+.sg-wrap{width:100%;max-width:calc(var(--maxw) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* type scale */
+.sg-mono{font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1.4;letter-spacing:.14em;text-transform:uppercase}
+.sg-eyebrow{font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1.4;letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
+.sg-root[dir="rtl"] .sg-eyebrow{font-family:var(--f-ar);font-weight:600;font-size:15px;letter-spacing:0;text-transform:none}
+.sg-h2{font-family:var(--f-display);font-weight:400;font-size:clamp(36px,5.6cqi,82px);line-height:.92;letter-spacing:-.018em;text-transform:uppercase;text-wrap:balance}
+.sg-root[dir="rtl"] .sg-h2{font-weight:800;font-size:clamp(30px,4.6cqi,66px);line-height:1.32;letter-spacing:0;text-transform:none}
+.sg-h3{font-family:var(--f-display);font-weight:400;font-size:clamp(20px,1.9cqi,26px);line-height:1.02;letter-spacing:-.005em;text-transform:uppercase}
+.sg-root[dir="rtl"] .sg-h3{font-weight:800;font-size:clamp(19px,1.7cqi,23px);line-height:1.45;letter-spacing:0;text-transform:none}
+.sg-lede{font-size:clamp(17px,1.45cqi,20px);line-height:1.55;color:var(--soft);max-width:44ch}
+.sg-root[dir="rtl"] .sg-lede{line-height:1.8}
+/* Arabic never takes case transforms or tracking */
+.sg-root[dir="rtl"] :is(.sg-row__title,.sg-label,.sg-fact__value,.sg-door__name,.sg-strip__in,.sg-footer__h,.sg-mission__label,.sg-manifest__head,.sg-viewer__cap,.sg-bill__label,.sg-hero__label > div,.sg-chip,.sg-sheet__title,.sg-cta__meta,.sg-mono,.sg-success__text,.sg-wa__title,.sg-sheet__label,.sg-nav__link,.sg-menu-btn,.sg-fab,.sg-btn,.sg-top){text-transform:none;letter-spacing:0}
+
+/* corner brackets + crosshair (used sparingly) */
+.sg-frame{position:relative}
+.sg-frame::after{content:"";position:absolute;inset:-7px;pointer-events:none;--c:var(--red-t);
+  background:
+    linear-gradient(var(--c),var(--c)) 0 0/14px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 0/1px 14px no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 0/14px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 0/1px 14px no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 100%/14px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) 0 100%/1px 14px no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 100%/14px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) 100% 100%/1px 14px no-repeat}
+.sg-plus{position:absolute;width:15px;height:15px;pointer-events:none;--c:rgba(242,242,245,.55);
+  background:linear-gradient(var(--c),var(--c)) center/15px 1px no-repeat,linear-gradient(var(--c),var(--c)) center/1px 15px no-repeat}
+
+/* buttons */
+.sg-btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:0 24px;border:1px solid transparent;border-radius:0;
+  font:600 14px/1.1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;
+  transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .12s ease}
+.sg-btn:active{transform:scale(.98)}
+.sg-btn--red{background:var(--red);color:#fff}
+.sg-btn--red:hover{background:var(--red-h)}
+.sg-btn--ghost{background:var(--bg);color:var(--text);border-color:#8C92AD}
+.sg-btn--ghost:hover{background:var(--bg-3);border-color:var(--text)}
+.sg-btn--ink{background:var(--ink);color:#fff}
+.sg-btn--ink:hover{background:#262C4D}
+.sg-btn .sg-ico{transition:transform .15s ease}
+.sg-btn:hover .sg-ico--go{transform:translateX(3px)}
+.sg-root[dir="rtl"] .sg-btn:hover .sg-ico--go{transform:scaleX(-1) translateX(3px)}
+.sg-root[dir="rtl"] .sg-btn{font-family:var(--f-ar);font-size:15px;font-weight:700;letter-spacing:0;text-transform:none}
+
+/* ============ 2. SKIP + STRIP + HEADER ============ */
+.sg-skip{position:absolute;inset-inline-start:12px;top:12px;z-index:200;transform:translateY(-200%);background:var(--text);color:var(--ink);padding:12px 18px;font-weight:700;text-decoration:none}
+.sg-skip:focus,.sg-skip:focus-visible{transform:none;outline:2px solid var(--red-t);outline-offset:2px}
+
+.sg-strip{border-bottom:1px solid var(--line);color:var(--muted);background:var(--bg)}
+.sg-strip__in{display:flex;align-items:center;gap:18px;min-height:36px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.sg-strip__k{color:var(--red-t)}
+.sg-strip__k{display:inline-flex}
+.sg-strip__k .sg-ico{width:14px;height:14px}
+.sg-strip__sep{width:24px;height:1px;background:var(--line-2)}
+.sg-strip__push{flex:1}
+.sg-strip__nums{display:flex;gap:18px}
+.sg-strip__call{display:inline-flex;align-items:center;gap:10px;padding-inline-start:18px;border-inline-start:1px solid var(--line-2)}
+.sg-root[dir="rtl"] .sg-strip__ar{font-family:var(--f-ar);font-size:13px;letter-spacing:0}
+
+.sg-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.sg-header__in{display:flex;align-items:center;gap:20px;min-height:var(--head-h)}
+/* brand lockup: emblem at the inline-start, the two-line wordmark beside it (the emblem is never mirrored; the words stay Latin and lean toward the emblem in both directions) */
+.sg-brand{--em:48px;display:inline-flex;align-items:center;gap:calc(var(--em) * .25);min-height:48px;padding:4px 10px;margin-inline-start:-10px;color:#fff;text-decoration:none;flex:none;transition:background-color .15s ease,transform .12s ease}
+.sg-brand__emblem{flex:none;display:block;height:var(--em);width:auto;aspect-ratio:512/431;max-width:none}
+.sg-brand__words{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:5px;min-width:0;padding-top:1px}
+.sg-brand__name,.sg-brand__tag{direction:ltr;unicode-bidi:isolate}
+.sg-brand__name{font-family:var(--f-brand);font-weight:800;font-size:17px;line-height:1;letter-spacing:.02em;white-space:nowrap}
+.sg-brand__tag{font-family:var(--f-brand);font-weight:700;font-size:9.5px;line-height:1;letter-spacing:.18em;color:var(--red-t);white-space:nowrap}
+/* footer lockup: larger, and fluid so it always fits its column (4-up footer from 1024, 2-up below) */
+.sg-brand--lg{--em:clamp(60px,5.3cqi,76px);gap:clamp(14px,1.25cqi,18px)}
+.sg-brand--lg .sg-brand__words{gap:clamp(6px,.55cqi,8px)}
+.sg-brand--lg .sg-brand__name{font-size:clamp(18px,1.6cqi,23px)}
+.sg-brand--lg .sg-brand__tag{font-size:clamp(10.5px,.87cqi,12.5px)}
+.sg-brand:hover{background:var(--bg-2)}
+.sg-brand:active{transform:scale(.98)}
+.sg-nav{display:flex;align-items:center;gap:2px;margin-inline-start:auto}
+.sg-nav__link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;text-decoration:none;color:var(--text);
+  font:600 13px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;transition:background-color .15s ease,transform .12s ease}
+.sg-nav__link:hover{background:var(--bg-2)}
+.sg-nav__link:active{transform:scale(.98)}
+.sg-root[dir="rtl"] .sg-nav__link{font-family:var(--f-ar);font-size:15px;letter-spacing:0;text-transform:none}
+.sg-header__act{display:flex;align-items:center;gap:10px}
+.sg-lang{display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:44px;padding:0 14px;background:transparent;border:1px solid var(--line-2);cursor:pointer;color:var(--text);transition:background-color .15s ease,border-color .15s ease}
+.sg-lang:hover{background:var(--bg-2);border-color:#5A6390}
+.sg-lang:active{transform:scale(.98)}
+.sg-lang__t{font:600 15px/1 var(--f-body)}
+.sg-lang__t:lang(ar){font-family:var(--f-ar);font-weight:700;font-size:16px}
+.sg-lang__t:lang(en){font-family:"Archivo",sans-serif;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.sg-header__cta{min-height:44px;padding:0 18px}
+.sg-menu-btn{display:none;align-items:center;gap:10px;min-height:44px;min-width:44px;padding:0 14px;background:var(--bg);border:1px solid var(--line-2);color:var(--text);cursor:pointer;
+  font:600 13px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;transition:background-color .15s ease}
+.sg-menu-btn:hover{background:var(--bg-2)}
+.sg-menu-btn:active{transform:scale(.98)}
+.sg-root[dir="rtl"] .sg-menu-btn{font-family:var(--f-ar);font-size:15px;letter-spacing:0;text-transform:none}
+
+/* ============ 3. HERO ============ */
+.sg-hero{position:relative;isolation:isolate;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;min-height:clamp(620px,56cqi,820px)}
+.sg-hero__stage{position:absolute;inset:0;z-index:-3;direction:ltr;overflow:hidden}
+.sg-root[dir="rtl"] .sg-hero__stage{scale:-1 1}
+.sg-slide__media{position:absolute;inset:0;opacity:0;transition:opacity .12s linear .34s}
+/* slide 2 is a 1200 px photo: on desktop it fills only the photo side (the text side sits under the solid scrim), so it never upscales */
+.sg-slide__media--b{inset-inline-start:36%;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%);mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%)}
+.sg-slide__media.is-active{opacity:1}
+.sg-slide__img{width:100%;height:100%;object-fit:cover}
+.sg-hero.has-moved .sg-slide__media.is-active .sg-slide__img{animation:sg-push 1.6s cubic-bezier(.2,.7,.2,1) both}
+.sg-hero__wipe{position:absolute;inset:0;z-index:-2;pointer-events:none;transform:translateX(-102%);background:var(--bg);border-inline-end:3px solid var(--red)}
+.sg-root[dir="rtl"] .sg-hero__wipe{scale:-1 1;border-inline-end:0;border-inline-start:3px solid var(--red)}
+.sg-hero.is-wipe-a .sg-hero__wipe{animation:sg-wipe-a .8s cubic-bezier(.7,0,.3,1) both}
+.sg-hero.is-wipe-b .sg-hero__wipe{animation:sg-wipe-b .8s cubic-bezier(.7,0,.3,1) both}
+.sg-hero__scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
+    linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
+.sg-root[dir="rtl"] .sg-hero__scrim{background:
+    linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
+    linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
+.sg-hero__inner{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(64px,7cqi,120px)}
+.sg-hero__stack{display:grid;max-width:min(800px,62%)}
+.sg-slide{grid-area:1/1;align-self:end;visibility:hidden;min-width:0}
+.sg-slide.is-active{visibility:visible}
+.sg-slide:not(.is-active) .sg-slide__copy{opacity:0}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > *{animation:sg-rise .62s cubic-bezier(.2,.7,.2,1) both}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(2){animation-delay:.07s}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(3){animation-delay:.14s}
+.sg-slide__eyebrow{display:flex;align-items:center;gap:12px;color:var(--text);margin-bottom:26px}
+.sg-slide__eyebrow::before{content:"";width:10px;height:10px;background:var(--red);flex:none}
+.sg-slide__title{font-family:var(--f-display);font-weight:400;font-size:clamp(46px,7.2cqi,108px);line-height:.9;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance;color:#fff}
+.sg-root[dir="rtl"] .sg-slide__title{font-weight:800;font-size:clamp(40px,6.9cqi,104px);line-height:1.22;letter-spacing:0;text-transform:none}
+.sg-slide__text{margin-top:26px;max-width:34em;font-size:clamp(17px,1.4cqi,20px);line-height:1.55;color:var(--soft)}
+.sg-root[dir="rtl"] .sg-slide__text{line-height:1.85}
+.sg-hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.sg-hero__bar{position:relative;display:flex;align-items:center;gap:22px;margin-top:clamp(40px,4.6cqi,72px);padding-block:12px 18px;border-top:1px solid rgba(242,242,245,.2)}
+.sg-hero__bar .sg-plus{top:-8px;inset-inline-start:-8px}
+.sg-count{display:flex;align-items:baseline;gap:8px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;color:var(--muted);direction:ltr}
+.sg-count b{font-weight:700;color:#fff;font-size:15px}
+.sg-dots{display:flex;gap:6px}
+.sg-dot{display:grid;place-items:center;width:64px;height:44px;padding:0;background:transparent;border:0;cursor:pointer}
+.sg-dot__track{position:relative;width:100%;height:3px;background:rgba(242,242,245,.28);overflow:hidden;transition:background-color .15s ease}
+.sg-dot:hover .sg-dot__track{background:rgba(242,242,245,.6)}
+.sg-dot__fill{position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left center}
+.sg-root[dir="rtl"] .sg-dot__fill{transform-origin:right center}
+.sg-dot.is-active .sg-dot__track{background:rgba(242,242,245,.4)}
+.sg-dot.is-active .sg-dot__fill.sg-anim-a{animation:sg-prog-a 7s linear both}
+.sg-dot.is-active .sg-dot__fill.sg-anim-b{animation:sg-prog-b 7s linear both}
+.sg-hero.is-paused .sg-dot__fill,.sg-hero:focus-within .sg-dot__fill{animation-play-state:paused!important}
+.sg-hero.is-paused .sg-dot.is-active .sg-dot__fill{background:var(--text)}
+.sg-ctrls{display:flex;gap:6px;margin-inline-start:auto}
+.sg-ctrl{display:grid;place-items:center;width:48px;height:48px;padding:0;background:var(--bg);border:1px solid var(--line-2);color:var(--text);cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
+.sg-ctrl:hover{background:var(--bg-3);border-color:#5A6390}
+.sg-ctrl:active{transform:scale(.96)}
+.sg-hero__label{position:absolute;inset-inline-end:var(--gutter);bottom:clamp(120px,10cqi,150px);z-index:1;min-width:250px;max-width:min(380px,30cqi);background:rgba(10,13,28,.92);border:1px solid var(--line-2);padding:16px 18px}
+.sg-hero__label > div{display:flex;justify-content:space-between;gap:28px;padding-block:7px;border-bottom:1px dashed var(--line-2);font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.sg-hero__label > div:last-child{border-bottom:0}
+.sg-hero__label dt{color:var(--muted);white-space:nowrap}
+.sg-hero__label dd{color:#fff;text-align:end}
+.sg-root[dir="rtl"] .sg-hero__label > div{font-family:var(--f-ar);font-size:13px;letter-spacing:0}
+
+/* ============ 4. FACTS ============ */
+.sg-facts{border-bottom:1px solid var(--line);background:var(--bg)}
+.sg-facts__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.sg-fact{display:flex;flex-direction:column;gap:12px;min-width:0;padding:34px 36px 38px;border-inline-start:1px solid var(--line)}
+.sg-fact:first-child{border-inline-start:0;padding-inline-start:0}
+.sg-fact__value{font-family:var(--f-display);font-size:clamp(30px,3.5cqi,50px);line-height:.95;letter-spacing:-.015em;text-transform:uppercase;color:#fff;text-wrap:balance}
+.sg-root[dir="rtl"] .sg-fact__value{font-weight:800;font-size:clamp(26px,2.9cqi,40px);line-height:1.35;letter-spacing:0}
+.sg-fact__label{color:var(--muted);font-size:15px;line-height:1.5;max-width:30ch}
+
+/* ============ 5. SECTIONS COMMON ============ */
+.sg-section{padding-block:clamp(72px,9cqi,136px);scroll-margin-top:var(--head-h)}
+.sg-sechead{display:flex;align-items:center;gap:16px;min-height:44px;margin-bottom:clamp(28px,3.6cqi,52px);border-top:1px solid var(--line);position:relative}
+.sg-sechead .sg-plus{top:-8px;inset-inline-start:-7px;--c:var(--red-t)}
+.sg-sechead__no{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--red-t);padding-inline-start:16px;white-space:nowrap}
+.sg-intro{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(24px,4cqi,64px);align-items:end;margin-bottom:clamp(40px,5cqi,80px)}
+.sg-intro .sg-lede{justify-self:end}
+.sg-intro--solo{grid-template-columns:minmax(0,10fr) minmax(0,2fr)}
+
+/* ============ 6. SERVICES (manifest) ============ */
+.sg-manifest{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,4.4cqi,72px);align-items:stretch}
+.sg-manifest__head{display:grid;grid-template-columns:80px minmax(0,1fr) 92px 44px;gap:20px;padding:0 14px 12px;border-bottom:1px solid var(--line-2);
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.sg-root[dir="rtl"] .sg-manifest__head{font-family:var(--f-ar);font-size:13px;letter-spacing:0}
+.sg-row{border-bottom:1px solid var(--line)}
+.sg-row__h{font:inherit}
+.sg-row__btn{display:grid;grid-template-columns:80px minmax(0,1fr) 92px 44px;gap:20px;align-items:center;width:100%;min-height:92px;padding:22px 14px;
+  background:transparent;border:0;text-align:start;cursor:pointer;color:var(--text);transition:background-color .15s ease,transform .12s ease}
+.sg-row__btn:hover{background:var(--bg-2)}
+.sg-row__btn:active{transform:scale(.99)}
+.sg-row.is-open .sg-row__btn{background:var(--bg-2)}
+.sg-row.is-open .sg-row__btn:hover{background:var(--bg-3)}
+.sg-row__code{justify-self:start;font-family:var(--f-mono);font-weight:700;font-size:13px;letter-spacing:.12em;color:var(--red-t);padding:6px 9px;border:1px solid rgba(240,104,122,.45);direction:ltr;white-space:nowrap}
+.sg-row.is-open .sg-row__code{background:var(--red);border-color:var(--red);color:#fff}
+.sg-row__main{min-width:0;display:flex;flex-direction:column;gap:8px}
+.sg-row__title{font-family:var(--f-display);font-size:clamp(20px,2cqi,28px);line-height:1;letter-spacing:-.01em;text-transform:uppercase}
+.sg-root[dir="rtl"] .sg-row__title{font-weight:800;font-size:clamp(19px,1.75cqi,24px);line-height:1.4;letter-spacing:0}
+.sg-row__short{font-size:15px;line-height:1.5;color:var(--muted)}
+.sg-row__no{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;color:var(--muted);direction:ltr;justify-self:end;white-space:nowrap}
+.sg-row__icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line-2);transition:background-color .15s ease,border-color .15s ease}
+.sg-row__icon svg{transition:transform .2s ease}
+.sg-row__btn:hover .sg-row__icon{border-color:#5A6390}
+.sg-row.is-open .sg-row__icon{border-color:var(--text)}
+.sg-row.is-open .sg-row__icon svg{transform:rotate(45deg)}
+.sg-row__panel{padding:6px 14px 34px;padding-inline-start:calc(14px + 80px + 20px);background:var(--bg-2)}
+.sg-root.sg-touched .sg-row__panel:not([hidden]){animation:sg-open .2s ease-out both}
+.sg-row__panel[hidden]{display:none}
+.sg-row__media{display:none}
+.sg-row__dtitle{font-weight:700;font-size:19px;line-height:1.35;color:#fff;margin-bottom:10px}
+.sg-row__dtext{color:var(--soft);font-size:16px;line-height:1.65;max-width:58ch}
+.sg-root[dir="rtl"] .sg-row__dtext{line-height:1.85}
+.sg-row__cta{margin-top:22px}
+.sg-row__cta .sg-btn{min-height:48px}
+/* the photo column stretches to the full height of the table, so the photo always sits beside the row that changes it (a sticky panel never moves in a full-height artboard) */
+.sg-viewer{display:flex;flex-direction:column;min-width:0}
+.sg-viewer__frame{position:relative;flex:1;min-height:clamp(440px,42cqi,620px);background:var(--bg-2)}
+.sg-viewer__clip{position:absolute;inset:0;overflow:hidden}
+.sg-viewer__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .35s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.sg-viewer__img.is-on{opacity:1;transform:none}
+.sg-viewer__shade{position:absolute;inset:auto 0 0 0;height:48%;background:linear-gradient(0deg,rgba(10,13,28,.92),rgba(10,13,28,0))}
+.sg-viewer__code{position:absolute;inset-inline-start:24px;bottom:18px;font-family:var(--f-code);font-size:clamp(64px,8cqi,124px);line-height:.8;letter-spacing:-.03em;color:#fff;unicode-bidi:isolate}
+.sg-viewer__cap{display:flex;justify-content:space-between;gap:16px;padding-top:16px;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sg-viewer__cap b{color:var(--text);font-weight:500}
+.sg-root[dir="rtl"] .sg-viewer__cap{font-family:var(--f-ar);font-size:13px;letter-spacing:0}
+
+/* ============ 7. OCEAN: FCL / LCL ============ */
+.sg-doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2cqi,28px)}
+.sg-door{display:flex;flex-direction:column;min-width:0;background:var(--bg-2);border:1px solid var(--line)}
+.sg-door__face{position:relative;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--line);container-type:inline-size}
+/* FCL: a closed container door. The locking bars sit at 7 / 40 / 60 / 93 % so the stencil gets a clear zone between bars 1 and 2 */
+.sg-door--fcl .sg-door__face{background-color:var(--crimson);
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 12px,rgba(255,255,255,.10) 12px 14px,rgba(0,0,0,.22) 14px 19px,rgba(0,0,0,0) 19px 30px)}
+.sg-door--fcl .sg-door__face::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0) 9%,rgba(0,0,0,0) 91%,rgba(0,0,0,.4)),
+    linear-gradient(90deg,rgba(0,0,0,0) calc(50% - 2px),rgba(0,0,0,.55) calc(50% - 2px),rgba(0,0,0,.55) calc(50% + 1px),rgba(255,255,255,.12) calc(50% + 1px),rgba(255,255,255,.12) calc(50% + 2px),rgba(0,0,0,0) calc(50% + 2px))}
+.sg-door__bar{position:absolute;top:7%;bottom:7%;width:7px;background:linear-gradient(90deg,#3a0d14,#d9d4d6 35%,#8c8487 70%,#2a0a10)}
+.sg-door__bar::before,.sg-door__bar::after{content:"";position:absolute;inset-inline:-5px;height:9px;background:#2a0a10;border:1px solid rgba(255,255,255,.25)}
+.sg-door__bar::before{top:10%}
+.sg-door__bar::after{bottom:10%}
+.sg-door__bar i{position:absolute;top:58%;inset-inline-start:3px;width:clamp(16px,4.6cqi,30px);height:6px;background:linear-gradient(180deg,#d9d4d6,#6b6366);border-radius:3px}
+.sg-door__bar--1{inset-inline-start:7%}.sg-door__bar--2{inset-inline-start:40%}.sg-door__bar--3{inset-inline-start:calc(60% - 7px)}.sg-door__bar--4{inset-inline-start:calc(93% - 7px)}
+.sg-door__stencil{position:absolute;z-index:1;top:15%;inset-inline-start:calc(11.4% + 3px);font-family:var(--f-code);font-size:11.8cqi;line-height:.85;letter-spacing:-.02em;color:#fff;unicode-bidi:isolate;text-shadow:0 1px 0 rgba(0,0,0,.25)}
+/* LCL: the same container seen from the rear with its doors open: crimson end frame, a dark hold in perspective, mixed parcels on the floor */
+.sg-door--lcl .sg-door__face{background:#141936}
+.sg-door--lcl .sg-door__stencil{inset-inline-start:calc(6% + 6.5cqi)}
+.sg-box{position:absolute;inset:7% 6% 9%;border:solid var(--crimson);border-width:2.4cqi 2.4cqi 2cqi;background:#070A16}
+.sg-box::after{content:"";position:absolute;inset:-2.4cqi -2.4cqi -2cqi;pointer-events:none;--k:#2B0B12;
+  background:
+    linear-gradient(var(--k),var(--k)) 0 0/3.6cqi 3.6cqi no-repeat,
+    linear-gradient(var(--k),var(--k)) 100% 0/3.6cqi 3.6cqi no-repeat,
+    linear-gradient(var(--k),var(--k)) 0 100%/3.6cqi 3.2cqi no-repeat,
+    linear-gradient(var(--k),var(--k)) 100% 100%/3.6cqi 3.2cqi no-repeat}
+.sg-box__w{position:absolute;inset:0}
+.sg-box__w--top{clip-path:polygon(0 0,100% 0,78% 24%,22% 24%);background:#090C1C}
+.sg-box__w--l,.sg-box__w--r{background-color:#10142C;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 7px,rgba(255,255,255,.05) 7px 8px,rgba(0,0,0,.25) 8px 10px)}
+.sg-box__w--l{clip-path:polygon(0 0,22% 24%,22% 64%,0 100%)}
+.sg-box__w--r{clip-path:polygon(100% 0,78% 24%,78% 64%,100% 100%)}
+.sg-box__w--floor{clip-path:polygon(0 100%,100% 100%,78% 64%,22% 64%);background-color:#1D2348;background-image:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0 9px,rgba(255,255,255,.05) 9px 10px)}
+.sg-box__w--back{inset:24% 22% 36%;background:#0C1024}
+.sg-hold{position:absolute;inset:auto 5% 0;height:56%;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(4,1fr);gap:3px}
+.sg-hold span{display:block;border:1px solid rgba(0,0,0,.5);background-color:var(--navy);box-shadow:inset 0 3px 0 rgba(255,255,255,.14),inset 0 -4px 0 rgba(0,0,0,.22);
+  background-image:linear-gradient(90deg,rgba(255,255,255,0) 44%,rgba(255,255,255,.16) 44% 56%,rgba(255,255,255,0) 56%)}
+.sg-hold span:nth-child(1){grid-column:1/4;grid-row:2/5}
+.sg-hold span:nth-child(2){grid-column:1/3;grid-row:1/2;background-color:#5B6390}
+.sg-hold span:nth-child(3){grid-column:4/8;grid-row:3/5;background-color:var(--crimson)}
+.sg-hold span:nth-child(4){grid-column:4/7;grid-row:2/3;background-color:#2C3262}
+.sg-hold span:nth-child(5){grid-column:8/10;grid-row:3/5;background-color:#8C93B8}
+.sg-hold span:nth-child(6){grid-column:10/13;grid-row:2/5;background-color:#4A5280}
+.sg-hold span:nth-child(7){grid-column:8/10;grid-row:2/3;background-color:#262B57}
+.sg-door__body{position:relative;padding:clamp(22px,2.4cqi,34px);display:flex;flex-direction:column;gap:12px;flex:1}
+.sg-door__tag{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;color:var(--red-t)}
+.sg-door__tag::after{content:"";flex:1;max-width:80px;height:1px;background:var(--line-2)}
+.sg-door__name{font-family:var(--f-display);font-size:clamp(24px,2.5cqi,36px);line-height:1;letter-spacing:-.012em;text-transform:uppercase;color:#fff;text-wrap:balance}
+.sg-root[dir="rtl"] .sg-door__name{font-weight:800;font-size:clamp(22px,2.2cqi,30px);line-height:1.4;letter-spacing:0}
+.sg-door__text{color:var(--soft);max-width:52ch}
+.sg-dedicated{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(18px,2.4cqi,32px);align-items:start;margin-top:clamp(16px,2cqi,28px);padding:clamp(22px,2.6cqi,36px);border:1px solid var(--line);background:var(--bg)}
+.sg-dedicated__ico{display:grid;place-items:center;width:56px;height:56px;background:var(--red);color:#fff}
+.sg-dedicated__ico .sg-ico{width:26px;height:26px}
+.sg-dedicated__in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(12px,3cqi,48px);align-items:baseline}
+.sg-dedicated__text{color:var(--soft)}
+
+/* ============ 8. VALUES ============ */
+.sg-values{background:var(--bg-2);border-block:1px solid var(--line)}
+.sg-values .sg-sechead{border-top-color:var(--line-2)}
+.sg-vlist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-2)}
+.sg-value{display:flex;flex-direction:column;min-width:0;padding:30px 28px 10px;border-inline-start:1px solid var(--line-2)}
+.sg-value:first-child{border-inline-start:0;padding-inline-start:0}
+.sg-value__no{display:block;font-family:var(--f-code);font-size:clamp(84px,9.6cqi,150px);line-height:.78;letter-spacing:-.04em;color:var(--red);direction:ltr;margin-bottom:clamp(28px,3cqi,44px);align-self:flex-start}
+.sg-value__title{margin-bottom:12px}
+.sg-value__body{color:var(--soft);font-size:15.5px}
+
+/* ============ 9. ABOUT ============ */
+.sg-about__grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);grid-template-areas:"title title" "media copy";column-gap:clamp(36px,5cqi,88px);align-items:start}
+.sg-about__title{grid-area:title;max-width:14ch;margin-bottom:clamp(36px,4.4cqi,64px)}
+.sg-about__media{grid-area:media;position:relative}
+.sg-about__clip{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-2)}
+.sg-about__clip img{width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+.sg-about__copy{grid-area:copy;display:flex;flex-direction:column;gap:clamp(28px,3cqi,44px)}
+.sg-about__body{font-size:clamp(18px,1.65cqi,23px);line-height:1.6;color:var(--text);max-width:40em}
+.sg-root[dir="rtl"] .sg-about__body{line-height:1.9}
+.sg-mission{position:relative;padding:clamp(26px,3cqi,44px);background:var(--bg-2);border:1px solid var(--line)}
+.sg-mission__label{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--red-t);margin-bottom:20px}
+.sg-mission__label::before{content:"";width:10px;height:10px;background:var(--red)}
+.sg-root[dir="rtl"] .sg-mission__label{font-family:var(--f-ar);font-weight:700;font-size:16px;letter-spacing:0}
+.sg-mission__text{color:var(--soft);font-size:16.5px;line-height:1.7}
+.sg-root[dir="rtl"] .sg-mission__text{line-height:1.9}
+
+/* ============ 10. CTA BAND ============ */
+/* signal-crimson band: black display title (3.7:1, large text), white body and meta (5.2:1) */
+.sg-cta{position:relative;background:var(--red);color:var(--ink);overflow:hidden}
+.sg-cta :focus-visible{outline-color:var(--ink)}
+.sg-cta__in{position:relative;display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:clamp(28px,4cqi,72px);align-items:end;padding-block:clamp(72px,8.4cqi,128px)}
+.sg-cta__meta{position:absolute;top:22px;inset-inline:var(--gutter);display:flex;justify-content:space-between;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff}
+.sg-root[dir="rtl"] .sg-cta__meta{font-family:var(--f-ar);font-weight:700;font-size:13px;letter-spacing:0;top:16px}
+.sg-cta__title{font-family:var(--f-display);font-size:clamp(34px,5.5cqi,82px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance}
+/* each sentence of the CTA title starts its own line, so a question never shares a line with the next sentence */
+.sg-cta__line{display:block}
+.sg-root[dir="rtl"] .sg-cta__title{font-weight:800;font-size:clamp(30px,4.5cqi,66px);line-height:1.32;letter-spacing:0;text-transform:none}
+.sg-cta__body{font-size:clamp(17px,1.4cqi,19px);font-weight:500;line-height:1.55;margin-bottom:28px;color:#fff}
+.sg-cta__perf{position:absolute;top:54px;inset-inline:0;height:0;border-top:2px dashed rgba(10,13,28,.42);pointer-events:none}
+.sg-cta__perf::before,.sg-cta__perf::after{content:"";position:absolute;top:-14px;width:26px;height:26px;border-radius:50%;background:var(--bg)}
+.sg-cta__perf::before{left:-13px}
+.sg-cta__perf::after{right:-13px}
+
+/* ============ 11. CONTACT ============ */
+.sg-contact__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,4cqi,64px);align-items:start}
+.sg-bill{border:1px solid var(--line)}
+.sg-bill__cell{padding:clamp(20px,2.2cqi,28px);border-bottom:1px solid var(--line)}
+.sg-bill__cell:last-child{border-bottom:0}
+.sg-bill__label{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.sg-root[dir="rtl"] .sg-bill__label{font-family:var(--f-ar);font-weight:700;font-size:14px;letter-spacing:0}
+.sg-addr{font-style:normal;font-size:17px;line-height:1.55;color:var(--text)}
+.sg-addr span{display:block}
+.sg-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:10px;padding:0 12px;margin-inline-start:-12px;color:var(--red-t);text-decoration:none;font-weight:600;transition:background-color .15s ease,transform .12s ease}
+.sg-link:hover{background:var(--bg-2)}
+.sg-link:active,.sg-mail:active,.sg-flink:active,.sg-wa__row:active,.sg-sheet__tel:active,.sg-top:active{transform:scale(.98)}
+.sg-link span{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.sg-tels{display:flex;flex-direction:column}
+.sg-tel{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding-block:12px;border-top:1px dashed var(--line-2)}
+.sg-tel:first-child{border-top:0;padding-top:0}
+.sg-tel__num{font-family:var(--f-mono);font-weight:500;font-size:19px;letter-spacing:.02em;color:#fff}
+/* call-only row: the "call only" note takes the WhatsApp chip's slot (an invisible copy of that chip, stacked in the same grid cell, sets the width; a longer note widens the cell instead of clipping), so its Call chip lines up with the others and the row wraps exactly like them */
+.sg-tel__only{display:inline-grid}
+.sg-tel__only > *{grid-area:1/1}
+.sg-tel__ghost{visibility:hidden}
+.sg-tel__kind{display:flex;align-items:center;justify-content:center;padding:0 6px;border:1px dashed var(--line-2);font-family:var(--f-mono);font-weight:500;font-size:11px;line-height:1.2;letter-spacing:.14em;text-transform:uppercase;text-align:center;color:var(--muted);white-space:nowrap}
+.sg-root[dir="rtl"] .sg-tel__kind{font-family:var(--f-ar);font-weight:600;font-size:13px;letter-spacing:0;text-transform:none}
+.sg-tel__act{display:flex;gap:8px;flex-wrap:wrap}
+.sg-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line-2);background:transparent;color:var(--text);text-decoration:none;
+  font:600 13px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;transition:background-color .15s ease,border-color .15s ease}
+.sg-chip:hover{background:var(--bg-2);border-color:#5A6390}
+.sg-chip:active{transform:scale(.98)}
+.sg-chip--wa{border-color:rgba(240,104,122,.55)}
+.sg-root[dir="rtl"] .sg-chip{font-family:var(--f-ar);font-size:14px;letter-spacing:0;text-transform:none}
+.sg-mails{display:flex;flex-direction:column;gap:2px}
+.sg-mail{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;margin-inline-start:-12px;color:var(--text);text-decoration:none;font-size:17px;transition:background-color .15s ease,transform .12s ease;max-width:calc(100% + 12px)}
+.sg-mail:hover{background:var(--bg-2)}
+.sg-mail .sg-ico{color:var(--red-t)}
+.sg-form-wrap{position:relative;background:var(--bg-2);border:1px solid var(--line);padding:clamp(22px,3.2cqi,48px)}
+.sg-form__title{margin-bottom:clamp(20px,2.4cqi,32px)}
+.sg-form__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 20px}
+.sg-field{display:flex;flex-direction:column;min-width:0}
+.sg-field--full{grid-column:1/-1}
+.sg-label{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text)}
+.sg-req{font-size:12px;letter-spacing:.1em;color:var(--muted)}
+.sg-root[dir="rtl"] .sg-label{font-family:var(--f-ar);font-weight:700;font-size:15px;letter-spacing:0}
+.sg-root[dir="rtl"] .sg-req{font-size:12px;letter-spacing:0;font-weight:600}
+.sg-input{width:100%;min-height:52px;padding:13px 15px;background:var(--bg);border:1px solid var(--field);border-radius:0;color:var(--text);font:400 16px/1.4 var(--f-body);
+  -webkit-appearance:none;appearance:none;transition:border-color .15s ease,box-shadow .15s ease,background-color .15s ease}
+.sg-input:hover{border-color:#8C92AD;background:#0D1123}
+.sg-input:focus,.sg-input:focus-visible{outline:none;border-color:var(--text);box-shadow:0 0 0 3px rgba(242,242,245,.28)}
+.sg-input[aria-invalid="true"]{border-color:var(--red-t)}
+.sg-input[aria-invalid="true"]:focus{border-color:var(--red-t);box-shadow:0 0 0 3px rgba(240,104,122,.4)}
+.sg-input::placeholder{color:#7A8099}
+textarea.sg-input{min-height:148px;resize:vertical}
+.sg-selectbox{position:relative}
+.sg-selectbox .sg-input{padding-inline-end:46px;cursor:pointer}
+.sg-selectbox .sg-ico{position:absolute;top:50%;inset-inline-end:15px;margin-top:-10px;pointer-events:none;color:var(--muted)}
+.sg-input.is-empty{color:var(--muted)}
+.sg-input option{color:#0A0D1C;background:#fff}
+.sg-err{display:flex;align-items:flex-start;gap:8px;margin-top:9px;font-size:14px;line-height:1.45;color:var(--red-t)}
+.sg-err .sg-ico{margin-top:1px}
+.sg-form__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px}
+.sg-btn[disabled]{opacity:.7;cursor:progress}
+.sg-success{display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding:clamp(8px,1cqi,16px) 0;scroll-margin-block:calc(var(--head-h) + 24px) 24px}
+.sg-success:not(.is-on){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sg-success__ico{display:grid;place-items:center;width:56px;height:56px;background:var(--red);color:#fff}
+.sg-success__ico .sg-ico{width:28px;height:28px}
+.sg-success__text{font-family:var(--f-display);font-size:clamp(22px,2.3cqi,32px);line-height:1.1;text-transform:uppercase;color:#fff;max-width:22em}
+.sg-root[dir="rtl"] .sg-success__text{font-weight:800;line-height:1.5;text-transform:none;font-size:clamp(20px,2cqi,28px)}
+
+/* ============ 12. FOOTER ============ */
+.sg-footer{position:relative;border-top:1px solid var(--line);background:var(--bg);padding-top:clamp(56px,6cqi,96px);overflow:hidden}
+.sg-footer__grid{display:grid;grid-template-columns:minmax(0,4.4fr) repeat(3,minmax(0,2.6fr));gap:clamp(28px,3.4cqi,56px)}
+.sg-footer__brand .sg-brand{margin-bottom:18px}
+.sg-footer__line{color:var(--muted);max-width:28ch}
+.sg-footer__h{font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.sg-root[dir="rtl"] .sg-footer__h{font-family:var(--f-ar);font-weight:700;font-size:14px;letter-spacing:0}
+.sg-flinks{display:flex;flex-direction:column;align-items:flex-start}
+.sg-flink{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 10px;margin-inline-start:-10px;color:var(--text);text-decoration:none;transition:background-color .15s ease,transform .12s ease;max-width:calc(100% + 10px)}
+.sg-flink:hover{background:var(--bg-2)}
+.sg-flink .sg-ico{color:var(--red-t)}
+.sg-flink--call{flex-wrap:wrap;column-gap:10px;row-gap:0;padding-block:6px}
+.sg-flink__kind{font-family:var(--f-mono);font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sg-root[dir="rtl"] .sg-flink__kind{font-family:var(--f-ar);font-weight:600;font-size:12.5px;letter-spacing:0}
+.sg-footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin-top:clamp(40px,5cqi,72px);padding-block:12px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+.sg-top{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 12px;margin-inline-end:-12px;color:var(--text);text-decoration:none;font-family:var(--f-mono);font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:background-color .15s ease,transform .12s ease}
+.sg-top:hover{background:var(--bg-2)}
+.sg-top .sg-ico{color:var(--red-t)}
+.sg-root[dir="rtl"] .sg-top{font-family:var(--f-ar);font-weight:600;font-size:14px;letter-spacing:0;text-transform:none}
+.sg-footer__mark{display:block;direction:ltr;text-align:center;white-space:nowrap;font-family:var(--f-brand);font-weight:800;font-size:13.6cqi;line-height:.74;letter-spacing:-.01em;
+  color:#1D2345;margin-top:clamp(8px,2cqi,28px);margin-bottom:-.06em;user-select:none;pointer-events:none}
+
+/* ============ 13. WHATSAPP DOCK + LAYERS ============ */
+.sg-dock{position:sticky;bottom:0;height:0;z-index:60}
+.sg-fab{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom,0px));inset-inline-end:calc(16px + env(safe-area-inset-right,0px));display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  z-index:2;height:56px;min-width:56px;padding:0 22px 0 18px;background:var(--red);color:#fff;border:0;cursor:pointer;box-shadow:0 12px 32px rgba(0,0,0,.5);
+  font:700 13px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;transition:background-color .15s ease,transform .12s ease}
+.sg-fab:hover{background:var(--red-h)}
+.sg-fab:active{transform:scale(.97)}
+.sg-fab .sg-ico{width:24px;height:24px}
+.sg-root[dir="rtl"] .sg-fab{font-family:var(--f-ar);font-size:15px;letter-spacing:0;text-transform:none;padding:0 18px 0 22px}
+.sg-root.is-menu .sg-fab{visibility:hidden}
+.sg-scrim{position:fixed;inset:0;z-index:0;display:block;width:100%;height:100%;padding:0;border:0;background:rgb(0 0 0 / .45);cursor:default;animation:sg-fade .2s ease-out both}
+.sg-wa{position:absolute;z-index:1;bottom:calc(84px + env(safe-area-inset-bottom,0px));inset-inline-end:16px;width:min(400px,calc(100cqi - 32px));
+  background:var(--bg-2);border:1px solid var(--line-2);box-shadow:0 24px 60px rgba(0,0,0,.55);animation:sg-pop .22s cubic-bezier(.2,.7,.2,1) both}
+.sg-wa__head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 20px 16px 22px;border-bottom:1px solid var(--line)}
+.sg-wa__title{font-family:var(--f-display);font-size:20px;line-height:1.05;text-transform:uppercase;color:#fff}
+.sg-root[dir="rtl"] .sg-wa__title{font-weight:800;font-size:19px;line-height:1.5;text-transform:none}
+.sg-wa__sub{margin-top:8px;color:var(--muted);font-size:14.5px;line-height:1.5}
+.sg-x{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;background:transparent;border:1px solid var(--line-2);color:var(--text);cursor:pointer;transition:background-color .15s ease}
+.sg-x:hover{background:var(--bg-3)}
+.sg-x:active{transform:scale(.96)}
+.sg-wa__list{padding:10px}
+.sg-wa__row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;min-height:72px;padding:12px 14px;color:var(--text);text-decoration:none;transition:background-color .15s ease,transform .12s ease}
+.sg-wa__list li + li{border-top:1px solid var(--line)}
+.sg-wa__row:hover{background:var(--bg-3)}
+.sg-wa__ico{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line-2);color:var(--red-t)}
+.sg-wa__num{font-family:var(--f-mono);font-weight:500;font-size:20px;color:#fff}
+.sg-wa__go{display:grid;place-items:center;width:44px;height:44px;background:var(--red);color:#fff}
+.sg-wa__row:hover .sg-wa__go{background:var(--red-h)}
+
+.sg-sheet{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);animation:sg-sheet .22s cubic-bezier(.2,.7,.2,1) both}
+/* the sheet head repeats the header (same height, brand at the start, the close button where the menu button sits) so nothing jumps on open */
+.sg-sheet__head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:var(--head-h);padding-inline:var(--gutter);background:var(--bg);border-bottom:1px solid var(--line);flex:none}
+.sg-sheet__head .sg-x{width:48px;height:44px}
+.sg-sheet__title{display:flex;align-items:center;gap:12px;margin:24px var(--gutter) 0;font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1.4;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);flex:none}
+.sg-sheet__title::before{content:"";width:10px;height:10px;background:var(--red);flex:none}
+.sg-root[dir="rtl"] .sg-sheet__title{font-family:var(--f-ar);font-weight:700;font-size:15px;letter-spacing:0}
+.sg-sheet__nav{padding:4px var(--gutter) 0}
+.sg-sheet__link{display:flex;align-items:center;gap:18px;min-height:76px;padding:12px 6px;border-bottom:1px solid var(--line);color:#fff;text-decoration:none;transition:background-color .15s ease}
+.sg-sheet__link:hover{background:var(--bg-2)}
+.sg-sheet__link:active{transform:scale(.99)}
+.sg-sheet__label{flex:1;min-width:0;font-family:var(--f-display);font-size:clamp(26px,8cqi,40px);line-height:1;letter-spacing:-.01em;text-transform:uppercase}
+.sg-root[dir="rtl"] .sg-sheet__label{font-weight:800;font-size:clamp(24px,7cqi,34px);line-height:1.4;letter-spacing:0}
+.sg-sheet__link .sg-ico{color:var(--muted)}
+.sg-sheet__foot{display:flex;flex-direction:column;gap:14px;padding:28px var(--gutter) 36px;margin-top:auto}
+.sg-sheet__foot .sg-btn{width:100%}
+.sg-sheet__tels{display:flex;flex-direction:column;gap:2px;padding-top:12px;border-top:1px solid var(--line)}
+.sg-sheet__tel{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:0 6px;color:var(--text);text-decoration:none;transition:background-color .15s ease,transform .12s ease;font-size:16px}
+.sg-sheet__tel:hover{background:var(--bg-2)}
+.sg-sheet__tel .sg-mono{color:var(--muted)}
+.sg-root[dir="rtl"] .sg-sheet__tel .sg-mono{font-family:var(--f-ar);font-size:14px;letter-spacing:0}
+
+/* ============ 14. MOTION ============ */
+@keyframes sg-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes sg-push{from{transform:scale(1.07)}to{transform:scale(1)}}
+@keyframes sg-wipe-a{0%{transform:translateX(-102%)}44%,56%{transform:translateX(0)}100%{transform:translateX(102%)}}
+@keyframes sg-wipe-b{0%{transform:translateX(-102%)}44%,56%{transform:translateX(0)}100%{transform:translateX(102%)}}
+@keyframes sg-prog-a{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sg-prog-b{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sg-open{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes sg-fade{from{opacity:0}to{opacity:1}}
+@keyframes sg-pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sg-sheet{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* ============ 15. CONTAINER QUERIES ============ */
+@container sg (max-width: 1180px){
+  .sg-nav__link{padding:0 10px}
+  /* 1024-1180: the text column would reach the thin part of the scrim, so narrow it and darken the middle stops */
+  .sg-hero__stack{max-width:min(800px,58%)}
+  .sg-hero__scrim{background:
+    linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.86) 46%,rgba(10,13,28,.6) 62%,rgba(10,13,28,.14) 80%,rgba(10,13,28,0) 100%),
+    linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
+  .sg-root[dir="rtl"] .sg-hero__scrim{background:
+    linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.86) 46%,rgba(10,13,28,.6) 62%,rgba(10,13,28,.14) 80%,rgba(10,13,28,0) 100%),
+    linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
+  .sg-manifest__head,.sg-row__btn{grid-template-columns:72px minmax(0,1fr) 44px}
+  .sg-manifest__head span:nth-child(3),.sg-row__no{display:none}
+  .sg-row__panel{padding-inline-start:calc(14px + 72px + 20px)}
+}
+@container sg (max-width: 1023px){
+  .sg-strip{display:none}
+  .sg-nav,.sg-hero__label{display:none}
+  .sg-menu-btn{display:inline-flex}
+  .sg-header__act{margin-inline-start:auto}
+  .sg-hero__stack{max-width:min(720px,86%)}
+  .sg-slide__title{font-size:clamp(46px,8.3cqi,128px)}
+  .sg-slide__media--b{inset-inline-start:0;-webkit-mask-image:none;mask-image:none}
+  .sg-hero__scrim{background:linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
+  .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
+  .sg-intro{grid-template-columns:1fr;align-items:start}
+  .sg-intro .sg-lede{justify-self:start}
+  .sg-manifest{grid-template-columns:1fr}
+  .sg-viewer{display:none}
+  .sg-row__panel{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;align-items:start;padding-inline-start:14px;padding-top:4px}
+  .sg-row__media{display:block;position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--bg-3)}
+  .sg-row__media img{width:100%;height:100%;object-fit:cover}
+  .sg-vlist{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sg-value:nth-child(3){border-inline-start:0;padding-inline-start:0}
+  .sg-value:nth-child(n+3){border-top:1px solid var(--line-2);padding-top:34px}
+  .sg-value{padding-bottom:30px}
+  .sg-contact__grid{grid-template-columns:1fr}
+  .sg-about__grid{grid-template-columns:1fr;grid-template-areas:"title" "media" "copy";row-gap:clamp(28px,4cqi,44px)}
+  .sg-about__title{margin-bottom:0}
+  .sg-cta__in{grid-template-columns:1fr;align-items:start}
+  .sg-footer__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sg-brand--lg{--em:clamp(56px,7cqi,72px);gap:clamp(12px,1.6cqi,16px)}
+  .sg-brand--lg .sg-brand__name{font-size:clamp(17px,2.1cqi,22px)}
+  .sg-brand--lg .sg-brand__tag{font-size:clamp(10px,1.15cqi,12px)}
+  .sg-dedicated__in{grid-template-columns:1fr;gap:8px}
+}
+@container sg (max-width: 860px){
+  .sg-header__cta{display:none}
+  .sg-fact{padding:28px 22px 30px}
+  .sg-fact__label{font-size:14px}
+  .sg-doors{grid-template-columns:1fr}
+}
+@container sg (max-width: 640px){
+  .sg-facts__list{grid-template-columns:1fr}
+  .sg-fact{gap:8px;padding:24px 0 26px;border-inline-start:0;border-top:1px solid var(--line)}
+  .sg-fact:first-child{border-top:0}
+  .sg-fact__label{max-width:none;font-size:15px}
+  .sg-header__in,.sg-sheet__head{min-height:64px}
+  .sg-section{scroll-margin-top:64px}
+  .sg-header__in{gap:10px}
+  /* phone header: the mark scales with the frame and the Latin "English" label drops its caps, so brand + language + menu always fit one row */
+  .sg-brand:not(.sg-brand--lg){--em:clamp(32px,9.6cqi,40px);gap:clamp(8px,2.4cqi,10px);padding-inline-end:4px}
+  .sg-brand__name{font-size:clamp(12.5px,3.6cqi,15px)}
+  .sg-brand__tag{font-size:clamp(8px,2.1cqi,8.5px)}
+  .sg-lang__t:lang(en){text-transform:none;letter-spacing:.01em}
+  .sg-brand--lg{--em:66px;gap:16px}
+  .sg-brand--lg .sg-brand__name{font-size:20px}
+  .sg-brand--lg .sg-brand__tag{font-size:11px}
+  .sg-menu-btn{padding:0;width:48px;justify-content:center}
+  .sg-menu-btn span{display:none}
+  .sg-lang{min-width:0;padding:0 12px}
+  .sg-hero{min-height:0}
+  .sg-hero__stage{bottom:auto;height:min(124cqi,540px)}
+  .sg-hero__scrim{inset:0 0 auto 0;height:min(124cqi,540px);background:linear-gradient(180deg,rgba(10,13,28,.3) 0%,rgba(10,13,28,0) 20%,rgba(10,13,28,.72) 52%,rgba(10,13,28,.95) 76%,#0A0D1C 100%)}
+  .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(180deg,rgba(10,13,28,.3) 0%,rgba(10,13,28,0) 20%,rgba(10,13,28,.72) 52%,rgba(10,13,28,.95) 76%,#0A0D1C 100%)}
+  .sg-hero__wipe{bottom:auto;height:min(124cqi,540px)}
+  .sg-hero__inner{padding-top:calc(min(124cqi,540px) - 168px)}
+  .sg-hero__stack{max-width:none}
+  .sg-slide__eyebrow{margin-bottom:16px}
+  .sg-slide__text{margin-top:18px}
+  .sg-hero__cta{flex-direction:column;align-items:stretch;margin-top:28px}
+  .sg-hero__cta .sg-btn{width:100%}
+  .sg-hero__bar{gap:10px;margin-top:28px;padding-bottom:22px}
+  .sg-dot{width:44px}
+  .sg-ctrl{width:44px;height:44px}
+  .sg-section{padding-block:clamp(56px,16cqi,80px)}
+  /* Latin section titles: plain wrapping on phones keeps "your shipment" together (balance would strand a short word) */
+  .sg-root:not([dir="rtl"]) .sg-h2{text-wrap:wrap}
+  .sg-sechead{gap:12px}
+  .sg-sechead__no{padding-inline-start:12px}
+  .sg-manifest__head{grid-template-columns:62px minmax(0,1fr) 44px;gap:12px;padding-inline:6px}
+  .sg-manifest__head span:nth-child(3){display:none}
+  .sg-row__btn{grid-template-columns:62px minmax(0,1fr) 44px;gap:12px;padding:18px 6px;min-height:84px;align-items:start}
+  .sg-row__code{margin-top:2px;font-size:12px;padding:5px 7px}
+  .sg-row__no{display:none}
+  .sg-row__short{font-size:14.5px}
+  .sg-row__panel{grid-template-columns:1fr;gap:20px;padding:4px 6px 28px}
+  .sg-row__cta .sg-btn{width:100%}
+  .sg-door__face{aspect-ratio:4/3}
+  .sg-dedicated{grid-template-columns:1fr}
+  .sg-vlist{grid-template-columns:1fr}
+  .sg-value,.sg-value:nth-child(3){display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:20px;padding:26px 0;border-inline-start:0;border-top:1px solid var(--line-2)}
+  .sg-value:first-child{border-top:0}
+  .sg-value__no{grid-row:1/3;font-size:64px;margin:0;line-height:.82}
+  .sg-value__title{align-self:end}
+  .sg-cta__meta{top:16px}
+  .sg-cta__perf{top:46px}
+  .sg-cta__in .sg-btn{width:100%}
+  .sg-form__grid{grid-template-columns:1fr;gap:20px}
+  .sg-form__foot .sg-btn{width:100%}
+  .sg-footer__grid{grid-template-columns:1fr;gap:32px}
+  .sg-fab{padding:0;width:56px}
+  .sg-fab__label{display:none}
+  .sg-frame::after{inset:-5px}
+  .sg-wa{position:fixed;inset:0;z-index:3;width:auto;display:flex;flex-direction:column;background:var(--bg);border:0;box-shadow:none;overflow-y:auto;overscroll-behavior:contain;
+    padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);animation:sg-sheet .22s cubic-bezier(.2,.7,.2,1) both}
+  .sg-wa__head{min-height:64px;padding:16px var(--gutter)}
+  .sg-wa__title{font-size:22px}
+  .sg-wa__list{padding:8px var(--gutter)}
+  .sg-wa__row{min-height:84px;padding:14px 4px}
+  .sg-wa__num{font-size:clamp(17px,5.4cqi,22px)}
+}
+@container sg (max-width: 400px){
+  .sg-header__in{gap:8px}
+  .sg-menu-btn,.sg-sheet__head .sg-x{width:44px}
+  /* narrow phones: let the Latin hero title shrink with the frame so "FOR SEA, AIR" keeps one line instead of orphaning "ONE" */
+  .sg-slide__title{font-size:clamp(38px,12.4cqi,46px)}
+  .sg-root[dir="rtl"] .sg-slide__title{font-size:clamp(34px,11.6cqi,40px)}
+  .sg-cta__title{font-size:clamp(30px,9.6cqi,34px)}
+  .sg-lang{padding:0 10px}
+  .sg-brand--lg{--em:58px;gap:14px}
+  .sg-brand--lg .sg-brand__name{font-size:18px}
+  .sg-brand--lg .sg-brand__tag{font-size:10px}
+  .sg-header__act{gap:6px}
+  .sg-manifest__head,.sg-row__btn{grid-template-columns:56px minmax(0,1fr) 44px}
+  .sg-row__title{font-size:18px}
+}
+@container sg (max-width: 359px){
+  .sg-manifest__head{display:none}
+  .sg-rows{border-top:1px solid var(--line-2)}
+  .sg-row__btn{grid-template-columns:minmax(0,1fr) 44px;grid-template-areas:"code icon" "main icon";row-gap:12px}
+  .sg-row__code{grid-area:code;margin-top:0}
+  .sg-row__main{grid-area:main}
+  .sg-row__icon{grid-area:icon;align-self:start}
+  /* compact mark: the tagline hides, the emblem stays (one line of type beside it, so it can be a little smaller) */
+  .sg-brand:not(.sg-brand--lg){--em:clamp(26px,8.8cqi,32px);gap:6px;padding-inline-start:8px;margin-inline-start:-8px}
+  .sg-brand:not(.sg-brand--lg) .sg-brand__tag{display:none}
+  .sg-brand:not(.sg-brand--lg) .sg-brand__name{font-size:clamp(11px,3.6cqi,12.5px);letter-spacing:.01em}
+  .sg-header__in,.sg-header__act{gap:6px}
+  .sg-lang{padding:0 7px}
+  .sg-brand--lg{--em:52px;gap:12px}
+  .sg-brand--lg .sg-brand__name{font-size:16.5px}
+  .sg-brand--lg .sg-brand__tag{font-size:9.5px}
+  .sg-hero__bar .sg-count{display:none}
+  .sg-tel__num{font-size:17px}
+}
+
+@media (hover:hover) and (pointer:fine){
+  .sg-hero:hover .sg-dot__fill{animation-play-state:paused!important}
+}
+@media (prefers-reduced-motion: reduce){
+  .sg-root *,.sg-root *::before,.sg-root *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+  .sg-root .sg-dot.is-active .sg-dot__fill{animation-duration:7s!important}
+  .sg-root .sg-hero__wipe{display:none}
+}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<script type="text/x-dc-template" id="dc-template">
+<div class="sg-root {{rootCls}}" lang="{{lang}}" dir="{{dir}}" ref="{{setRoot}}">
+<a class="sg-skip" href="#sg-main" onClick="{{skip}}">{{t.nav.skip}}</a>
+
+<div class="sg-strip">
+  <div class="sg-wrap sg-strip__in">
+    <span class="sg-strip__k" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+    <span class="sg-strip__ar">{{strip.place}}</span>
+    <span class="sg-strip__sep"></span>
+    <span class="sg-strip__ar">{{t.tagline}}</span>
+    <span class="sg-strip__push"></span>
+    <span class="sg-strip__k" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg></span>
+    <span class="sg-strip__nums">
+      <sc-for list="{{tels}}" as="n" hint-placeholder-count="2"><span dir="ltr" class="sg-pin">{{n.display}}</span></sc-for>
+    </span>
+    <sc-for list="{{calls}}" as="n" hint-placeholder-count="1"><span class="sg-strip__call"><span class="sg-strip__k" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span><span dir="ltr" class="sg-pin">{{n.display}}</span></span></sc-for>
+  </div>
+</div>
+
+<header class="sg-header">
+  <div class="sg-wrap sg-header__in">
+    <a class="sg-brand" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
+      <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="57" height="48" decoding="async"/>
+      <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
+    </a>
+    <nav class="sg-nav" aria-label="{{x.mainNav}}">
+      <sc-for list="{{nav}}" as="n" hint-placeholder-count="4">
+        <a class="sg-nav__link" href="{{n.href}}" onClick="{{n.go}}"><span>{{n.label}}</span></a>
+      </sc-for>
+    </nav>
+    <div class="sg-header__act">
+      <button type="button" class="sg-lang" onClick="{{toggleLang}}"><span class="sg-lang__t" lang="{{x.otherLang}}">{{t.nav.lang}}</span><span class="sg-vh">{{langSr}}</span></button>
+      <a class="sg-btn sg-btn--red sg-header__cta" href="#sg-contact" onClick="{{goContact}}"><span>{{t.nav.quote}}</span><svg class="sg-ico sg-ico--sm sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      <button type="button" class="sg-menu-btn" onClick="{{openMenu}}" aria-haspopup="dialog" aria-expanded="{{menuExpanded}}" ref="{{setMenuBtn}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path></svg><span>{{t.nav.menu}}</span></button>
+    </div>
+  </div>
+</header>
+
+<main id="sg-main" tabIndex="-1" ref="{{setMain}}">
+<section class="sg-hero {{heroCls}}" id="sg-top" aria-roledescription="carousel" aria-label="{{x.carousel}}" ref="{{setTop}}">
+  <div class="sg-hero__stage">
+    <div class="sg-slide__media {{slides.0.mediaCls}}" aria-hidden="{{slides.0.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-hero.webp" alt="{{slides.0.alt}}" width="1672" height="941" decoding="async" style="object-position: {{slides.0.pos}}"/></div>
+    <div class="sg-slide__media sg-slide__media--b {{slides.1.mediaCls}}" aria-hidden="{{slides.1.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-packaging.webp" alt="{{slides.1.alt}}" width="1200" height="800" decoding="async" style="object-position: {{slides.1.pos}}"/></div>
+  </div>
+  <div class="sg-hero__wipe" aria-hidden="true"></div>
+  <div class="sg-hero__scrim" aria-hidden="true"></div>
+  <div class="sg-wrap sg-hero__inner">
+    <h1 class="sg-vh">{{h1}}</h1>
+    <div class="sg-hero__stack">
+      <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
+        <div class="sg-slide {{s.cls}}" role="group" aria-roledescription="slide" aria-label="{{s.label}}" aria-hidden="{{s.ariaHidden}}">
+          <div class="sg-slide__copy">
+            <p class="sg-slide__eyebrow sg-eyebrow">{{s.eyebrow}}</p>
+            <h2 class="sg-slide__title">{{s.title}}</h2>
+            <p class="sg-slide__text">{{s.body}}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div class="sg-hero__cta">
+      <a class="sg-btn sg-btn--red" href="#sg-contact" onClick="{{goContact}}"><span>{{t.hero.ctaQuote}}</span><svg class="sg-ico sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      <button type="button" class="sg-btn sg-btn--ghost" onClick="{{openWa}}" aria-haspopup="dialog"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span>{{t.hero.ctaWhatsapp}}</span></button>
+    </div>
+    <div class="sg-hero__bar">
+      <span class="sg-plus" aria-hidden="true"></span>
+      <p class="sg-count" aria-hidden="true"><b>{{slideNo}}</b><span>/</span><span>{{slideTotal}}</span></p>
+      <div class="sg-dots">
+        <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
+          <button type="button" class="sg-dot {{s.dotCls}}" onClick="{{s.go}}" aria-label="{{s.goLabel}}" aria-current="{{s.current}}"><span class="sg-dot__track"><span class="sg-dot__fill {{s.fillCls}}" onAnimationEnd="{{onProgEnd}}"></span></span></button>
+        </sc-for>
+      </div>
+      <div class="sg-ctrls">
+        <button type="button" class="sg-ctrl" onClick="{{prevSlide}}" aria-label="{{t.hero.prev}}"><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></button>
+        <button type="button" class="sg-ctrl" onClick="{{togglePause}}" aria-label="{{pauseLabel}}">
+          <sc-if value="{{playing}}" hint-placeholder-val="{{ true }}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
+          <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg></sc-if>
+        </button>
+        <button type="button" class="sg-ctrl" onClick="{{nextSlide}}" aria-label="{{t.hero.next}}"><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+  </div>
+  <dl class="sg-hero__label sg-frame">
+    <sc-for list="{{heroLabel}}" as="r" hint-placeholder-count="2"><div><dt>{{r.k}}</dt><dd>{{r.v}}</dd></div></sc-for>
+  </dl>
+</section>
+
+<section class="sg-facts" aria-label="{{x.facts}}">
+  <div class="sg-wrap">
+    <ul class="sg-facts__list">
+      <sc-for list="{{facts}}" as="f" hint-placeholder-count="3">
+        <li class="sg-fact"><span class="sg-fact__value">{{f.value}}</span><span class="sg-fact__label">{{f.label}}</span></li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+
+<section class="sg-section sg-services" id="sg-services" aria-labelledby="{{ids.svc}}" ref="{{setServices}}">
+  <div class="sg-wrap">
+    <div class="sg-sechead"><span class="sg-plus" aria-hidden="true"></span><span class="sg-sechead__no" aria-hidden="true"><span class="sg-ltr">01 / 05</span></span><span class="sg-eyebrow">{{t.services.eyebrow}}</span></div>
+    <div class="sg-intro">
+      <h2 class="sg-h2" id="{{ids.svc}}" tabIndex="-1">{{t.services.title}}</h2>
+      <p class="sg-lede">{{t.services.lede}}</p>
+    </div>
+    <div class="sg-manifest">
+      <div class="sg-manifest__table" onMouseLeave="{{svcLeave}}">
+        <div class="sg-manifest__head" aria-hidden="true"><span>{{x.colCode}}</span><span>{{x.colService}}</span><span>{{x.colRef}}</span><span></span></div>
+        <ul class="sg-rows">
+          <sc-for list="{{services}}" as="s" hint-placeholder-count="7">
+            <li class="sg-row {{s.cls}}" onMouseEnter="{{s.hover}}">
+              <h3 class="sg-row__h">
+                <button type="button" class="sg-row__btn" id="{{s.btnId}}" aria-expanded="{{s.expanded}}" aria-controls="{{s.panelId}}" onClick="{{s.toggle}}">
+                  <span class="sg-row__code" aria-hidden="true">{{s.code}}</span>
+                  <span class="sg-row__main"><span class="sg-row__title">{{s.title}}</span><span class="sg-row__short">{{s.short}}</span></span>
+                  <span class="sg-row__no" aria-hidden="true">{{s.no}}</span>
+                  <span class="sg-row__icon" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg></span>
+                </button>
+              </h3>
+              <div class="sg-row__panel" id="{{s.panelId}}" role="region" aria-labelledby="{{s.btnId}}" hidden="{{s.closed}}">
+                <div class="sg-row__media"><img src="{{s.img}}" alt="{{s.alt}}" width="1200" height="800" loading="lazy" decoding="async" style="object-position: {{s.pos}}"/></div>
+                <div class="sg-row__detail">
+                  <p class="sg-row__dtitle">{{s.detailTitle}}</p>
+                  <p class="sg-row__dtext">{{s.detail}}</p>
+                  <div class="sg-row__cta"><a class="sg-btn sg-btn--red" href="#sg-contact" onClick="{{s.quote}}"><span>{{t.services.cta}}</span><svg class="sg-ico sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div>
+                </div>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+      <figure class="sg-viewer" aria-hidden="true">
+        <div class="sg-viewer__frame sg-frame">
+          <div class="sg-viewer__clip">
+            <sc-for list="{{viewer}}" as="v" hint-placeholder-count="7"><img class="sg-viewer__img {{v.cls}}" src="{{v.img}}" alt="" width="1200" height="800" loading="lazy" decoding="async" style="object-position: {{v.pos}}"/></sc-for>
+            <div class="sg-viewer__shade"></div>
+            <span class="sg-viewer__code">{{viewerNow.code}}</span>
+          </div>
+        </div>
+        <figcaption class="sg-viewer__cap"><span><b>{{x.fig}} <span class="sg-ltr">{{viewerNow.no}}</span></b></span><span>{{viewerNow.title}}</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sg-section sg-ocean" aria-labelledby="{{ids.ocean}}">
+  <div class="sg-wrap">
+    <div class="sg-sechead"><span class="sg-plus" aria-hidden="true"></span><span class="sg-sechead__no" aria-hidden="true"><span class="sg-ltr">02 / 05</span></span><span class="sg-eyebrow">{{t.ocean.eyebrow}}</span></div>
+    <div class="sg-intro sg-intro--solo"><h2 class="sg-h2" id="{{ids.ocean}}">{{t.ocean.title}}</h2></div>
+    <div class="sg-doors">
+      <article class="sg-door sg-door--fcl">
+        <div class="sg-door__face" aria-hidden="true">
+          <span class="sg-door__bar sg-door__bar--1"><i></i></span><span class="sg-door__bar sg-door__bar--2"><i></i></span><span class="sg-door__bar sg-door__bar--3"><i></i></span><span class="sg-door__bar sg-door__bar--4"><i></i></span>
+          <span class="sg-door__stencil">{{t.ocean.fcl.tag}}</span>
+        </div>
+        <div class="sg-door__body">
+          <p class="sg-door__tag">{{t.ocean.fcl.tag}}</p>
+          <h3 class="sg-door__name">{{t.ocean.fcl.name}}</h3>
+          <p class="sg-door__text">{{t.ocean.fcl.body}}</p>
+        </div>
+      </article>
+      <article class="sg-door sg-door--lcl">
+        <div class="sg-door__face" aria-hidden="true">
+          <div class="sg-box">
+            <span class="sg-box__w sg-box__w--back"></span><span class="sg-box__w sg-box__w--top"></span><span class="sg-box__w sg-box__w--l"></span><span class="sg-box__w sg-box__w--r"></span><span class="sg-box__w sg-box__w--floor"></span>
+            <div class="sg-hold"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <span class="sg-door__stencil">{{t.ocean.lcl.tag}}</span>
+        </div>
+        <div class="sg-door__body">
+          <p class="sg-door__tag">{{t.ocean.lcl.tag}}</p>
+          <h3 class="sg-door__name">{{t.ocean.lcl.name}}</h3>
+          <p class="sg-door__text">{{t.ocean.lcl.body}}</p>
+        </div>
+      </article>
+    </div>
+    <div class="sg-dedicated">
+      <span class="sg-dedicated__ico" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"></path><path d="M21 16v2a4 4 0 0 1-4 4h-5"></path></svg></span>
+      <div class="sg-dedicated__in">
+        <h3 class="sg-h3">{{t.ocean.contactTitle}}</h3>
+        <p class="sg-dedicated__text">{{t.ocean.contactBody}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sg-section sg-values" aria-labelledby="{{ids.values}}">
+  <div class="sg-wrap">
+    <div class="sg-sechead"><span class="sg-plus" aria-hidden="true"></span><span class="sg-sechead__no" aria-hidden="true"><span class="sg-ltr">03 / 05</span></span><span class="sg-eyebrow">{{t.values.eyebrow}}</span></div>
+    <div class="sg-intro sg-intro--solo"><h2 class="sg-h2" id="{{ids.values}}">{{t.values.title}}</h2></div>
+    <ol class="sg-vlist">
+      <sc-for list="{{values}}" as="v" hint-placeholder-count="4">
+        <li class="sg-value"><span class="sg-value__no" aria-hidden="true">{{v.no}}</span><h3 class="sg-h3 sg-value__title">{{v.title}}</h3><p class="sg-value__body">{{v.body}}</p></li>
+      </sc-for>
+    </ol>
+  </div>
+</section>
+
+<section class="sg-section sg-about" id="sg-about" aria-labelledby="{{ids.about}}" ref="{{setAbout}}">
+  <div class="sg-wrap">
+    <div class="sg-sechead"><span class="sg-plus" aria-hidden="true"></span><span class="sg-sechead__no" aria-hidden="true"><span class="sg-ltr">04 / 05</span></span><span class="sg-eyebrow">{{t.about.eyebrow}}</span></div>
+    <div class="sg-about__grid">
+      <h2 class="sg-h2 sg-about__title" id="{{ids.about}}" tabIndex="-1">{{t.about.title}}</h2>
+      <div class="sg-about__media sg-frame">
+        <div class="sg-about__clip"><img src="{{aboutImg.src}}" alt="{{aboutImg.alt}}" width="1200" height="800" loading="lazy" decoding="async"/></div>
+      </div>
+      <div class="sg-about__copy">
+        <p class="sg-about__body">{{t.about.body}}</p>
+        <div class="sg-mission">
+          <h3 class="sg-mission__label">{{t.about.missionTitle}}</h3>
+          <p class="sg-mission__text">{{t.about.mission}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sg-cta" aria-labelledby="{{ids.cta}}">
+  <div class="sg-cta__meta" aria-hidden="true"><span>{{t.tagline}}</span></div>
+  <div class="sg-cta__perf" aria-hidden="true"></div>
+  <div class="sg-wrap sg-cta__in">
+    <h2 class="sg-cta__title" id="{{ids.cta}}"><sc-for list="{{ctaLines}}" as="l" hint-placeholder-count="2"><span class="sg-cta__line">{{l}} </span></sc-for></h2>
+    <div>
+      <p class="sg-cta__body">{{t.cta.body}}</p>
+      <a class="sg-btn sg-btn--ink" href="#sg-contact" onClick="{{goContact}}"><span>{{t.cta.button}}</span><svg class="sg-ico sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="sg-section sg-contact" id="sg-contact" aria-labelledby="{{ids.contact}}" ref="{{setContact}}">
+  <div class="sg-wrap">
+    <div class="sg-sechead"><span class="sg-plus" aria-hidden="true"></span><span class="sg-sechead__no" aria-hidden="true"><span class="sg-ltr">05 / 05</span></span><span class="sg-eyebrow">{{c.eyebrow}}</span></div>
+    <div class="sg-intro">
+      <h2 class="sg-h2" id="{{ids.contact}}" tabIndex="-1">{{c.title}}</h2>
+      <p class="sg-lede">{{c.lede}}</p>
+    </div>
+    <div class="sg-contact__grid">
+      <div class="sg-bill">
+        <div class="sg-bill__cell">
+          <h3 class="sg-bill__label">{{c.officeTitle}}</h3>
+          <address class="sg-addr"><sc-for list="{{address}}" as="line" hint-placeholder-count="3"><span>{{line}}</span></sc-for></address>
+          <a class="sg-link" href="{{mapsUrl}}" target="_blank" rel="noopener noreferrer"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span>{{c.maps}}</span><span class="sg-vh">{{x.newTab}}</span></a>
+        </div>
+        <div class="sg-bill__cell">
+          <h3 class="sg-bill__label">{{c.phoneTitle}}</h3>
+          <ul class="sg-tels">
+            <sc-for list="{{tels}}" as="n" hint-placeholder-count="2">
+              <li class="sg-tel">
+                <span dir="ltr" class="sg-pin sg-tel__num">{{n.display}}</span>
+                <span class="sg-tel__act">
+                  <a class="sg-chip sg-chip--wa" href="{{n.wa}}" target="_blank" rel="noopener noreferrer" aria-label="{{n.waLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span>{{t.whatsapp.button}}</span></a>
+                  <a class="sg-chip" href="{{n.tel}}" aria-label="{{n.callLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>{{x.call}}</span></a>
+                </span>
+              </li>
+            </sc-for>
+            <sc-for list="{{calls}}" as="n" hint-placeholder-count="1">
+              <li class="sg-tel sg-tel--call">
+                <span dir="ltr" class="sg-pin sg-tel__num">{{n.display}}</span>
+                <span class="sg-tel__act">
+                  <span class="sg-tel__only"><span class="sg-chip sg-tel__ghost" aria-hidden="true"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span>{{t.whatsapp.button}}</span></span><span class="sg-tel__kind">{{x.callOnly}}</span></span>
+                  <a class="sg-chip sg-chip--call" href="{{n.tel}}" aria-label="{{n.callLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>{{x.call}}</span></a>
+                </span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+        <div class="sg-bill__cell">
+          <h3 class="sg-bill__label">{{c.emailTitle}}</h3>
+          <div class="sg-mails">
+            <sc-for list="{{emails}}" as="m" hint-placeholder-count="2"><a class="sg-mail" href="{{m.href}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="1"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg><span dir="ltr" class="sg-pin">{{m.addr}}</span></a></sc-for>
+          </div>
+        </div>
+        <div class="sg-bill__cell">
+          <h3 class="sg-bill__label">{{t.footer.follow}}</h3>
+          <a class="sg-mail" href="{{insta.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{x.instaLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span dir="ltr" class="sg-pin">{{insta.handle}}</span></a>
+        </div>
+      </div>
+
+      <div class="sg-form-wrap sg-frame">
+        <div class="sg-success {{successCls}}" tabIndex="-1" ref="{{setSuccess}}">
+          <sc-if value="{{sent}}" hint-placeholder-val="{{ false }}"><span class="sg-success__ico" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span></sc-if>
+          <p class="sg-success__text" role="status">{{statusText}}</p>
+          <sc-if value="{{sent}}" hint-placeholder-val="{{ false }}"><button type="button" class="sg-btn sg-btn--ghost" onClick="{{again}}"><span>{{x.another}}</span></button></sc-if>
+        </div>
+        <sc-if value="{{notSent}}" hint-placeholder-val="{{ true }}">
+          <form class="sg-form" noValidate="" onSubmit="{{submit}}" aria-labelledby="{{ids.formTitle}}">
+            <h3 class="sg-h3 sg-form__title" id="{{ids.formTitle}}">{{f.title}}</h3>
+            <div class="sg-form__grid">
+              <div class="sg-field">
+                <label class="sg-label" for="{{ids.name}}"><span>{{f.name}}</span><span class="sg-req" aria-hidden="true">{{f.required}}</span></label>
+                <input class="sg-input" id="{{ids.name}}" name="name" type="text" autoComplete="name" value="{{form.name}}" onChange="{{onName}}" aria-required="true" aria-invalid="{{inv.name}}" aria-describedby="{{desc.name}}" ref="{{refName}}"/>
+                <sc-if value="{{err.name}}" hint-placeholder-val="{{ false }}"><p class="sg-err" id="{{ids.nameErr}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><span>{{err.name}}</span></p></sc-if>
+              </div>
+              <div class="sg-field">
+                <label class="sg-label" for="{{ids.email}}"><span>{{f.email}}</span><span class="sg-req" aria-hidden="true">{{f.required}}</span></label>
+                <input class="sg-input" id="{{ids.email}}" name="email" type="email" autoComplete="email" inputMode="email" dir="ltr" value="{{form.email}}" onChange="{{onEmail}}" aria-required="true" aria-invalid="{{inv.email}}" aria-describedby="{{desc.email}}" ref="{{refEmail}}"/>
+                <sc-if value="{{err.email}}" hint-placeholder-val="{{ false }}"><p class="sg-err" id="{{ids.emailErr}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><span>{{err.email}}</span></p></sc-if>
+              </div>
+              <div class="sg-field">
+                <label class="sg-label" for="{{ids.phone}}"><span>{{f.phone}}</span><span class="sg-req" aria-hidden="true">{{f.required}}</span></label>
+                <input class="sg-input" id="{{ids.phone}}" name="phone" type="tel" autoComplete="tel" inputMode="tel" dir="ltr" value="{{form.phone}}" onChange="{{onPhone}}" aria-required="true" aria-invalid="{{inv.phone}}" aria-describedby="{{desc.phone}}" ref="{{refPhone}}"/>
+                <sc-if value="{{err.phone}}" hint-placeholder-val="{{ false }}"><p class="sg-err" id="{{ids.phoneErr}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><span>{{err.phone}}</span></p></sc-if>
+              </div>
+              <div class="sg-field">
+                <label class="sg-label" for="{{ids.service}}"><span>{{f.service}}</span><span class="sg-req" aria-hidden="true">{{f.required}}</span></label>
+                <div class="sg-selectbox">
+                  <select class="sg-input {{selectCls}}" id="{{ids.service}}" name="service" value="{{form.service}}" onChange="{{onService}}" aria-required="true" aria-invalid="{{inv.service}}" aria-describedby="{{desc.service}}" ref="{{refService}}">
+                    <option value="">{{f.servicePlaceholder}}</option>
+                    <sc-for list="{{serviceOptions}}" as="o" hint-placeholder-count="7"><option value="{{o.id}}">{{o.title}}</option></sc-for>
+                  </select>
+                  <svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                </div>
+                <sc-if value="{{err.service}}" hint-placeholder-val="{{ false }}"><p class="sg-err" id="{{ids.serviceErr}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><span>{{err.service}}</span></p></sc-if>
+              </div>
+              <div class="sg-field sg-field--full">
+                <label class="sg-label" for="{{ids.message}}"><span>{{f.message}}</span><span class="sg-req" aria-hidden="true">{{f.required}}</span></label>
+                <textarea class="sg-input" id="{{ids.message}}" name="message" rows="5" value="{{form.message}}" onChange="{{onMessage}}" aria-required="true" aria-invalid="{{inv.message}}" aria-describedby="{{desc.message}}" ref="{{refMessage}}"></textarea>
+                <sc-if value="{{err.message}}" hint-placeholder-val="{{ false }}"><p class="sg-err" id="{{ids.messageErr}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg><span>{{err.message}}</span></p></sc-if>
+              </div>
+            </div>
+            <div class="sg-form__foot">
+              <button type="submit" class="sg-btn sg-btn--red" disabled="{{sending}}"><span>{{submitLabel}}</span><svg class="sg-ico sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+            </div>
+          </form>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="sg-footer">
+  <div class="sg-wrap">
+    <div class="sg-footer__grid">
+      <div class="sg-footer__brand">
+        <a class="sg-brand sg-brand--lg" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
+          <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="90" height="76" loading="lazy" decoding="async"/>
+          <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
+        </a>
+        <p class="sg-footer__line">{{t.footer.line}}</p>
+      </div>
+      <nav aria-label="{{x.footerNav}}">
+        <p class="sg-footer__h">{{x.siteMap}}</p>
+        <ul class="sg-flinks">
+          <sc-for list="{{nav}}" as="n" hint-placeholder-count="4"><li><a class="sg-flink" href="{{n.href}}" onClick="{{n.go}}"><span>{{n.label}}</span></a></li></sc-for>
+        </ul>
+      </nav>
+      <div>
+        <p class="sg-footer__h">{{c.phoneTitle}}</p>
+        <ul class="sg-flinks">
+          <sc-for list="{{tels}}" as="n" hint-placeholder-count="2"><li><a class="sg-flink" href="{{n.wa}}" target="_blank" rel="noopener noreferrer" aria-label="{{n.waLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span dir="ltr" class="sg-pin">{{n.display}}</span></a></li></sc-for>
+          <sc-for list="{{calls}}" as="n" hint-placeholder-count="1"><li><a class="sg-flink sg-flink--call" href="{{n.tel}}" aria-label="{{n.callLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span dir="ltr" class="sg-pin">{{n.display}}</span><span class="sg-flink__kind" aria-hidden="true">{{x.callOnly}}</span></a></li></sc-for>
+        </ul>
+      </div>
+      <div>
+        <p class="sg-footer__h">{{t.footer.follow}}</p>
+        <ul class="sg-flinks">
+          <li><a class="sg-flink" href="{{insta.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{x.instaLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span dir="ltr" class="sg-pin">{{insta.handle}}</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="sg-footer__bottom">
+      <p>{{t.footer.rights}}</p>
+      <a class="sg-top" href="#sg-top" onClick="{{goHome}}"><span>{{x.toTop}}</span><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg></a>
+    </div>
+  </div>
+  <span class="sg-footer__mark" aria-hidden="true">FREIGHT NET</span>
+</footer>
+
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
+  <div class="sg-sheet" id="{{ids.menu}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.menuTitle}}" onKeyDown="{{menuKey}}">
+    <div class="sg-sheet__head">
+      <a class="sg-brand" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
+        <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="57" height="48" decoding="async"/>
+        <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
+      </a>
+      <button type="button" class="sg-x" onClick="{{closeMenu}}" aria-label="{{t.nav.close}}" ref="{{setMenuClose}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+    <p class="sg-sheet__title" id="{{ids.menuTitle}}">{{t.nav.menu}}</p>
+    <nav class="sg-sheet__nav" aria-label="{{x.mainNav}}">
+      <sc-for list="{{nav}}" as="n" hint-placeholder-count="4">
+        <a class="sg-sheet__link" href="{{n.href}}" onClick="{{n.go}}"><span class="sg-sheet__label">{{n.label}}</span><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      </sc-for>
+    </nav>
+    <div class="sg-sheet__foot">
+      <a class="sg-btn sg-btn--red" href="#sg-contact" onClick="{{goContact}}"><span>{{t.nav.quote}}</span><svg class="sg-ico sg-ico--go sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+      <div class="sg-sheet__tels">
+        <sc-for list="{{tels}}" as="n" hint-placeholder-count="2"><a class="sg-sheet__tel" href="{{n.wa}}" target="_blank" rel="noopener noreferrer" aria-label="{{n.waLabel}}"><span class="sg-mono">{{t.whatsapp.button}}</span><span dir="ltr" class="sg-pin">{{n.display}}</span></a></sc-for>
+        <sc-for list="{{calls}}" as="n" hint-placeholder-count="1"><a class="sg-sheet__tel" href="{{n.tel}}" aria-label="{{n.callLabel}}"><span class="sg-mono">{{x.callOnly}}</span><span dir="ltr" class="sg-pin">{{n.display}}</span></a></sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<div class="sg-dock">
+  <button type="button" class="sg-fab" onClick="{{toggleWa}}" onKeyDown="{{fabKey}}" aria-label="{{t.whatsapp.title}}" aria-haspopup="dialog" aria-expanded="{{waExpanded}}" ref="{{setFab}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span class="sg-fab__label">{{t.whatsapp.button}}</span></button>
+  <sc-if value="{{waOpen}}" hint-placeholder-val="{{ false }}">
+    <button type="button" class="sg-scrim" tabIndex="-1" aria-hidden="true" onClick="{{closeWa}}"></button>
+    <div class="sg-wa" id="{{ids.wa}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.waTitle}}" aria-describedby="{{ids.waSub}}" onKeyDown="{{waKey}}">
+      <div class="sg-wa__head">
+        <div>
+          <h2 class="sg-wa__title" id="{{ids.waTitle}}">{{t.whatsapp.title}}</h2>
+          <p class="sg-wa__sub" id="{{ids.waSub}}">{{t.whatsapp.subtitle}}</p>
+        </div>
+        <button type="button" class="sg-x" onClick="{{closeWa}}" aria-label="{{t.whatsapp.close}}" ref="{{setWaClose}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+      </div>
+      <ul class="sg-wa__list">
+        <sc-for list="{{tels}}" as="n" hint-placeholder-count="2">
+          <li><a class="sg-wa__row" href="{{n.wa}}" target="_blank" rel="noopener noreferrer" onClick="{{n.pickWa}}" aria-label="{{n.waLabel}}"><span class="sg-wa__ico" aria-hidden="true"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg></span><span dir="ltr" class="sg-pin sg-wa__num">{{n.display}}</span><span class="sg-wa__go" aria-hidden="true"><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg></span></a></li>
+        </sc-for>
+      </ul>
+    </div>
+  </sc-if>
+</div>
+</div>
+</script>
+<script type="application/json" id="dc-props">{"lang": "en"}</script>
+<script src="../vendor/react.production.min.js"></script>
+<script src="../vendor/react-dom.production.min.js"></script>
+<script src="../vendor/dc-lite.js"></script>
+<script>
+DCLite.boot(function (DCLogic) {
+/* COPY:START */
+const COPY = {
+  "contact": {
+    "whatsapp": [
+      {
+        "display": "+961 81 558 533",
+        "e164": "+96181558533",
+        "wa": "https://wa.me/96181558533"
+      },
+      {
+        "display": "+961 3 558 533",
+        "e164": "+9613558533",
+        "wa": "https://wa.me/9613558533"
+      }
+    ],
+    "emails": [
+      "info@freightnet-lb.com",
+      "sales@freightnet-lb.com"
+    ],
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mansour+Building+Choueifat+NSSF+Lebanon",
+    "social": [
+      {
+        "name": "Instagram",
+        "handle": "@freightnetsarl",
+        "url": "https://www.instagram.com/freightnetsarl/"
+      }
+    ],
+    "phones": [
+      {
+        "display": "+961 3 758 661",
+        "e164": "+9613758661",
+        "tel": "tel:+9613758661",
+        "note": "Call only (client, 29 Oct 2026: the one old number still in use)"
+      }
+    ]
+  },
+  "en": {
+    "dir": "ltr",
+    "brand": "Freight Net",
+    "legal": "Freight Net SARL",
+    "tagline": "Sea · Air · Land",
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "about": "About us",
+      "contact": "Contact us",
+      "quote": "Get a quote",
+      "lang": "عربي",
+      "langLabel": "Switch to Arabic",
+      "menu": "Menu",
+      "close": "Close menu",
+      "skip": "Skip to content"
+    },
+    "hero": {
+      "slides": [
+        {
+          "eyebrow": "In transport since 2010",
+          "title": "One team for sea, air and land",
+          "body": "We move goods between Lebanon and anywhere in the world, and take care of the customs paperwork on the way."
+        },
+        {
+          "eyebrow": "Freight and logistics",
+          "title": "Cargo for every industry",
+          "body": "From a single pallet to full containers, we plan the route, the transport and the customs clearance for you."
+        }
+      ],
+      "ctaQuote": "Get a quote",
+      "ctaWhatsapp": "Chat on WhatsApp",
+      "prev": "Previous slide",
+      "next": "Next slide",
+      "goTo": "Go to slide",
+      "pause": "Pause slideshow",
+      "play": "Play slideshow"
+    },
+    "facts": [
+      {
+        "value": "Since 2010",
+        "label": "Moving goods to and from Lebanon"
+      },
+      {
+        "value": "TIR",
+        "label": "Among the first to receive TIR certification"
+      },
+      {
+        "value": "Door to door",
+        "label": "Or port to port, whichever suits you"
+      }
+    ],
+    "services": {
+      "eyebrow": "What we do",
+      "title": "Everything your shipment needs",
+      "lede": "We stay with your cargo at every step, from pickup to final delivery.",
+      "cta": "Get a quote",
+      "items": [
+        {
+          "id": "ocean",
+          "title": "Ocean freight",
+          "short": "Ship a full container, or share one, to and from ports worldwide.",
+          "detailTitle": "Moving your cargo by sea",
+          "detail": "We arrange your sea shipment port to port or door to door. Take a full container for your own goods, or share container space when you ship smaller volumes."
+        },
+        {
+          "id": "air",
+          "title": "Air freight",
+          "short": "Air cargo for shipments that cannot wait, with updates until arrival.",
+          "detailTitle": "Air freight that fits your schedule",
+          "detail": "When time matters, we book space on suitable flights and keep you informed until your cargo lands. Tell us your deadline and budget, and we will suggest the options that fit, for urgent consignments and regular cargo alike."
+        },
+        {
+          "id": "land",
+          "title": "Land freight",
+          "short": "Road transport by truck, within Lebanon and across borders.",
+          "detailTitle": "Road transport from start to finish",
+          "detail": "We plan each road journey around your cargo: a suitable truck, a sensible route and the paperwork for any border crossings. We keep you updated from loading to delivery."
+        },
+        {
+          "id": "customs",
+          "title": "Customs clearance",
+          "short": "Import and export paperwork, prepared and followed through to clearance.",
+          "detailTitle": "Customs, handled for you",
+          "detail": "We prepare and submit your import and export documents, then follow your file until the goods are cleared. If anything extra is needed, we tell you straight away."
+        },
+        {
+          "id": "warehousing",
+          "title": "Warehousing",
+          "short": "Secure storage for your goods between shipments.",
+          "detailTitle": "Your stock, safely stored",
+          "detail": "Keep your goods with us between shipments, ready to move when you are. If your cargo needs special storage conditions, ask us what we can arrange."
+        },
+        {
+          "id": "packaging",
+          "title": "Packaging",
+          "short": "Careful packing and repacking that protects your goods and saves space.",
+          "detailTitle": "Packed to travel well",
+          "detail": "Good packing protects your cargo and can cut your costs. We pack and repack shipments to make better use of each container and truck, so you pay for less space."
+        },
+        {
+          "id": "buyship",
+          "title": "Buy & ship",
+          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
+          "detailTitle": "Buy abroad, receive at home",
+          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
+        }
+      ]
+    },
+    "ocean": {
+      "eyebrow": "Ocean freight options",
+      "title": "Full container or shared container",
+      "fcl": {
+        "tag": "FCL",
+        "name": "Full Container Load",
+        "body": "Your cargo fills a container of its own. We plan the move port to port or door to door and keep you informed at each stage."
+      },
+      "lcl": {
+        "tag": "LCL",
+        "name": "Less than Container Load",
+        "body": "Shipping a smaller volume? Your goods share a container with other cargo, so you pay only for the space they take."
+      },
+      "contactTitle": "One dedicated contact",
+      "contactBody": "One person on our team follows your shipment from booking to delivery, so you always know who to call."
+    },
+    "values": {
+      "eyebrow": "Why Freight Net",
+      "title": "The values behind every shipment",
+      "items": [
+        {
+          "title": "Respectful",
+          "body": "We treat everyone we work with fairly, speak plainly and do what we say we will do."
+        },
+        {
+          "title": "Independent",
+          "body": "As an independent company, we are free to recommend what suits you best, and we tell you why."
+        },
+        {
+          "title": "Personal",
+          "body": "We get to know our customers and their cargo, and give every request our full attention."
+        },
+        {
+          "title": "Sustainable",
+          "body": "We take the long view. We use resources carefully, work responsibly and build relationships that last."
+        }
+      ]
+    },
+    "about": {
+      "eyebrow": "About us",
+      "title": "Who we are",
+      "body": "Freight Net SARL is a shipping, general trading and commercial brokerage company based in Lebanon. We handle shipments into and out of the country, wherever in the world they start or end. Our team has long experience in shipping, trade and transport. We were also among the first to receive TIR certification for international road transport.",
+      "missionTitle": "Our mission",
+      "mission": "To take care of the whole journey for every client: ocean, air and land freight, customs clearance, warehousing, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
+    },
+    "cta": {
+      "title": "Ready to ship? Ask us for a quote.",
+      "body": "Tell us what you are moving, from where and to where. One of our experts will reply with a suggested route and a price.",
+      "button": "Talk to an expert"
+    },
+    "contactSection": {
+      "eyebrow": "Contact us",
+      "title": "Get in touch",
+      "lede": "Planning a shipment or have a question? Send us a message or reach us on WhatsApp, and our team will reply shortly.",
+      "officeTitle": "Head office",
+      "address": [
+        "Mansour Building, ground floor",
+        "Main road, near the NSSF",
+        "Choueifat, Beirut, Lebanon"
+      ],
+      "maps": "Open in Google Maps",
+      "phoneTitle": "Phone & WhatsApp",
+      "emailTitle": "Email",
+      "form": {
+        "title": "Send us a message",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone number",
+        "service": "Service",
+        "servicePlaceholder": "Select a service",
+        "message": "Message",
+        "required": "Required",
+        "submit": "Send message",
+        "sending": "Sending…",
+        "success": "Thank you. Your message has been sent and we will reply soon.",
+        "errName": "Please enter your name.",
+        "errEmail": "Please enter a full email address, such as name@example.com.",
+        "errPhone": "Please enter your phone number.",
+        "errService": "Please choose a service from the list.",
+        "errMessage": "Please tell us briefly what you need."
+      }
+    },
+    "whatsapp": {
+      "button": "WhatsApp",
+      "title": "Chat with us on WhatsApp",
+      "subtitle": "Choose a number to start a WhatsApp chat.",
+      "close": "Close"
+    },
+    "footer": {
+      "line": "Shipping, trading and brokerage, from Lebanon to the world.",
+      "rights": "© 2026 Freight Net SARL. All rights reserved.",
+      "follow": "Follow us"
+    }
+  },
+  "ar": {
+    "dir": "rtl",
+    "brand": "فريت نت",
+    "legal": "فريت نت ش.م.م.",
+    "tagline": "بحرًا · جوًا · برًا",
+    "nav": {
+      "home": "الرئيسية",
+      "services": "خدماتنا",
+      "about": "من نحن",
+      "contact": "اتصلوا بنا",
+      "quote": "اطلبوا عرض سعر",
+      "lang": "English",
+      "langLabel": "التبديل إلى الإنجليزية",
+      "menu": "القائمة",
+      "close": "إغلاق القائمة",
+      "skip": "الانتقال إلى المحتوى"
+    },
+    "hero": {
+      "slides": [
+        {
+          "eyebrow": "في قطاع النقل منذ عام 2010",
+          "title": "فريق واحد للشحن البحري والجوي والبري",
+          "body": "ننقل بضائعكم من لبنان إلى أي مكان في العالم، ومن العالم إلى لبنان، ونتولّى المعاملات الجمركية في كل مرحلة."
+        },
+        {
+          "eyebrow": "الشحن والخدمات اللوجستية",
+          "title": "شحنات لكل القطاعات",
+          "body": "من منصّة نقّالة واحدة إلى حاويات كاملة، نخطّط لكم المسار والنقل والتخليص الجمركي."
+        }
+      ],
+      "ctaQuote": "اطلبوا عرض سعر",
+      "ctaWhatsapp": "راسلونا عبر واتساب",
+      "prev": "الشريحة السابقة",
+      "next": "الشريحة التالية",
+      "goTo": "الانتقال إلى الشريحة",
+      "pause": "إيقاف العرض مؤقتًا",
+      "play": "تشغيل العرض"
+    },
+    "facts": [
+      {
+        "value": "منذ 2010",
+        "label": "ننقل البضائع من لبنان وإليه"
+      },
+      {
+        "value": "TIR",
+        "label": "من أوائل الشركات الحاصلة على شهادة TIR"
+      },
+      {
+        "value": "من الباب إلى الباب",
+        "label": "أو من ميناء إلى ميناء، بحسب ما يناسبكم"
+      }
+    ],
+    "services": {
+      "eyebrow": "ما نقدّمه",
+      "title": "كل ما تحتاج إليه شحناتكم",
+      "lede": "نرافق بضائعكم في كل خطوة، من الاستلام حتى التسليم النهائي.",
+      "cta": "اطلبوا عرض سعر",
+      "items": [
+        {
+          "id": "ocean",
+          "title": "الشحن البحري",
+          "short": "حاوية كاملة أو شحنة أقل من حاوية، من موانئ العالم وإليها.",
+          "detailTitle": "نقل بضائعكم بحرًا",
+          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية عندما تكون الكمية صغيرة."
+        },
+        {
+          "id": "air",
+          "title": "الشحن الجوي",
+          "short": "شحن جوي للبضائع التي لا تحتمل الانتظار، مع متابعة حتى الوصول.",
+          "detailTitle": "شحن جوي يناسب مواعيدكم",
+          "detail": "عندما يكون الوقت مهمًا، نحجز لبضائعكم مساحة على الرحلات المناسبة ونبقيكم على اطّلاع حتى تهبط الطائرة. أخبرونا بموعدكم النهائي وميزانيتكم، ونقترح عليكم الخيارات المناسبة، للشحنات العاجلة والمنتظمة على حدّ سواء."
+        },
+        {
+          "id": "land",
+          "title": "الشحن البري",
+          "short": "نقل بالشاحنات داخل لبنان وعبر الحدود.",
+          "detailTitle": "نقل بري من البداية إلى النهاية",
+          "detail": "نخطّط كل رحلة برية بحسب بضائعكم: الشاحنة المناسبة، والطريق الأنسب، والمستندات اللازمة لعبور الحدود. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+        },
+        {
+          "id": "customs",
+          "title": "التخليص الجمركي",
+          "short": "نُعِدّ مستندات الاستيراد والتصدير ونتابعها حتى إتمام التخليص.",
+          "detailTitle": "نتولّى عنكم معاملات الجمارك",
+          "detail": "نُعِدّ مستندات الاستيراد والتصدير ونقدّمها، ثم نتابع ملفكم حتى تخليص البضائع. وإذا تطلّب الأمر أي مستند إضافي، نبلغكم فورًا."
+        },
+        {
+          "id": "warehousing",
+          "title": "التخزين",
+          "short": "تخزين آمن لبضائعكم بين الشحنات.",
+          "detailTitle": "مخزونكم في أمان",
+          "detail": "احفظوا بضائعكم لدينا بين الشحنات، جاهزة للانطلاق متى أردتم. وإذا كانت بضائعكم تحتاج إلى ظروف تخزين خاصة، اسألونا عمّا يمكننا ترتيبه."
+        },
+        {
+          "id": "packaging",
+          "title": "التغليف",
+          "short": "تغليف وإعادة تغليف بعناية يحميان بضائعكم ويوفّران المساحة.",
+          "detailTitle": "تغليف يحمي بضائعكم في الطريق",
+          "detail": "التغليف الجيد يحمي بضائعكم وقد يخفّض تكاليفكم. نغلّف الشحنات ونعيد تغليفها لنستفيد أكثر من مساحة كل حاوية وكل شاحنة، فتدفعون مقابل مساحة أقل."
+        },
+        {
+          "id": "buyship",
+          "title": "الشراء والشحن",
+          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
+          "detailTitle": "من المورّد في الخارج إلى بابكم",
+          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
+        }
+      ]
+    },
+    "ocean": {
+      "eyebrow": "خيارات الشحن البحري",
+      "title": "حاوية كاملة أو شحنة أقل من حاوية",
+      "fcl": {
+        "tag": "FCL",
+        "name": "حاوية كاملة",
+        "body": "تملأ بضائعكم حاوية خاصة بها. نخطّط للنقل من ميناء إلى ميناء أو من الباب إلى الباب، ونبقيكم على اطّلاع في كل مرحلة."
+      },
+      "lcl": {
+        "tag": "LCL",
+        "name": "شحنة أقل من حاوية",
+        "body": "هل تشحنون كمية صغيرة؟ تتشارك بضائعكم الحاوية مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها."
+      },
+      "contactTitle": "جهة اتصال مخصّصة لكم",
+      "contactBody": "يتابع شخص واحد من فريقنا شحنتكم من الحجز حتى التسليم، فتعرفون دائمًا بمن تتصلون."
+    },
+    "values": {
+      "eyebrow": "لماذا فريت نت",
+      "title": "قيم ترافق كل شحنة",
+      "items": [
+        {
+          "title": "الاحترام",
+          "body": "نتعامل بإنصاف مع كل من نعمل معهم، ونتحدّث بوضوح، ونلتزم بما نعد به."
+        },
+        {
+          "title": "الاستقلالية",
+          "body": "بصفتنا شركة مستقلة، نوصي بما يناسبكم فعلًا، ونشرح لكم الأسباب."
+        },
+        {
+          "title": "الاهتمام الشخصي",
+          "body": "نتعرّف إلى عملائنا وبضائعهم، ونمنح كل طلب اهتمامنا الكامل."
+        },
+        {
+          "title": "الاستدامة",
+          "body": "ننظر إلى المدى البعيد: نستخدم الموارد بحرص، ونعمل بمسؤولية، ونبني علاقات تدوم."
+        }
+      ]
+    },
+    "about": {
+      "eyebrow": "من نحن",
+      "title": "تعرّفوا إلينا",
+      "body": "فريت نت ش.م.م. شركة شحن وتجارة عامة ووساطة تجارية مقرّها لبنان. نتولّى الشحنات الواردة إلى لبنان والصادرة منه، أيًّا كانت نقطة انطلاقها أو وجهتها في العالم. يتمتع فريقنا بخبرة طويلة في الشحن والتجارة والنقل، وكنّا من أوائل الحاصلين على شهادة TIR للنقل البري الدولي.",
+      "missionTitle": "رسالتنا",
+      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والتخليص الجمركي، والتخزين، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
+    },
+    "cta": {
+      "title": "جاهزون للشحن؟ اطلبوا عرض سعر.",
+      "body": "أخبرونا ماذا تشحنون، ومن أين وإلى أين، وسيردّ عليكم أحد خبرائنا بمسار مقترح وسعر.",
+      "button": "تحدّثوا إلى خبير"
+    },
+    "contactSection": {
+      "eyebrow": "اتصلوا بنا",
+      "title": "تواصلوا معنا",
+      "lede": "هل تخطّطون لشحنة أو لديكم سؤال؟ أرسلوا لنا رسالة أو راسلونا عبر واتساب، وسيردّ عليكم فريقنا قريبًا.",
+      "officeTitle": "المكتب الرئيسي",
+      "address": [
+        "مبنى منصور، الطابق الأرضي",
+        "الطريق العام، قرب الضمان الاجتماعي",
+        "الشويفات، بيروت، لبنان"
+      ],
+      "maps": "فتح في خرائط Google",
+      "phoneTitle": "الهاتف وواتساب",
+      "emailTitle": "البريد الإلكتروني",
+      "form": {
+        "title": "أرسلوا لنا رسالة",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "service": "الخدمة",
+        "servicePlaceholder": "اختاروا خدمة",
+        "message": "الرسالة",
+        "required": "مطلوب",
+        "submit": "إرسال الرسالة",
+        "sending": "جارٍ الإرسال…",
+        "success": "شكرًا لكم. وصلتنا رسالتكم وسنردّ عليكم قريبًا.",
+        "errName": "يُرجى إدخال اسمكم.",
+        "errEmail": "يُرجى إدخال بريد إلكتروني كامل، مثل name@example.com.",
+        "errPhone": "يُرجى إدخال رقم هاتفكم.",
+        "errService": "يُرجى اختيار خدمة من القائمة.",
+        "errMessage": "يُرجى كتابة ما تحتاجون إليه باختصار."
+      }
+    },
+    "whatsapp": {
+      "button": "واتساب",
+      "title": "راسلونا عبر واتساب",
+      "subtitle": "اختاروا رقمًا لبدء محادثة على واتساب.",
+      "close": "إغلاق"
+    },
+    "footer": {
+      "line": "شحن وتجارة ووساطة، من لبنان إلى العالم.",
+      "rights": "© 2026 فريت نت ش.م.م. جميع الحقوق محفوظة.",
+      "follow": "تابعونا"
+    }
+  }
+};
+/* COPY:END */
+
+const EXTRA = {
+  en: {
+    otherLang: 'ar',
+    brandHome: 'Freight Net SARL, home',
+    mainNav: 'Main',
+    footerNav: 'Footer',
+    siteMap: 'Site map',
+    carousel: 'Highlights',
+    facts: 'Key facts',
+    colCode: 'Code',
+    colService: 'Service',
+    colRef: 'Ref.',
+    fig: 'Fig.',
+    call: 'Call',
+    callOnly: 'Call only',
+    callPrefix: 'Call',
+    waPrefix: 'WhatsApp',
+    another: 'Send another message',
+    newTab: '(opens in a new tab)',
+    instaLabel: 'Instagram @freightnetsarl',
+    modes: 'Modes',
+    toTop: 'Back to top',
+    alt: {
+      hero: 'Container terminal at night, with cranes and a ship at the quay',
+      slide2: 'Wrapped pallets and a truck at a loading dock at night',
+      ocean: 'Container ship at sea at dusk',
+      air: 'Cargo being loaded onto a freighter aircraft at night',
+      land: 'Truck on a winding mountain road at dusk',
+      customs: 'Shipping documents and a stamp on a desk overlooking a port',
+      warehousing: 'Warehouse aisle with tall racks and a forklift',
+      packaging: 'Wrapped pallets and a truck at a loading dock at night',
+      buyship: 'Container terminal at night, with cranes and a ship at the quay'
+    }
+  },
+  ar: {
+    otherLang: 'en',
+    brandHome: 'فريت نت، الصفحة الرئيسية',
+    mainNav: 'القائمة الرئيسية',
+    footerNav: 'روابط الموقع',
+    siteMap: 'روابط الموقع',
+    carousel: 'أبرز خدماتنا',
+    facts: 'حقائق أساسية',
+    colCode: 'الرمز',
+    colService: 'الخدمة',
+    colRef: 'المرجع',
+    fig: 'صورة',
+    call: 'اتصال',
+    callOnly: 'للاتصال فقط',
+    callPrefix: 'اتصل على',
+    waPrefix: 'واتساب',
+    another: 'إرسال رسالة أخرى',
+    newTab: '(يفتح في نافذة جديدة)',
+    instaLabel: 'إنستغرام @freightnetsarl',
+    modes: 'الوسائط',
+    toTop: 'العودة إلى الأعلى',
+    alt: {
+      hero: 'محطة حاويات ليلًا مع رافعات وسفينة على الرصيف',
+      slide2: 'منصّات مغلّفة وشاحنة عند رصيف تحميل ليلًا',
+      ocean: 'سفينة حاويات في البحر عند الغسق',
+      air: 'تحميل بضائع على طائرة شحن ليلًا',
+      land: 'شاحنة على طريق جبلي متعرّج عند الغسق',
+      customs: 'مستندات شحن وختم على مكتب يطلّ على ميناء',
+      warehousing: 'ممر في مستودع مع رفوف عالية ورافعة شوكية',
+      packaging: 'منصّات مغلّفة وشاحنة عند رصيف تحميل ليلًا',
+      buyship: 'محطة حاويات ليلًا مع رافعات وسفينة على الرصيف'
+    }
+  }
+};
+
+const SG_IMG = {
+  hero: '../img/s1-hero.webp',
+  ocean: '../img/s1-ocean.webp',
+  air: '../img/s1-air.webp',
+  land: '../img/s1-land.webp',
+  customs: '../img/s1-customs.webp',
+  warehousing: '../img/s1-warehouse.webp',
+  packaging: '../img/s1-packaging.webp',
+  buyship: '../img/s1-hero.webp'
+};
+const SG_POS = { ocean: '45% 50%', air: '62% 50%', land: '62% 50%', customs: '58% 50%', warehousing: '50% 50%', packaging: '42% 50%', buyship: '70% 50%' };
+const SG_CODE = { ocean: 'OCN', air: 'AIR', land: 'LND', customs: 'CUS', warehousing: 'WRH', packaging: 'PKG', buyship: 'B&S' };
+const SG_SLIDES = [
+  { img: SG_IMG.hero, pos: '58% 50%', alt: 'hero' },
+  { img: SG_IMG.packaging, pos: '50% 50%', alt: 'slide2' }
+];
+
+function sgMerge(base, over) {
+  if (Array.isArray(base) || Array.isArray(over)) return Array.isArray(over) && over.length ? over : (base || []);
+  if (base && typeof base === 'object') {
+    const out = {};
+    const o = over && typeof over === 'object' ? over : {};
+    Object.keys(base).forEach(k => { out[k] = sgMerge(base[k], o[k]); });
+    Object.keys(o).forEach(k => { if (!(k in out)) out[k] = o[k]; });
+    return out;
+  }
+  return over === undefined || over === null || over === '' ? base : over;
+}
+function sgPad(n) { return (n < 10 ? '0' : '') + n; }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.uid = 'sg' + Math.random().toString(36).slice(2, 8);
+    let urlLang = null;
+    try { const v = new URLSearchParams(window.location.search).get('lang'); if (v === 'ar' || v === 'en') urlLang = v; } catch (e) {}
+    this.urlLang = urlLang;
+    this.state = {
+      lang: null, slide: 0, anim: 0, wipe: 0, paused: false,
+      menuOpen: false, waOpen: false, openSvc: 0, hoverSvc: null,
+      form: { name: '', email: '', phone: '', service: '', message: '' },
+      errors: {}, sending: false, sent: false
+    };
+    this.layers = [];
+    this.els = {};
+    this.ignorePop = 0;
+    this.pendingNav = null;
+    this.timers = [];
+
+    const ref = k => el => { this.els[k] = el; };
+    this.setRoot = ref('root'); this.setMain = ref('main'); this.setTop = ref('top');
+    this.setServices = ref('services'); this.setAbout = ref('about'); this.setContact = ref('contact');
+    this.setMenuBtn = ref('menuBtn'); this.setMenuClose = ref('menuClose'); this.setFab = ref('fab');
+    this.setWaClose = ref('waClose'); this.setSuccess = ref('success');
+    this.refName = ref('f_name'); this.refEmail = ref('f_email'); this.refPhone = ref('f_phone');
+    this.refService = ref('f_service'); this.refMessage = ref('f_message');
+
+    this.toggleLang = () => this.setState(s => ({ lang: this.lang(s) === 'ar' ? 'en' : 'ar' }));
+    this.goHome = e => this.goTo('top', e);
+    this.goContact = e => this.goTo('contact', e);
+    this.skip = e => {
+      if (e) e.preventDefault();
+      const m = this.els.main || document.getElementById('sg-main');
+      if (m) { try { m.focus({ preventScroll: true }); } catch (_) { m.focus(); } this.scrollEl(m); }
+    };
+
+    this.nextSlide = () => this.goSlide(this.state.slide + 1);
+    this.prevSlide = () => this.goSlide(this.state.slide - 1);
+    this.togglePause = () => this.setState(s => ({ paused: !s.paused }));
+    this.onProgEnd = e => {
+      if (e && e.animationName && String(e.animationName).indexOf('sg-prog') !== 0) return;
+      if (this.state.paused) return;
+      this.goSlide(this.state.slide + 1);
+    };
+
+    this.svcLeave = () => { if (this.state.hoverSvc !== null) this.setState({ hoverSvc: null }); };
+
+    this.openMenu = e => this.openLayer('menu', e && e.currentTarget);
+    this.closeMenu = () => this.closeLayer('menu', {});
+    this.openWa = e => this.openLayer('wa', e && e.currentTarget);
+    // the floating button toggles the chooser, and Escape works while focus sits on it
+    this.toggleWa = e => { if (this.state.waOpen) this.closeLayer('wa', {}); else this.openLayer('wa', e && e.currentTarget); };
+    this.fabKey = e => { if ((e.key === 'Escape' || e.key === 'Esc') && this.state.waOpen) { e.preventDefault(); e.stopPropagation(); this.closeLayer('wa', {}); } };
+    this.closeWa = () => this.closeLayer('wa', {});
+    this.menuKey = e => this.layerKey('menu', e);
+    this.waKey = e => this.layerKey('wa', e);
+
+    const field = k => e => {
+      const v = e && e.target ? e.target.value : '';
+      this.setState(s => {
+        const errors = Object.assign({}, s.errors);
+        if (errors[k]) delete errors[k];
+        return { form: Object.assign({}, s.form, { [k]: v }), errors };
+      });
+    };
+    this.onName = field('name'); this.onEmail = field('email'); this.onPhone = field('phone');
+    this.onService = field('service'); this.onMessage = field('message');
+    this.submit = e => this.handleSubmit(e);
+    this.again = () => this.setState({ sent: false, sending: false, errors: {}, form: { name: '', email: '', phone: '', service: '', message: '' } }, () => {
+      const el = this.els.f_name; if (el) { try { el.focus({ preventScroll: true }); } catch (_) {} }
+    });
+  }
+
+  lang(s) {
+    const st = s || this.state;
+    const p = this.props && this.props.lang;
+    return st.lang || this.urlLang || (p === 'ar' || p === 'en' ? p : 'en');
+  }
+
+  componentDidMount() {
+    try {
+      this.mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      this.reduced = !!this.mq.matches;
+      if (this.reduced) this.setState({ paused: true });
+      this.onMq = ev => { this.reduced = !!ev.matches; if (ev.matches) this.setState({ paused: true }); };
+      if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq); else if (this.mq.addListener) this.mq.addListener(this.onMq);
+    } catch (e) {}
+    this.onPop = () => this.handlePop();
+    window.addEventListener('popstate', this.onPop);
+  }
+
+  componentWillUnmount() {
+    try { window.removeEventListener('popstate', this.onPop); } catch (e) {}
+    try { if (this.mq) { if (this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq); else if (this.mq.removeListener) this.mq.removeListener(this.onMq); } } catch (e) {}
+    this.timers.forEach(id => clearTimeout(id));
+    clearTimeout(this.navTimer);
+    this.lockScroll(false);
+  }
+
+  later(fn, ms) { const id = setTimeout(fn, ms); this.timers.push(id); return id; }
+
+  /* ---------- slider ---------- */
+  goSlide(i) {
+    const n = SG_SLIDES.length;
+    const next = ((i % n) + n) % n;
+    if (next === this.state.slide) return;
+    this.setState(s => ({ slide: next, anim: s.anim + 1, wipe: s.wipe + 1 }));
+  }
+
+  /* ---------- scrolling to sections ---------- */
+  scrollEl(el, block) {
+    if (!el) return;
+    const b = block || 'start';
+    const top0 = el.getBoundingClientRect().top;
+    try { el.scrollIntoView({ behavior: this.reduced ? 'auto' : 'smooth', block: b }); } catch (e) { try { el.scrollIntoView(true); } catch (_) {} }
+    if (!this.reduced) {
+      // if smooth scrolling did not start (throttled or unsupported), jump instead
+      this.later(() => {
+        const r = el.getBoundingClientRect();
+        const off = b === 'start' ? Math.abs(r.top) > 90 : (r.top < 0 || r.bottom > window.innerHeight);
+        if (Math.abs(r.top - top0) < 2 && off) { try { el.scrollIntoView({ block: b }); } catch (_) {} }
+      }, 420);
+    }
+  }
+  goTo(key, e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const run = () => {
+      if (key === 'top') {
+        // Home: scroll the whole page to its very top (strip and header included), focus the main landmark
+        const r = this.els.root;
+        if (r) this.scrollEl(r);
+        else { try { window.scrollTo({ top: 0, behavior: this.reduced ? 'auto' : 'smooth' }); } catch (_) {} }
+        const m = this.els.main || document.getElementById('sg-main');
+        if (m) { try { m.focus({ preventScroll: true }); } catch (_) {} }
+        return;
+      }
+      const el = this.els[key] || document.getElementById('sg-' + key);
+      if (!el) return;
+      this.scrollEl(el);
+      const target = el.querySelector('h2[tabindex]') || el;
+      try { target.focus({ preventScroll: true }); } catch (_) {}
+    };
+    if (this.state.menuOpen) this.closeLayer('menu', { then: run, restoreFocus: false });
+    else if (this.state.waOpen) this.closeLayer('wa', { then: run, restoreFocus: false });
+    else run();
+  }
+  quote(id, e) {
+    if (e && e.preventDefault) e.preventDefault();
+    this.setState(s => {
+      const errors = Object.assign({}, s.errors); delete errors.service;
+      return { form: Object.assign({}, s.form, { service: id }), errors, sent: false, sending: false };
+    }, () => this.goTo('contact'));
+  }
+
+  /* ---------- layers: menu sheet + WhatsApp chooser ---------- */
+  lockScroll(on) {
+    try {
+      const de = document.documentElement;
+      if (on) {
+        if (this.prevOverflow === undefined) {
+          this.prevOverflow = de.style.overflow || '';
+          this.prevGutter = de.style.scrollbarGutter || '';
+          // keep the classic scrollbar's width reserved so the page behind the layer does not jump
+          if (window.innerWidth - de.clientWidth > 0) de.style.scrollbarGutter = 'stable';
+        }
+        de.style.overflow = 'hidden';
+      } else if (this.prevOverflow !== undefined) {
+        de.style.overflow = this.prevOverflow; de.style.scrollbarGutter = this.prevGutter || '';
+        this.prevOverflow = undefined; this.prevGutter = undefined;
+      }
+    } catch (e) {}
+  }
+  openLayer(name, opener) {
+    const key = name + 'Open';
+    if (this.state[key]) return;
+    // one layer at a time
+    const other = name === 'menu' ? 'wa' : 'menu';
+    if (this.state[other + 'Open']) this.closeLayer(other, { restoreFocus: false, silent: true });
+    let pushed = false;
+    try {
+      const st = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+      window.history.pushState(Object.assign({}, st, { __fnBack: this.layers.length + 1 }), '');
+      pushed = true;
+    } catch (e) { pushed = false; }
+    this.layers.push({ name, opener: opener || null, pushed });
+    this.lockScroll(true);
+    this.setState({ [key]: true }, () => {
+      const el = name === 'menu' ? this.els.menuClose : this.els.waClose;
+      if (el) { try { el.focus({ preventScroll: true }); } catch (_) { try { el.focus(); } catch (__) {} } }
+    });
+  }
+  closeLayer(name, opts) {
+    const o = opts || {};
+    let idx = -1;
+    for (let i = this.layers.length - 1; i >= 0; i--) if (this.layers[i].name === name) { idx = i; break; }
+    if (idx < 0) { if (this.state[name + 'Open']) this.setState({ [name + 'Open']: false }); if (o.then) o.then(); return; }
+    const layer = this.layers.splice(idx, 1)[0];
+    if (!this.layers.length) this.lockScroll(false);
+    this.setState({ [name + 'Open']: false }, () => {
+      if (o.restoreFocus !== false) {
+        const op = layer.opener || (name === 'menu' ? this.els.menuBtn : this.els.fab);
+        if (op && op.isConnected !== false && op.focus) { try { op.focus({ preventScroll: true }); } catch (_) {} }
+      }
+    });
+    let sentinel = false;
+    if (!o.fromPop && layer.pushed) {
+      try { sentinel = !!(window.history.state && window.history.state.__fnBack != null); } catch (e) { sentinel = false; }
+    }
+    if (sentinel) {
+      this.ignorePop += 1;
+      this.pendingNav = o.then || null;
+      Promise.resolve().then(() => {
+        try { window.history.go(-1); } catch (e) { this.ignorePop = Math.max(0, this.ignorePop - 1); this.runPending(); }
+      });
+      clearTimeout(this.navTimer);
+      this.navTimer = setTimeout(() => this.runPending(), 450);
+    } else if (o.then) {
+      this.later(o.then, 30);
+    }
+  }
+  runPending() {
+    clearTimeout(this.navTimer);
+    const f = this.pendingNav; this.pendingNav = null;
+    if (f) f();
+  }
+  handlePop() {
+    if (this.ignorePop > 0) {
+      this.ignorePop -= 1;
+      if (this.pendingNav) this.later(() => this.runPending(), 16);
+      return;
+    }
+    const top = this.layers[this.layers.length - 1];
+    if (top) this.closeLayer(top.name, { fromPop: true });
+  }
+  layerKey(name, e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      e.preventDefault(); e.stopPropagation();
+      this.closeLayer(name, {});
+      return;
+    }
+    if (e.key === 'Tab') {
+      const box = e.currentTarget;
+      const list = Array.prototype.slice.call(box.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter(el => el.getClientRects().length > 0);
+      if (!list.length) return;
+      const first = list[0], last = list[list.length - 1];
+      const act = document.activeElement;
+      if (e.shiftKey && (act === first || !box.contains(act))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (act === last || !box.contains(act))) { e.preventDefault(); first.focus(); }
+    }
+  }
+
+  /* ---------- form ---------- */
+  validate(form) {
+    const err = {};
+    if (!String(form.name || '').trim()) err.name = 1;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(form.email || '').trim())) err.email = 1;
+    if (String(form.phone || '').replace(/\D/g, '').length < 6) err.phone = 1;
+    if (!form.service) err.service = 1;
+    if (!String(form.message || '').trim()) err.message = 1;
+    return err;
+  }
+  handleSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (this.state.sending) return;
+    const err = this.validate(this.state.form);
+    const order = ['name', 'email', 'phone', 'service', 'message'];
+    const first = order.find(k => err[k]);
+    if (first) {
+      this.setState({ errors: err }, () => {
+        const el = this.els['f_' + first];
+        if (el) { try { el.focus(); } catch (_) {} }
+      });
+      return;
+    }
+    this.setState({ errors: {}, sending: true });
+    this.later(() => {
+      this.setState({ sending: false, sent: true }, () => {
+        // the success box is much shorter than the form: bring it into view first (on a phone it would sit above the screen)
+        const el = this.els.success;
+        if (el) {
+          this.scrollEl(el, 'center');
+          try { el.focus({ preventScroll: true }); } catch (_) {}
+        }
+      });
+    }, 900);
+  }
+
+  /* ---------- render values ---------- */
+  renderVals() {
+    const s = this.state;
+    const lang = this.lang();
+    const t = sgMerge(COPY.en, COPY[lang] || {});
+    const x = EXTRA[lang] || EXTRA.en;
+    const C = COPY.contact || {};
+    const uid = this.uid;
+    const c = t.contactSection || {};
+    const f = c.form || {};
+    const hero = t.hero || {};
+    const slidesCopy = hero.slides || [];
+    const nSlides = Math.min(SG_SLIDES.length, slidesCopy.length) || SG_SLIDES.length;
+    const animCls = s.anim % 2 ? 'sg-anim-b' : 'sg-anim-a';
+
+    const slides = SG_SLIDES.slice(0, nSlides).map((d, i) => {
+      const sc = slidesCopy[i] || {};
+      const on = i === s.slide;
+      return {
+        img: d.img, pos: d.pos, alt: (x.alt && x.alt[d.alt]) || '',
+        eyebrow: sc.eyebrow || '', title: sc.title || '', body: sc.body || '',
+        cls: on ? 'is-active' : '', mediaCls: on ? 'is-active' : '',
+        ariaHidden: on ? undefined : 'true',
+        label: (i + 1) + ' / ' + nSlides,
+        dotCls: on ? 'is-active' : '', fillCls: on ? animCls : '',
+        current: on ? 'true' : undefined,
+        goLabel: (hero.goTo || 'Go to slide') + ' ' + (i + 1),
+        go: () => this.goSlide(i)
+      };
+    });
+    // the media layer needs the is-active class on a wrapper: mirror into slide__media via a separate class
+    const heroCls = [s.paused ? 'is-paused' : '', s.anim ? 'has-moved' : '', s.wipe ? (s.wipe % 2 ? 'is-wipe-a' : 'is-wipe-b') : ''].join(' ');
+
+    const navDefs = [
+      { key: 'top', label: (t.nav || {}).home, href: '#sg-top' },
+      { key: 'services', label: (t.nav || {}).services, href: '#sg-services' },
+      { key: 'about', label: (t.nav || {}).about, href: '#sg-about' },
+      { key: 'contact', label: (t.nav || {}).contact, href: '#sg-contact' }
+    ];
+    const nav = navDefs.map(n => Object.assign({}, n, { go: e => this.goTo(n.key, e) }));
+
+    const items = ((t.services || {}).items || []);
+    const nSvc = items.length;
+    const services = items.map((it, i) => {
+      const open = s.openSvc === i;
+      return Object.assign({}, it, {
+        code: SG_CODE[it.id] || String(it.id || '').slice(0, 3).toUpperCase(),
+        no: sgPad(i + 1) + ' / ' + sgPad(nSvc),
+        img: SG_IMG[it.id] || SG_IMG.hero, pos: SG_POS[it.id] || '50% 50%',
+        alt: (x.alt && x.alt[it.id]) || '',
+        cls: open ? 'is-open' : '',
+        expanded: open ? 'true' : 'false', closed: !open,
+        btnId: uid + '-svc-b' + i, panelId: uid + '-svc-p' + i,
+        toggle: () => this.setState(st => ({ openSvc: st.openSvc === i ? null : i, touched: true })),
+        hover: () => { if (this.state.hoverSvc !== i) this.setState({ hoverSvc: i }); },
+        quote: e => this.quote(it.id, e)
+      });
+    });
+    const vIdx = s.hoverSvc !== null && s.hoverSvc !== undefined ? s.hoverSvc : (s.openSvc !== null && s.openSvc !== undefined ? s.openSvc : 0);
+    const viewer = services.map((sv, i) => ({ img: sv.img, pos: sv.pos, cls: i === vIdx ? 'is-on' : '' }));
+    const vNow = services[vIdx] || services[0] || {};
+
+    const facts = (t.facts || []).map(fa => ({ value: fa.value, label: fa.label }));
+    const values = ((t.values || {}).items || []).map((v, i) => ({ title: v.title, body: v.body, no: sgPad(i + 1) }));
+
+    const tels = (C.whatsapp || []).map((n, i) => ({
+      display: n.display, wa: n.wa, tel: 'tel:' + (n.e164 || String(n.display || '').replace(/[^\d+]/g, '')),
+      waLabel: x.waPrefix + ' ' + n.display, callLabel: x.callPrefix + ' ' + n.display,
+      pickWa: () => { if (this.state.waOpen) this.later(() => this.closeLayer('wa', { restoreFocus: true }), 60); }
+    }));
+    // call-only numbers (no WhatsApp): contact list, footer, strip and menu sheet, never the WhatsApp chooser
+    const calls = (C.phones || []).filter(n => n && n.display).map(n => ({
+      display: n.display, tel: n.tel || ('tel:' + (n.e164 || String(n.display).replace(/[^\d+]/g, ''))),
+      callLabel: x.callPrefix + ' ' + n.display
+    }));
+    const emails = (C.emails || []).map(m => ({ addr: m, href: 'mailto:' + m }));
+    const insta = (C.social && C.social[0]) || { handle: '@freightnetsarl', url: 'https://www.instagram.com/freightnetsarl/' };
+    const address = c.address || [];
+    // the hero's manifest box reads only from the copy, so a copy update cannot leave it stale
+    const heroLabel = [
+      { k: c.officeTitle || '', v: address[address.length - 1] || '' },
+      { k: x.modes || '', v: t.tagline || '' }
+    ].filter(r => r.k && r.v);
+
+    // CTA title split at sentence ends (?, !, ., Arabic ؟) so each sentence gets its own line(s); the text itself is unchanged
+    const ctaTitle = String((t.cta || {}).title || '');
+    const ctaLines = ctaTitle.replace(/([?!.؟])\s+(?=\S)/g, '$1|~|').split('|~|').filter(Boolean);
+    const errs = s.errors || {};
+    const errMsg = { name: f.errName, email: f.errEmail, phone: f.errPhone, service: f.errService, message: f.errMessage };
+    const err = {}, inv = {}, desc = {};
+    ['name', 'email', 'phone', 'service', 'message'].forEach(k => {
+      err[k] = errs[k] ? (errMsg[k] || '') : '';
+      inv[k] = errs[k] ? 'true' : undefined;
+      desc[k] = errs[k] ? uid + '-' + k + '-err' : undefined;
+    });
+    const ids = {
+      svc: uid + '-svc', ocean: uid + '-ocean', values: uid + '-values', about: uid + '-about', cta: uid + '-cta', contact: uid + '-contact',
+      formTitle: uid + '-ftitle', name: uid + '-name', email: uid + '-email', phone: uid + '-phone', service: uid + '-service', message: uid + '-message',
+      nameErr: uid + '-name-err', emailErr: uid + '-email-err', phoneErr: uid + '-phone-err', serviceErr: uid + '-service-err', messageErr: uid + '-message-err',
+      menu: uid + '-menu', menuTitle: uid + '-menu-t', wa: uid + '-wa', waTitle: uid + '-wa-t', waSub: uid + '-wa-s'
+    };
+
+    const rootCls = [s.menuOpen ? 'is-menu is-locked' : '', s.waOpen ? 'is-locked' : '', s.touched ? 'sg-touched' : ''].join(' ');
+
+    return {
+      t, x, c, f, lang, dir: lang === 'ar' ? 'rtl' : 'ltr', rootCls, ids, uid,
+      h1: (t.legal || 'Freight Net SARL') + ' · ' + (t.tagline || ''),
+      strip: { place: address[address.length - 1] || '' }, heroLabel,
+      langSr: (t.nav || {}).langLabel ? ' (' + t.nav.langLabel + ')' : '',
+      nav, slides, heroCls,
+      slideNo: sgPad(s.slide + 1), slideTotal: sgPad(nSlides),
+      playing: !s.paused, paused: !!s.paused,
+      pauseLabel: s.paused ? hero.play : hero.pause,
+      facts, services, viewer, viewerNow: { code: vNow.code || '', no: vNow.no || '', title: vNow.title || '' },
+      values, tels, calls, emails, insta, ctaLines, address, mapsUrl: C.mapsUrl || '#',
+      aboutImg: { src: SG_IMG.land, alt: (x.alt && x.alt.land) || '' },
+      serviceOptions: items.map(it => ({ id: it.id, title: it.title })),
+      form: s.form, err, inv, desc,
+      selectCls: s.form.service ? '' : 'is-empty',
+      successCls: s.sent ? 'is-on' : '', statusText: s.sent ? (f.success || '') : '',
+      sending: !!s.sending, sent: !!s.sent, notSent: !s.sent,
+      submitLabel: s.sending ? f.sending : f.submit,
+      menuOpen: !!s.menuOpen, menuExpanded: s.menuOpen ? 'true' : 'false',
+      waOpen: !!s.waOpen, waExpanded: s.waOpen ? 'true' : 'false',
+      svcLeave: this.svcLeave,
+      setRoot: this.setRoot, setMain: this.setMain, setTop: this.setTop, setServices: this.setServices, setAbout: this.setAbout, setContact: this.setContact,
+      setMenuBtn: this.setMenuBtn, setMenuClose: this.setMenuClose, setFab: this.setFab, setWaClose: this.setWaClose, setSuccess: this.setSuccess,
+      refName: this.refName, refEmail: this.refEmail, refPhone: this.refPhone, refService: this.refService, refMessage: this.refMessage,
+      toggleLang: this.toggleLang, goHome: this.goHome, goContact: this.goContact, skip: this.skip,
+      nextSlide: this.nextSlide, prevSlide: this.prevSlide, togglePause: this.togglePause, onProgEnd: this.onProgEnd,
+      openMenu: this.openMenu, closeMenu: this.closeMenu, openWa: this.openWa, toggleWa: this.toggleWa, fabKey: this.fabKey, closeWa: this.closeWa, menuKey: this.menuKey, waKey: this.waKey,
+      onName: this.onName, onEmail: this.onEmail, onPhone: this.onPhone, onService: this.onService, onMessage: this.onMessage,
+      submit: this.submit, again: this.again
+    };
+  }
+}
+return Component;
+});
+</script>
+</body>
+</html>
