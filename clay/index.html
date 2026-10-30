@@ -118,11 +118,11 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 /* ---------- 5. Header ---------- */
 .cl-header{position:sticky;top:0;z-index:40;background:var(--bg);padding-block:12px}
 .cl-bar{display:flex;align-items:center;gap:8px;min-height:68px;padding-block:8px;padding-inline:16px 10px;background:var(--bg-2);border-radius:var(--pill);box-shadow:var(--sh-1)}
-/* brand mark: the original emblem at the inline-start, the two-line wordmark beside it, leaning toward the
+/* brand mark: the client's emblem at the inline-start, the two-line wordmark beside it, leaning toward the
    emblem in both directions (emblem ~2.7x the name size, gap ~0.2x the emblem, as in brand/logo-horizontal.svg).
    The emblem is never mirrored; the pill-shaped hover hugs its round arc. */
 .cl-brand{--em:46px;display:inline-flex;align-items:center;gap:max(6px,calc(var(--em) * .21));min-height:44px;flex:none;padding-block:3px;padding-inline:6px 14px;margin-inline-start:-6px;border-radius:var(--pill);text-decoration:none;line-height:1;transition:background-color .2s}
-.cl-brand__mark{flex:none;display:block;width:auto;height:var(--em);aspect-ratio:512 / 431;max-width:none}
+.cl-brand__mark{flex:none;display:block;width:auto;height:var(--em);aspect-ratio:351 / 323;max-width:none}
 .cl-brand__words{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .cl-brand__name{font:800 17px/1 var(--f-brand);letter-spacing:.02em;color:var(--navy);white-space:nowrap}
 .cl-brand__tag{font:700 9.5px/1 var(--f-brand);letter-spacing:.18em;color:var(--crimson);white-space:nowrap;margin-top:6px}
@@ -200,13 +200,14 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 /* ---------- 6. Hero ---------- */
 .cl-hero{padding-block-start:6px}
 /* the whole panel is the swipe surface: vertical pans and pinch-zoom stay with the browser, sideways drags come
-   to the pointer handlers. While a drag is under way the current words and picture follow it a little. */
+   to the pointer handlers. The picture is what moves (see "art"); the words stay put, dim as the drag goes on,
+   and cross-fade when the slide changes. */
 .cl-hero__panel{position:relative;overflow:hidden;isolation:isolate;background:var(--sky);border-radius:var(--r-xl);display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"art" "copy" "actions";padding:18px 20px 24px;row-gap:16px;touch-action:pan-y pinch-zoom}
 .cl-hero__panel.is-drag{-webkit-user-select:none;user-select:none;cursor:grabbing}
-.cl-hero__panel.is-drag .cl-slide.is-active,.cl-hero__panel.is-drag .cl-hero__img.is-active{transform:translateX(var(--cl-dx,0px));transition:none}
 .cl-hero__copy{grid-area:copy;display:grid;align-self:end;position:relative;z-index:1}
-.cl-slide{grid-area:1 / 1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:18px;opacity:0;visibility:hidden;transform:translateX(calc(var(--cl-x) * 28px));transition:opacity .3s var(--out),transform .3s var(--out),visibility 0s linear .3s}
-.cl-slide.is-active{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.cl-slide{grid-area:1 / 1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:18px;opacity:0;visibility:hidden;transition:opacity .25s var(--out),visibility 0s linear .25s}
+.cl-slide.is-active{opacity:1;visibility:visible;transition-delay:0s}
+.cl-hero__panel.is-drag .cl-slide.is-active{opacity:calc(1 - var(--cl-p,0) * .6);transition:none}
 .cl-chip{display:inline-flex;align-items:center;gap:9px;padding-block:8px;padding-inline:10px 15px;background:#fff;border-radius:var(--pill);font:700 13px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);box-shadow:0 3px 0 rgb(16 20 40 / .06)}
 .cl-chip::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:inset -2px -2px 0 rgb(0 0 0 / .16)}
 .cl-hero__title{font:800 var(--t-hero)/.97 var(--f-display);letter-spacing:-.04em;color:var(--navy);text-wrap:balance;max-width:11.5em}
@@ -236,17 +237,27 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 /* art */
 .cl-hero__art{grid-area:art;position:relative;display:grid;place-items:center;width:min(100%,330px);aspect-ratio:1;justify-self:center}
 @media (hover:hover) and (pointer:fine){ .cl-hero__art{cursor:grab} }
-.cl-hero__float{grid-area:1 / 1;width:100%;height:100%;display:grid;place-items:center;animation:cl-float 1.5s var(--out) .15s both}
+.cl-hero__float{grid-area:1 / 1;position:relative;width:100%;height:100%;animation:cl-float 1.5s var(--out) .15s both}
 .cl-hero__halo{position:absolute;inset:9%;border-radius:50%;background:rgb(255 255 255 / .42)}
 .cl-hero__orbit{position:absolute;inset:1.5%;border-radius:50%;border:2.5px dashed rgb(255 255 255 / .9)}
-.cl-hero__img{grid-area:1 / 1;width:92%;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 26px 22px rgb(16 20 40 / .22));opacity:0;transform:translateX(calc(var(--cl-x) * 48px)) scale(.9) rotate(calc(var(--cl-x) * 6deg));transition:opacity .3s var(--out),transform .5s var(--bounce)}
-.cl-hero__img.is-active{opacity:1;transform:none}
+/* gallery: the pictures slide through a round window cut just inside the dashed orbit. Each slide's picture fills
+   the art box; the current one sits at --cl-off (0 at rest) and the neighbour being revealed sits one box-width to
+   its side (is-nb-l / is-nb-r, physical sides). The script writes --cl-off (and --cl-p, 0..1, for the words) on the
+   panel only while a drag or a slide change is moving, and removes them when it settles. */
+.cl-hero__view{position:absolute;inset:0;clip-path:circle(calc(48.5% - 3px) at 50% 50%)}
+.cl-hero__pic{position:absolute;inset:0;display:grid;place-items:center;visibility:hidden;transform:translateX(var(--cl-off,0px))}
+.cl-hero__pic.is-active{visibility:visible}
+.cl-hero__pic.is-nb-r{visibility:visible;transform:translateX(calc(var(--cl-off,0px) + 100%))}
+.cl-hero__pic.is-nb-l{visibility:visible;transform:translateX(calc(var(--cl-off,0px) - 100%))}
+.cl-hero__img{width:92%;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 26px 22px rgb(16 20 40 / .22))}
 .cl-hero__img--ship{width:84%;translate:0 -3%}
+/* pebbles frame the window and stay still while the pictures slide; none sits on the dots' row, so nothing
+   near the pagination looks like another control */
 .cl-peb{position:absolute;display:block;border-radius:50%;box-shadow:var(--blob);animation:cl-pop .7s var(--bounce) both}
 .cl-peb--coral{width:17%;aspect-ratio:1;background:var(--coral);top:4%;inset-inline-start:1%;animation-delay:.5s}
-.cl-peb--sun{width:27%;aspect-ratio:2.7;border-radius:var(--pill);background:var(--sun);bottom:7%;inset-inline-end:-3%;rotate:-18deg;animation-delay:.65s}
+.cl-peb--sun{width:24%;aspect-ratio:2.7;border-radius:var(--pill);background:var(--sun);bottom:19%;inset-inline-start:-7%;rotate:22deg;animation-delay:.65s}
+.cl-root[dir="rtl"] .cl-peb--sun{rotate:-22deg}
 .cl-peb--ring{width:11%;aspect-ratio:1;background:transparent;border:clamp(7px,1.1cqi,12px) solid var(--navy);top:10%;inset-inline-end:5%;box-shadow:0 10px 18px -10px rgb(16 20 40 / .4),inset 2px 2px 3px rgb(255 255 255 / .25);animation-delay:.8s}
-.cl-peb--dot{width:5%;aspect-ratio:1;background:#fff;bottom:20%;inset-inline-start:7%;animation-delay:.95s}
 @container cl (min-width:520px){
   .cl-hero__art{width:min(100%,400px)}
   .cl-hero__panel{padding:24px 32px 32px}
@@ -783,7 +794,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
 <header class="cl-header">
   <div class="cl-wrap cl-bar">
     <a class="cl-brand" href="#top" aria-label="{{brandLabel}}">
-      <img class="cl-brand__mark" src="../img/emblem.svg" alt="" width="55" height="46" decoding="async">
+      <img class="cl-brand__mark" src="../img/emblem.svg" alt="" width="50" height="46" decoding="async">
       <span class="cl-brand__words">
         <span class="cl-brand__name" lang="en">FREIGHT NET SARL</span>
         <span class="cl-brand__tag" lang="en">SEA . AIR . LAND</span>
@@ -828,10 +839,11 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
       <span class="cl-hero__halo" aria-hidden="true"></span>
       <span class="cl-peb cl-peb--coral" aria-hidden="true"></span>
       <span class="cl-peb cl-peb--ring" aria-hidden="true"></span>
-      <span class="cl-peb cl-peb--dot" aria-hidden="true"></span>
       <div class="cl-hero__float">
-        <img class="cl-hero__img {{slides.0.cls}}" src="../img/s3-hero.webp" alt="{{slides.0.alt}}" aria-hidden="{{slides.0.ariaHidden}}" width="800" height="800" decoding="async">
-        <img class="cl-hero__img cl-hero__img--ship {{slides.1.cls}}" src="../img/s3-ocean.webp" alt="{{slides.1.alt}}" aria-hidden="{{slides.1.ariaHidden}}" width="800" height="800" decoding="async">
+        <div class="cl-hero__view">
+          <div class="cl-hero__pic {{slides.0.picCls}}"><img class="cl-hero__img" src="../img/s3-hero.webp" alt="{{slides.0.alt}}" aria-hidden="{{slides.0.ariaHidden}}" width="800" height="800" decoding="async"></div>
+          <div class="cl-hero__pic {{slides.1.picCls}}"><img class="cl-hero__img cl-hero__img--ship" src="../img/s3-ocean.webp" alt="{{slides.1.alt}}" aria-hidden="{{slides.1.ariaHidden}}" width="800" height="800" decoding="async"></div>
+        </div>
       </div>
       <span class="cl-peb cl-peb--sun" aria-hidden="true"></span>
       <div class="cl-dots" onAnimationEnd="{{fillDone}}">
@@ -1151,7 +1163,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
     <div class="cl-foot__grid">
       <div class="cl-foot__brand">
         <a class="cl-brand cl-brand--dark cl-brand--lg" href="#top" aria-label="{{brandLabel}}">
-          <img class="cl-brand__mark" src="../img/emblem-on-dark.svg" alt="" width="76" height="64" loading="lazy" decoding="async">
+          <img class="cl-brand__mark" src="../img/emblem-on-dark.svg" alt="" width="70" height="64" loading="lazy" decoding="async">
           <span class="cl-brand__words">
             <span class="cl-brand__name" lang="en">FREIGHT NET SARL</span>
             <span class="cl-brand__tag" lang="en">SEA . AIR . LAND</span>
@@ -1778,12 +1790,13 @@ class Component extends DCLogic {
     try { const q = new URLSearchParams(window.location.search).get('lang'); if (q === 'ar' || q === 'en') urlLang = q; } catch (e) {}
     this.urlLang = urlLang;
     this.state = {
-      lang: null, slide: 0, stopped: false, hover: false, focusIn: false, dragging: false, reduced: false,
+      lang: null, slide: 0, nb: null, nbSide: 0, stopped: false, hover: false, focusIn: false, dragging: false, reduced: false,
       menuOpen: false, waOpen: false, waFrom: null, narrow: false, compact: false,
       openSvc: null, load: 'fcl',
       form: Object.assign({}, CL_EMPTY), errors: {}, tried: false, sending: false, success: false, flash: false
     };
     this._depth = 0; this._histOk = false; this._ignorePop = 0; this._pendingNav = null;
+    this._sw = null; this._off = 0; this._raf = 0; this._anim = null; this._dragEnd = 0;
 
     this.toggleLang = () => this.setState({ lang: this.lang() === 'ar' ? 'en' : 'ar' }, () => this.syncLangUrl());
     /* The slideshow pauses while a mouse is over the hero (a finger's tap must not hold it: touch pointers are
@@ -1878,7 +1891,7 @@ class Component extends DCLogic {
   componentDidUpdate() { this.syncLock(); }
   componentWillUnmount() {
     clearTimeout(this._navT); clearTimeout(this._flashT); clearTimeout(this._sendT);
-    this._sw = null;
+    this._sw = null; this.stopAnim();
     this._depth = 0; this.resetRestore(0);
     window.removeEventListener('popstate', this.onPop);
     window.removeEventListener('resize', this.measure);
@@ -1903,9 +1916,87 @@ class Component extends DCLogic {
     s = s || this.state;
     return !s.stopped && !s.reduced && !s.hover && !s.focusIn && !s.dragging && !s.menuOpen && !s.waOpen && this.slideCount() > 1;
   }
+  /* ----- gallery motion -----
+     One number moves the pictures: the offset (px) of the current picture, written as --cl-off on this hero's panel.
+     The neighbour that offset reveals sits one picture-width to the other side (state nb / nbSide, physical: +1 =
+     right). A drag sets the offset straight from the finger; a release, a dot or autoplay tweens it to 0 (ease-out),
+     so every change is the same horizontal slide and a new drag can take over a slide in flight from where it is. */
+  heroPanel(el) { return el && el.closest ? el.closest('.cl-hero__panel') : null; }
+  picWidth(panel) {
+    const v = panel && panel.querySelector('.cl-hero__view');
+    return v ? v.getBoundingClientRect().width : 0;
+  }
+  /* the slide one step to a physical side: right is the next one in English and the previous one in Arabic */
+  nbIndex(side) {
+    const n = this.slideCount();
+    return (this.state.slide + side * (this.lang() === 'ar' ? -1 : 1) + n * 2) % n;
+  }
+  setOff(panel, off, W) {
+    this._off = off;
+    try {
+      panel.style.setProperty('--cl-off', off.toFixed(2) + 'px');
+      panel.style.setProperty('--cl-p', Math.min(1, Math.abs(off) / (W || 1)).toFixed(3));
+    } catch (err) {}
+  }
+  clearOff(panel) {
+    this._off = 0;
+    if (!panel) return;
+    try {
+      panel.style.removeProperty('--cl-off'); panel.style.removeProperty('--cl-p');
+      if (!panel.getAttribute('style')) panel.removeAttribute('style');
+    } catch (err) {}
+  }
+  stopAnim() {
+    if (this._raf) { try { cancelAnimationFrame(this._raf); } catch (err) {} }
+    this._raf = 0; this._anim = null;
+  }
+  /* tween the offset from `from` to `to` (ease-out cubic, 200-340ms by distance), then clean up and call done */
+  animOff(panel, from, to, W, done) {
+    this.stopAnim();
+    const dur = Math.max(200, Math.min(340, 150 + 220 * Math.abs(to - from) / (W || 1)));
+    const t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    const anim = this._anim = { panel };
+    const step = (now) => {
+      if (this._anim !== anim) return;
+      const p = Math.min(1, Math.max(0, (now - t0) / dur));
+      const k = 1 - Math.pow(1 - p, 3);
+      this.setOff(panel, from + (to - from) * k, W);
+      if (p < 1) { this._raf = requestAnimationFrame(step); return; }
+      this._raf = 0; this._anim = null;
+      this.clearOff(panel);
+      if (done) done();
+    };
+    this.setOff(panel, from, W);
+    this._raf = requestAnimationFrame(step);
+  }
+  settle() { if (this.state.nb != null || this.state.nbSide) this.setState({ nb: null, nbSide: 0 }); }
+  /* make slide k current, sliding in from physical side `side` (+1 = from the right). `start` is where the new picture
+     starts (default: one width off to that side); the old picture becomes the neighbour on the other side, so the
+     motion is continuous. Reduced motion, or no measurable panel: an instant change. */
+  goTo(k, side, panel, start, extra) {
+    const old = this.state.slide;
+    const W = this.picWidth(panel);
+    this.stopAnim();
+    if (this.state.reduced || !panel || !W || !side || k === old) {
+      if (panel) this.clearOff(panel);
+      this.setState(Object.assign({ slide: k, nb: null, nbSide: 0 }, extra || {}));
+      return;
+    }
+    const from = start == null ? side * W : start;
+    this.setState(Object.assign({ slide: k, nb: old, nbSide: -side }, extra || {}), () => {
+      this.animOff(panel, from, 0, W, () => this.settle());
+    });
+  }
   pickSlide(i, e) {
     if (this.dragClick(e)) { if (e && e.preventDefault) e.preventDefault(); return; }
-    this.setState({ slide: i, stopped: true });
+    const cur = this.state.slide;
+    if (i === cur) { if (!this.state.stopped) this.setState({ stopped: true }); return; }
+    const panel = this.heroPanel(e && e.currentTarget);
+    const nb = this.state.nb, n = this.state.nbSide;
+    /* the picture already half in view (a slide in flight): carry on from where it is */
+    if (this._off && nb === i && n) { this.goTo(i, n, panel, this._off + n * this.picWidth(panel), { stopped: true }); return; }
+    const side = (i > cur ? 1 : -1) * (this.lang() === 'ar' ? -1 : 1);
+    this.goTo(i, side, panel, null, { stopped: true });
   }
   /* true only for the click that ends a sideways drag: it comes right after that drag's release and before any new
      press (swDown clears the window), and it is a pointer click (keyboard clicks have detail 0 and always count) */
@@ -1916,15 +2007,17 @@ class Component extends DCLogic {
   /* Swipe: pointer handlers on the hero panel (template attributes, no global listeners). A press only becomes a
      drag once it has moved 10px and mostly sideways; a mostly vertical move is left to the browser (page scroll
      on touch, text selection with a mouse). Capture is taken only then, so a plain tap still reaches the link or
-     button under it. On release a move of 40px, or a quick flick of 24px, changes the slide: toward the start
-     side (left in English, right in Arabic) goes to the next one. */
+     button under it. While dragging, the picture follows the finger 1:1 with the neighbour sliding in beside it
+     (a slide already in flight is taken over where it is). On release, past 20% of the picture's width or a flick
+     in that direction completes the change; anything less slides back. Moving toward the start side (left in
+     English, right in Arabic) brings the next slide; the slideshow wraps, so there is a neighbour both ways. */
   swDown(e) {
     this._dragEnd = 0;
     const old = this._sw;
-    if (old) { this._sw = null; this.swReset(old); if (old.on) this.setState({ dragging: false }); }
+    if (old) { this._sw = null; if (old.on) this.dragDone(old, 0, 0, true); }
     if (!e || !e.isPrimary || this.slideCount() < 2) return;
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    this._sw = { id: e.pointerId, el: e.currentTarget, x0: e.clientX, y0: e.clientY, t0: Date.now(), dx: 0, on: false, off: false };
+    this._sw = { id: e.pointerId, el: e.currentTarget, x0: e.clientX, y0: e.clientY, dx: 0, dy: 0, on: false, skip: false, base: 0, W: 0, pts: [] };
   }
   swMove(e) {
     const g = this._sw;
@@ -1933,21 +2026,32 @@ class Component extends DCLogic {
        the hero, say) and never reached swEnd. Drop that press instead of turning a plain hover into a drag. Touch and
        a pen in contact report buttons 1 while down, so they are not affected. */
     if (!e.buttons) { this.swEnd(e, true); return; }
-    if (g.off) return;
+    if (g.skip) return;
     const dx = e.clientX - g.x0, dy = e.clientY - g.y0;
     if (!g.on) {
       const ax = Math.abs(dx), ay = Math.abs(dy);
       if (ax < 10 && ay < 10) return;
-      if (ax <= ay) { g.off = true; return; }
+      if (ax <= ay) { g.skip = true; return; }
       g.on = true;
+      g.W = this.picWidth(g.el);
+      /* a slide still in flight is caught where it is (no jump); from rest the picture tracks the finger exactly */
+      g.base = this._raf ? this._off - dx : 0;
+      this.stopAnim();
       try { g.el.setPointerCapture(e.pointerId); } catch (err) {}
       try { const sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (err) {}
       this.setState({ dragging: true });
     }
     g.dx = dx; g.dy = dy;
-    if (!this.state.reduced) {
-      const f = Math.max(-56, Math.min(56, dx * 0.35));
-      try { g.el.style.setProperty('--cl-dx', f.toFixed(1) + 'px'); } catch (err) {}
+    const now = (window.performance && performance.now) ? performance.now() : Date.now();
+    g.pts.push([now, e.clientX]);
+    while (g.pts.length > 2 && now - g.pts[0][0] > 100) g.pts.shift();
+    if (this.state.reduced || !g.W) return;
+    const off = Math.max(-g.W, Math.min(g.W, g.base + dx));
+    this.setOff(g.el, off, g.W);
+    const side = off < 0 ? 1 : (off > 0 ? -1 : 0);
+    if (side) {
+      const k = this.nbIndex(side);
+      if (k !== this.state.nb || side !== this.state.nbSide) this.setState({ nb: k, nbSide: side });
     }
   }
   swEnd(e, cancelled) {
@@ -1955,24 +2059,40 @@ class Component extends DCLogic {
     if (!g || e.pointerId !== g.id) return;
     this._sw = null;
     if (!g.on) return;
-    this.swReset(g);
-    this._dragEnd = Date.now();
     const dx = cancelled ? g.dx : e.clientX - g.x0;
     const dy = cancelled ? g.dy : e.clientY - g.y0;
-    const ax = Math.abs(dx);
-    const patch = { dragging: false };
-    if (!cancelled && ax > Math.abs(dy) && (ax >= 40 || (ax >= 24 && this._dragEnd - g.t0 <= 250))) {
-      const n = this.slideCount();
-      const step = (dx < 0 ? 1 : -1) * (this.lang() === 'ar' ? -1 : 1);
-      patch.slide = (this.state.slide + step + n) % n;
-      patch.stopped = true;
-    }
-    this.setState(patch);
+    this.dragDone(g, dx, dy, cancelled);
   }
-  swReset(g) {
-    if (!g || !g.el) return;
+  /* finish a recognised drag: release capture, swallow the click it ends with, then complete the change or slide back */
+  dragDone(g, dx, dy, cancelled) {
     try { if (g.el.hasPointerCapture && g.el.hasPointerCapture(g.id)) g.el.releasePointerCapture(g.id); } catch (err) {}
-    try { g.el.style.removeProperty('--cl-dx'); if (!g.el.getAttribute('style')) g.el.removeAttribute('style'); } catch (err) {}
+    this._dragEnd = Date.now();
+    const W = g.W || this.picWidth(g.el);
+    let v = 0;
+    if (g.pts.length > 1) {
+      const a = g.pts[0], b = g.pts[g.pts.length - 1];
+      const now = (window.performance && performance.now) ? performance.now() : Date.now();
+      if (now - b[0] < 100 && b[0] > a[0]) v = (b[1] - a[1]) / (b[0] - a[0]);
+    }
+    const sideways = Math.abs(dx) > Math.abs(dy);
+    if (this.state.reduced || !W) {
+      const ax = Math.abs(dx);
+      if (!cancelled && sideways && (ax >= 0.2 * (W || 300) || (ax >= 24 && Math.abs(v) >= 0.35 && v * dx > 0))) {
+        this.goTo(this.nbIndex(dx < 0 ? 1 : -1), 0, null, null, { stopped: true, dragging: false });
+      } else this.setState({ dragging: false });
+      return;
+    }
+    const off = Math.max(-W, Math.min(W, g.base + dx));
+    const side = off < 0 ? 1 : (off > 0 ? -1 : 0);
+    const ao = Math.abs(off);
+    const commit = !cancelled && side && sideways && (ao >= 0.2 * W || (ao >= 24 && Math.abs(v) >= 0.35 && v * off > 0));
+    if (commit) {
+      this.goTo(this.nbIndex(side), side, g.el, off + side * W, { stopped: true, dragging: false });
+      return;
+    }
+    this.setState({ dragging: false });
+    if (off) this.animOff(g.el, off, 0, W, () => this.settle());
+    else { this.clearOff(g.el); this.settle(); }
   }
   /* The slideshow's clock is the current dot's fill animation itself (cl-fill, 7s): when it completes, the next
      slide comes. So the visible progress and the slide change cannot disagree, and pausing (.is-playing off)
@@ -1981,7 +2101,9 @@ class Component extends DCLogic {
     if (!e || e.animationName !== 'cl-fill') return;
     const s = this.state;
     if (s.stopped || s.reduced || this.slideCount() < 2) return;
-    this.setState(st => ({ slide: (st.slide + 1) % this.slideCount() }));
+    /* forward, like a swipe toward the start side: the next picture slides in from the inline end */
+    const side = this.lang() === 'ar' ? -1 : 1;
+    this.goTo((s.slide + 1) % this.slideCount(), side, this.heroPanel(e.currentTarget), null, null);
   }
 
   /* ---------- layers: menu sheet and WhatsApp chooser ---------- */
@@ -2168,9 +2290,11 @@ class Component extends DCLogic {
     const playing = this.isPlaying();
     const F = (t.contactSection && t.contactSection.form) || {};
 
+    const nb = s.nb != null && s.nb !== slideIdx && s.nb < n && s.nbSide ? s.nb : -1;
     const slides = ((t.hero && t.hero.slides) || []).map((sl, i) => ({
       eyebrow: sl.eyebrow, title: sl.title, body: sl.body,
       cls: i === slideIdx ? 'is-active' : '',
+      picCls: i === slideIdx ? 'is-active' : (i === nb ? (s.nbSide > 0 ? 'is-nb-r' : 'is-nb-l') : ''),
       ariaHidden: i === slideIdx ? undefined : 'true',
       label: (i + 1) + ' / ' + n,
       img: i === 0 ? CL_IMG.hero : CL_IMG.ocean,

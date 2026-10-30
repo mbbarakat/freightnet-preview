@@ -42,6 +42,7 @@ body{margin:0;background:#0A0D1C}
   --gutter:clamp(16px,4.4cqi,64px);
   --maxw:1312px;
   --head-h:76px;
+  --sg-dir:1;
   container:sg / inline-size;
   position:relative;
   background:var(--bg); color:var(--text);
@@ -53,6 +54,7 @@ body{margin:0;background:#0A0D1C}
 .sg-root[dir="rtl"]{
   --f-display:"Noto Kufi Arabic","Cairo",system-ui,sans-serif;
   --f-body:"Cairo",system-ui,sans-serif;
+  --sg-dir:-1;
   line-height:1.75;
 }
 :where(.sg-root) *,:where(.sg-root) *::before,:where(.sg-root) *::after{box-sizing:border-box}
@@ -135,7 +137,7 @@ body{margin:0;background:#0A0D1C}
 .sg-header__in{display:flex;align-items:center;gap:20px;min-height:var(--head-h)}
 /* brand lockup: emblem at the inline-start, the two-line wordmark beside it (the emblem is never mirrored; the words stay Latin and lean toward the emblem in both directions) */
 .sg-brand{--em:48px;display:inline-flex;align-items:center;gap:calc(var(--em) * .25);min-height:48px;padding:4px 10px;margin-inline-start:-10px;color:#fff;text-decoration:none;flex:none;transition:background-color .15s ease,transform .12s ease}
-.sg-brand__emblem{flex:none;display:block;height:var(--em);width:auto;aspect-ratio:512/431;max-width:none}
+.sg-brand__emblem{flex:none;display:block;height:var(--em);width:auto;aspect-ratio:351/323;max-width:none}
 .sg-brand__words{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:5px;min-width:0;padding-top:1px}
 .sg-brand__name,.sg-brand__tag{direction:ltr;unicode-bidi:isolate}
 .sg-brand__name{font-family:var(--f-brand);font-weight:800;font-size:17px;line-height:1;letter-spacing:.02em;white-space:nowrap}
@@ -171,21 +173,24 @@ body{margin:0;background:#0A0D1C}
 /* the whole hero is the swipe surface: sideways drags change the slide, vertical ones still scroll the page (pinch zoom kept) */
 .sg-hero{position:relative;isolation:isolate;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;min-height:clamp(620px,56cqi,820px);touch-action:pan-y pinch-zoom}
 .sg-hero.is-dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
+/* photo gallery. The stage is left-to-right (mirrored with scale in Arabic), so "forward" is always +x here: the next photo waits at +100%, comes in toward 0,
+   and the one it replaces leaves toward -100% (on screen that is from the right in English and from the left in Arabic, the way a swipe to "next" goes).
+   The logic drives three things: --sg-x (stage px) moves the current photo with the finger, 1:1; --sg-in is the side the neighbour waits on (+1 or -1);
+   --sg-out is the side a photo that is leaving or returning settles to. Hidden photos sit on --sg-in with no transition, so they can be placed instantly */
 .sg-hero__stage{position:absolute;inset:0;z-index:-3;direction:ltr;overflow:hidden}
 .sg-root[dir="rtl"] .sg-hero__stage{scale:-1 1}
-.sg-slide__media{position:absolute;inset:0;opacity:0;transition:opacity .12s linear .34s}
-/* slide 2 is a 1200 px photo: on desktop it fills only the photo side (the text side sits under the solid scrim), so it never upscales */
-.sg-slide__media--b{inset-inline-start:36%;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%);mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%)}
-.sg-slide__media.is-active{opacity:1}
+.sg-hero{--sg-in:1;--sg-out:-1}
+.sg-hero.is-in-l{--sg-in:-1}
+.sg-hero.is-out-r{--sg-out:1}
+.sg-slide__media{position:absolute;inset:0;visibility:hidden;transform:translateX(calc(var(--sg-in) * 100%))}
+.sg-slide__media.is-active,.sg-slide__media.is-settling{visibility:visible;transition:transform .32s cubic-bezier(.22,.61,.36,1)}
+.sg-slide__media.is-active{transform:translateX(var(--sg-x,0px))}
+.sg-slide__media.is-settling{transform:translateX(calc(var(--sg-out) * 100%))}
+.sg-hero.is-dragging .sg-slide__media{visibility:visible;transition:none}
+.sg-hero.is-dragging .sg-slide__media:not(.is-active){transform:translateX(calc(var(--sg-x,0px) + var(--sg-in) * 100%))}
 .sg-slide__img{width:100%;height:100%;object-fit:cover}
-.sg-hero.has-moved .sg-slide__media.is-active .sg-slide__img{animation:sg-push 1.6s cubic-bezier(.2,.7,.2,1) both}
-/* the wipe travels the way the slides do, its red line on the leading edge: forward (next, autoplay, a swipe toward the start) sweeps toward the inline start, back toward the inline end.
-   Physical sides on purpose: in Arabic the wipe is mirrored with scale, which turns "right" into the inline start */
-.sg-hero__wipe{position:absolute;inset:0;z-index:-2;pointer-events:none;transform:translateX(-102%);background:var(--bg);border-right:3px solid var(--red)}
-.sg-root[dir="rtl"] .sg-hero__wipe{scale:-1 1}
-.sg-hero.is-wipe-a .sg-hero__wipe{animation:sg-wipe-a .8s cubic-bezier(.7,0,.3,1) both}
-.sg-hero.is-wipe-b .sg-hero__wipe{animation:sg-wipe-b .8s cubic-bezier(.7,0,.3,1) both}
-.sg-hero.is-fwd .sg-hero__wipe{animation-direction:reverse;border-right:0;border-left:3px solid var(--red)}
+/* slide 2 is a 1200 px photo: on desktop it fills only the photo side (the text side sits under the solid scrim), so it never upscales; its frame still spans the stage, so it slides a full width */
+.sg-slide__media--b .sg-slide__img{position:absolute;top:0;left:36%;width:64%;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%);mask-image:linear-gradient(90deg,rgba(0,0,0,0),#000 24%)}
 .sg-hero__scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
     linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
@@ -194,15 +199,16 @@ body{margin:0;background:#0A0D1C}
     linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
     linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
 .sg-hero__inner{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(64px,7cqi,120px)}
-/* during a sideways drag the copy follows the finger a little and fades slightly (the logic sets --sg-dx and --sg-do; never under reduced motion), and springs back if the drag is let go short */
+/* during a sideways drag the photo tracks the finger; the copy drifts a little the same way and fades as the next photo comes in (the logic sets --sg-dx and --sg-do),
+   and springs back if the drag is let go short. When the slide changes, the new copy comes in from the side its photo came from (--sg-in, made physical with --sg-dir) */
 .sg-hero__stack{display:grid;max-width:min(800px,62%);transform:translateX(var(--sg-dx,0px));opacity:var(--sg-do,1);transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
 .sg-hero.is-dragging .sg-hero__stack{transition:none}
 .sg-slide{grid-area:1/1;align-self:end;visibility:hidden;min-width:0}
 .sg-slide.is-active{visibility:visible}
 .sg-slide:not(.is-active) .sg-slide__copy{opacity:0}
-.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > *{animation:sg-rise .62s cubic-bezier(.2,.7,.2,1) both}
-.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(2){animation-delay:.07s}
-.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(3){animation-delay:.14s}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > *{animation:sg-copy-in .42s cubic-bezier(.2,.7,.2,1) both}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(2){animation-delay:.05s}
+.sg-hero.has-moved .sg-slide.is-active .sg-slide__copy > :nth-child(3){animation-delay:.1s}
 .sg-slide__eyebrow{display:flex;align-items:center;gap:12px;color:var(--text);margin-bottom:26px}
 .sg-slide__eyebrow::before{content:"";width:10px;height:10px;background:var(--red);flex:none}
 .sg-slide__title{font-family:var(--f-display);font-weight:400;font-size:clamp(46px,7.2cqi,108px);line-height:.9;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance;color:#fff}
@@ -210,23 +216,21 @@ body{margin:0;background:#0A0D1C}
 .sg-slide__text{margin-top:26px;max-width:34em;font-size:clamp(17px,1.4cqi,20px);line-height:1.55;color:var(--soft)}
 .sg-root[dir="rtl"] .sg-slide__text{line-height:1.85}
 .sg-hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-/* slide dots: one numbered tab per slide at the bar's inline start (the floating WhatsApp button keeps to the inline end, so the two never meet).
-   Current slide: white number, filled red marker, red bar. While the slideshow runs, that bar fills over the slide's time (the fill's end is what advances it);
+/* slide dots: one numbered tab per slide at the inline start (the floating WhatsApp button keeps to the inline end, so the two never meet).
+   Desktop and tablet: on the bar at the foot of the full-bleed photo. Phone: on the photo itself, just above the slide's eyebrow (see the 640 px block).
+   Current slide: white number and a red bar. While the slideshow runs, that bar fills over the slide's time (the fill's end is what advances it);
    once stopped (a swipe or a dot press, or reduced motion) it stays full */
 .sg-hero__bar{position:relative;display:flex;align-items:center;margin-top:clamp(40px,4.6cqi,72px);padding-block:10px 16px;border-top:1px solid rgba(242,242,245,.2)}
-.sg-hero__bar .sg-plus{top:-8px;inset-inline-start:-8px}
 .sg-dots{display:flex;gap:4px;margin-inline-start:-8px}
-.sg-dot{display:flex;flex-direction:column;justify-content:center;gap:10px;width:80px;height:48px;padding:0 8px;background:transparent;border:0;color:var(--muted);cursor:pointer;transition:color .15s ease,transform .12s ease}
+.sg-dot{display:flex;flex-direction:column;justify-content:center;gap:10px;width:80px;height:48px;padding:0 8px;background:transparent;border:0;color:var(--muted);cursor:pointer;text-align:start;transition:color .15s ease,transform .12s ease}
 .sg-dot:active{transform:scale(.97)}
-.sg-dot__no{display:flex;align-items:center;gap:9px;font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1;letter-spacing:.16em}
-.sg-dot__no::before{content:"";width:7px;height:7px;flex:none;border:1px solid currentColor;transition:background-color .15s ease,border-color .15s ease}
+.sg-dot__no{display:block;font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1;letter-spacing:.16em}
 .sg-dot__track{position:relative;display:block;height:3px;background:rgba(242,242,245,.24);overflow:hidden;transition:background-color .15s ease}
 .sg-dot__fill{position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left center}
 .sg-root[dir="rtl"] .sg-dot__fill{transform-origin:right center}
 .sg-dot:hover{color:var(--text)}
 .sg-dot:hover .sg-dot__track{background:rgba(242,242,245,.5)}
 .sg-dot.is-active{color:#fff}
-.sg-dot.is-active .sg-dot__no::before{background:var(--red);border-color:var(--red)}
 .sg-dot.is-active .sg-dot__track{background:rgba(242,242,245,.4)}
 .sg-dot.is-active .sg-dot__fill{transform:none}
 .sg-dot.is-active .sg-dot__fill.sg-anim-a{animation:sg-prog-a 7s linear both}
@@ -549,10 +553,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
 .sg-root[dir="rtl"] .sg-sheet__tel .sg-mono{font-family:var(--f-ar);font-size:14px;letter-spacing:0}
 
 /* ============ 14. MOTION ============ */
-@keyframes sg-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@keyframes sg-push{from{transform:scale(1.07)}to{transform:scale(1)}}
-@keyframes sg-wipe-a{0%{transform:translateX(-102%)}44%,56%{transform:translateX(0)}100%{transform:translateX(102%)}}
-@keyframes sg-wipe-b{0%{transform:translateX(-102%)}44%,56%{transform:translateX(0)}100%{transform:translateX(102%)}}
+@keyframes sg-copy-in{from{opacity:0;transform:translateX(calc(var(--sg-in) * var(--sg-dir) * 28px))}to{opacity:1;transform:none}}
 @keyframes sg-prog-a{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes sg-prog-b{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes sg-open{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
@@ -582,7 +583,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-header__act{margin-inline-start:auto}
   .sg-hero__stack{max-width:min(720px,86%)}
   .sg-slide__title{font-size:clamp(46px,8.3cqi,128px)}
-  .sg-slide__media--b{inset-inline-start:0;-webkit-mask-image:none;mask-image:none}
+  .sg-slide__media--b .sg-slide__img{left:0;width:100%;-webkit-mask-image:none;mask-image:none}
   .sg-hero__scrim{background:linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
   .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
   .sg-intro{grid-template-columns:1fr;align-items:start}
@@ -635,14 +636,14 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-hero__stage{bottom:auto;height:min(124cqi,540px)}
   .sg-hero__scrim{inset:0 0 auto 0;height:min(124cqi,540px);background:linear-gradient(180deg,rgba(10,13,28,.3) 0%,rgba(10,13,28,0) 20%,rgba(10,13,28,.72) 52%,rgba(10,13,28,.95) 76%,#0A0D1C 100%)}
   .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(180deg,rgba(10,13,28,.3) 0%,rgba(10,13,28,0) 20%,rgba(10,13,28,.72) 52%,rgba(10,13,28,.95) 76%,#0A0D1C 100%)}
-  .sg-hero__wipe{bottom:auto;height:min(124cqi,540px)}
-  .sg-hero__inner{padding-top:calc(min(124cqi,540px) - 168px)}
+  .sg-hero__inner{padding-top:calc(min(124cqi,540px) - 168px);padding-bottom:40px}
   .sg-hero__stack{max-width:none}
   .sg-slide__eyebrow{margin-bottom:16px}
   .sg-slide__text{margin-top:18px}
   .sg-hero__cta{flex-direction:column;align-items:stretch;margin-top:28px}
   .sg-hero__cta .sg-btn{width:100%}
-  .sg-hero__bar{margin-top:28px;padding-bottom:22px}
+  /* the dots sit on the photo, right above the slide's eyebrow (the copy overlaps the photo's foot by 168 px), so they read as the photo's own pagination */
+  .sg-hero__bar{position:absolute;inset-inline:var(--gutter);top:calc(min(124cqi,540px) - 168px - 60px);margin:0;padding:0;border:0}
   .sg-section{padding-block:clamp(56px,16cqi,80px)}
   /* Latin section titles: plain wrapping on phones keeps "your shipment" together (balance would strand a short word) */
   .sg-root:not([dir="rtl"]) .sg-h2{text-wrap:wrap}
@@ -719,7 +720,6 @@ textarea.sg-input{min-height:148px;resize:vertical}
 }
 @media (prefers-reduced-motion: reduce){
   .sg-root *,.sg-root *::before,.sg-root *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
-  .sg-root .sg-hero__wipe{display:none}
 }
 </style>
 </head>
@@ -747,7 +747,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
 <header class="sg-header">
   <div class="sg-wrap sg-header__in">
     <a class="sg-brand" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
-      <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="57" height="48" decoding="async"/>
+      <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="52" height="48" decoding="async"/>
       <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
     </a>
     <nav class="sg-nav" aria-label="{{x.mainNav}}">
@@ -769,7 +769,6 @@ textarea.sg-input{min-height:148px;resize:vertical}
     <div class="sg-slide__media {{slides.0.mediaCls}}" aria-hidden="{{slides.0.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-hero.webp" alt="{{slides.0.alt}}" width="1672" height="941" decoding="async" style="object-position: {{slides.0.pos}}"/></div>
     <div class="sg-slide__media sg-slide__media--b {{slides.1.mediaCls}}" aria-hidden="{{slides.1.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-packaging.webp" alt="{{slides.1.alt}}" width="1200" height="800" decoding="async" style="object-position: {{slides.1.pos}}"/></div>
   </div>
-  <div class="sg-hero__wipe" aria-hidden="true"></div>
   <div class="sg-hero__scrim" aria-hidden="true"></div>
   <div class="sg-wrap sg-hero__inner">
     <h1 class="sg-vh">{{h1}}</h1>
@@ -789,7 +788,6 @@ textarea.sg-input{min-height:148px;resize:vertical}
       <button type="button" class="sg-btn sg-btn--ghost" onClick="{{openWa}}" aria-haspopup="dialog"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span>{{t.hero.ctaWhatsapp}}</span></button>
     </div>
     <div class="sg-hero__bar">
-      <span class="sg-plus" aria-hidden="true"></span>
       <div class="sg-dots">
         <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
           <button type="button" class="sg-dot {{s.dotCls}}" onClick="{{s.go}}" aria-label="{{s.goLabel}}" aria-current="{{s.current}}"><span class="sg-dot__no" aria-hidden="true">{{s.no}}</span><span class="sg-dot__track" aria-hidden="true"><span class="sg-dot__fill {{s.fillCls}}" onAnimationEnd="{{onProgEnd}}"></span></span></button>
@@ -1050,7 +1048,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
     <div class="sg-footer__grid">
       <div class="sg-footer__brand">
         <a class="sg-brand sg-brand--lg" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
-          <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="90" height="76" loading="lazy" decoding="async"/>
+          <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="83" height="76" loading="lazy" decoding="async"/>
           <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
         </a>
         <p class="sg-footer__line">{{t.footer.line}}</p>
@@ -1087,7 +1085,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   <div class="sg-sheet" id="{{ids.menu}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.menuTitle}}" tabIndex="-1" onKeyDown="{{menuKey}}">
     <div class="sg-sheet__head">
       <a class="sg-brand" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
-        <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="57" height="48" decoding="async"/>
+        <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="52" height="48" decoding="async"/>
         <span class="sg-brand__words"><span class="sg-brand__name">FREIGHT NET SARL</span><span class="sg-brand__tag">SEA . AIR . LAND</span></span>
       </a>
       <button type="button" class="sg-x" onClick="{{closeMenu}}" aria-label="{{t.nav.close}}" ref="{{setMenuClose}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
@@ -1691,7 +1689,7 @@ class Component extends DCLogic {
     this.reduced = sgReduced();
     this.state = {
       // held: a person chose a slide (swipe or dot), so the slideshow stops for good; reduced: prefers-reduced-motion, no slideshow at all
-      lang: null, slide: 0, anim: 0, wipe: 0, back: false, held: false, reduced: this.reduced, dragging: false,
+      lang: null, slide: 0, anim: 0, inSide: 1, outSide: -1, settle: -1, held: false, reduced: this.reduced, dragging: false,
       menuOpen: false, waOpen: false, openSvc: 0, hoverSvc: null,
       form: { name: '', email: '', phone: '', service: '', message: '' },
       errors: {}, sending: false, sent: false
@@ -1802,41 +1800,69 @@ class Component extends DCLogic {
     this.timers.forEach(id => clearTimeout(id));
     clearTimeout(this.navTimer);
     clearTimeout(this.swallowTimer);
+    clearTimeout(this.settleTimer);
     this.lockScroll(false);
     this.restoreScrollMode();
   }
 
   later(fn, ms) { const id = setTimeout(fn, ms); this.timers.push(id); return id; }
 
-  /* ---------- slider ---------- */
-  // dir: 1 forward (next), -1 back; the wipe travels that way
+  /* ---------- slider: a photo gallery ----------
+     Positions are in stage coordinates (the stage is mirrored in Arabic), where forward (next) is always +x: the next photo waits at +100%.
+     State: slide (current), inSide (side the hidden photos wait on), outSide (side a leaving or returning photo settles to), settle (that photo, while it moves). */
+  media(i) { const h = this.els.top; return h ? h.querySelectorAll('.sg-slide__media')[i] || null : null; }
+  // dir: 1 forward (next), -1 back. The incoming photo is first placed on its side (it is hidden there, with no transition, so this is instant and invisible),
+  // then it slides in while the current one slides out the other way. Dots and autoplay come here; a swipe ends in swipeEnd
   goSlide(i, dir) {
-    const n = SG_SLIDES.length;
-    const next = ((i % n) + n) % n;
-    if (next === this.state.slide) return;
-    this.setState(s => ({ slide: next, anim: s.anim + 1, wipe: s.wipe + 1, back: dir < 0 }));
+    const n = SG_SLIDES.length, from = this.state.slide;
+    const to = ((i % n) + n) % n;
+    if (to === from) return;
+    const side = dir < 0 ? -1 : 1;
+    const h = this.els.top, m = this.media(to);
+    if (h && m) { try { h.style.setProperty('--sg-in', String(side)); void window.getComputedStyle(m).transform; } catch (_) {} }
+    this.settleSoon();
+    this.setState(s => ({ slide: to, anim: s.anim + 1, inSide: side, outSide: -side, settle: from }), () => this.clearInline());
   }
   // a person chose a slide (dot or swipe): the slideshow stops for good
   pickSlide(i, dir) {
     if (!this.state.held) this.setState({ held: true });
     this.goSlide(i, dir);
   }
+  // once everything has settled (photos .32 s, the new copy .52 s), the leaving or returning photo is hidden again and the sides go back to their
+  // defaults, so the hero is left exactly as it was before the gesture (hidden photos move unseen, with no transition)
+  settleSoon() {
+    clearTimeout(this.settleTimer);
+    this.settleTimer = setTimeout(() => {
+      const s = this.state;
+      if ((s.settle !== -1 || s.inSide !== 1 || s.outSide !== -1) && !(this.drag && this.drag.on)) this.setState({ settle: -1, inSide: 1, outSide: -1 });
+    }, 600);
+  }
+  // the gallery's inline variables only live during a gesture or a slide change
+  clearInline() {
+    const h = this.els.top;
+    if (!h || (this.drag && this.drag.on)) return;
+    try {
+      ['--sg-in', '--sg-x', '--sg-dx', '--sg-do'].forEach(k => h.style.removeProperty(k));
+      if (!h.getAttribute('style')) h.removeAttribute('style');
+    } catch (_) {}
+  }
 
   /* ---------- swipe ----------
      A drag becomes a swipe once it has moved 10 px, mostly sideways (a mostly vertical one is left to the page scroll; touch-action keeps that native).
-     Only then is the pointer captured, so a tap still reaches the link or button under it. Let go at 40 px or more, or after a quick flick (24 px, 0.3 px/ms),
-     and the slide changes: the finger's direction, mirrored in Arabic (LTR: toward the left = next; RTL: toward the right = next). */
+     Only then is the pointer captured, so a tap still reaches the link or button under it. From there the photo follows the finger 1:1, with its neighbour
+     coming in alongside from the side it uncovers. Let go past 20% of the photo's width, or after a quick flick (24 px, 0.3 px/ms) the same way, and the
+     gallery carries on to that photo; otherwise it slides back. In English a drag toward the left brings the next photo, in Arabic a drag toward the right. */
   swipeStart(e) {
     this.swallow = false;
     const d = this.drag;
-    // another pointer while a swipe is live: a second finger (pinch or two-finger gesture) drops the swipe, the copy springs back and the slide
+    // another pointer while a swipe is live: a second finger (pinch or two-finger gesture) drops the swipe, the photo slides back and the slide
     // and slideshow stay as they were; any other pointer (another device) is ignored. Neither can take the drag over
     if (d && d.on && e.pointerId !== d.id) {
       if (!e.isPrimary) this.swipeEnd({ pointerId: d.id }, true);
       return;
     }
     if (!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) { this.drag = null; return; }
-    this.drag ={ id: e.pointerId, mouse: e.pointerType === 'mouse', x0: e.clientX, y0: e.clientY, on: false, pts: [[e.clientX, e.timeStamp]] };
+    this.drag = { id: e.pointerId, mouse: e.pointerType === 'mouse', x0: e.clientX, y0: e.clientY, on: false, pts: [[e.clientX, e.timeStamp]] };
   }
   swipeTrack(e) {
     const d = this.drag;
@@ -1849,19 +1875,29 @@ class Component extends DCLogic {
       if (ax < ay * 1.2) { this.drag = null; return; }
       d.on = true;
       try { e.currentTarget.setPointerCapture(d.id); } catch (_) {}
-      this.setState({ dragging: true });
+      // start from wherever the photo is: a swipe can catch a slide change in flight
+      d.base = 0; d.w = 1; d.rtl = this.lang() === 'ar';
+      try {
+        const st = this.els.top.querySelector('.sg-hero__stage'), m = this.media(this.state.slide);
+        d.w = Math.max(1, st.getBoundingClientRect().width);
+        const tf = window.getComputedStyle(m).transform;
+        d.base = tf && tf !== 'none' && window.DOMMatrixReadOnly ? new window.DOMMatrixReadOnly(tf).m41 : 0;
+      } catch (_) {}
+      clearTimeout(this.settleTimer);
+      this.setState({ dragging: true, settle: -1 });
     }
     if (d.mouse) this.clearSelection();
     d.pts.push([e.clientX, e.timeStamp]);
     if (d.pts.length > 8) d.pts.shift();
-    this.follow(dx);
+    this.follow(dx, d);
   }
   swipeEnd(e, cancel) {
     const d = this.drag;
     if (!d || e.pointerId !== d.id) return;
     this.drag = null;
     if (!d.on) return;
-    let step = 0;
+    const sx = d.sx || 0, side = sx < 0 ? 1 : -1;
+    let go = false;
     if (cancel) {
       // a cancelled swipe may still hold the pointer (a second finger ended it while the first is down): let it go
       try { const el = this.els.top; if (el && el.hasPointerCapture && el.hasPointerCapture(d.id)) el.releasePointerCapture(d.id); } catch (_) {}
@@ -1869,33 +1905,50 @@ class Component extends DCLogic {
       this.swallow = true;
       clearTimeout(this.swallowTimer);
       this.swallowTimer = setTimeout(() => { this.swallow = false; }, 400);
-      const x = e.clientX, t = e.timeStamp, dx = x - d.x0, ax = Math.abs(dx);
-      // speed over the last 100 ms of the drag
+      const x = e.clientX, t = e.timeStamp, ax = Math.abs(x - d.x0);
+      // speed over the last 100 ms of the drag, in stage terms
       let p = d.pts[d.pts.length - 1];
       for (let k = d.pts.length - 1; k >= 0 && t - d.pts[k][1] <= 100; k--) p = d.pts[k];
-      const v = (x - p[0]) / Math.max(1, t - p[1]);
-      if (ax >= 40 || (ax >= 24 && Math.abs(v) >= 0.3 && (v < 0) === (dx < 0))) step = (dx < 0) !== (this.lang() === 'ar') ? 1 : -1;
+      const v = (x - p[0]) / Math.max(1, t - p[1]) * (d.rtl ? -1 : 1);
+      // carry on only toward the photo that is coming in (the side the current one has uncovered)
+      go = sx !== 0 && (Math.abs(sx) >= d.w * 0.2 || (ax >= 24 && Math.abs(v) >= 0.3 && (v < 0) === (sx < 0)));
     }
-    this.unfollow(step !== 0);
-    this.setState({ dragging: false });
-    if (step) this.pickSlide(this.state.slide + step, step);
+    this.unfollow(go);
+    const from = this.state.slide, n = SG_SLIDES.length, near = ((from + side) % n + n) % n;
+    this.settleSoon();
+    if (go) {
+      // the neighbour becomes the current photo and slides on to 0 from where the finger left it; the old one carries on out the other side
+      this.setState(s => ({ dragging: false, held: true, slide: near, anim: s.anim + 1, inSide: side, outSide: -side, settle: from }), () => this.clearInline());
+    } else {
+      // short: the photo slides back to 0 and its neighbour back to where it waited
+      this.setState({ dragging: false, inSide: side, outSide: side, settle: near === from ? -1 : near }, () => this.clearInline());
+    }
   }
-  // a light follow: the copy moves a third of the drag, at most 64 px, fading to .65 at that point (none under reduced motion)
-  follow(dx) {
+  // during the drag: the photo moves with the finger (stage px, so mirrored in Arabic) and its neighbour waits on the side it uncovers;
+  // the copy drifts an eighth of the way (at most 32 px) and fades to .3 as the photo travels a third of its width
+  follow(dx, d) {
     const el = this.els.top;
-    if (!el || this.reduced) return;
-    const f = Math.max(-64, Math.min(64, dx / 3));
-    try { el.style.setProperty('--sg-dx', f.toFixed(1) + 'px'); el.style.setProperty('--sg-do', (1 - Math.abs(f) / 64 * 0.35).toFixed(3)); } catch (_) {}
+    if (!el) return;
+    const sx = d.base + (d.rtl ? -dx : dx);
+    d.sx = sx;
+    const k = Math.min(1, Math.abs(sx) / (d.w / 3));
+    try {
+      el.style.setProperty('--sg-x', sx.toFixed(1) + 'px');
+      el.style.setProperty('--sg-in', sx < 0 ? '1' : '-1');
+      el.style.setProperty('--sg-dx', Math.max(-32, Math.min(32, dx / 8)).toFixed(1) + 'px');
+      el.style.setProperty('--sg-do', (1 - k * 0.7).toFixed(3));
+    } catch (_) {}
   }
-  // let go: a short drag springs back; when the slide changes the copy snaps home at once (transitions are still off), as the new slide's copy rises in from nothing
+  // let go. The copy springs back on a short drag; when the slide changes it snaps home at once (its transitions are still off) as the new copy comes in.
+  // The photos: --sg-x goes, so the current photo transitions to 0 from where the finger left it, in the same style change as the class change that follows
   unfollow(snap) {
     const el = this.els.top;
     if (!el) return;
     try {
       el.style.removeProperty('--sg-dx');
       el.style.removeProperty('--sg-do');
-      if (!el.getAttribute('style')) el.removeAttribute('style');
       if (snap) { const st = el.querySelector('.sg-hero__stack'); if (st) { const cs = window.getComputedStyle(st); void cs.transform; void cs.opacity; } }
+      el.style.removeProperty('--sg-x');
     } catch (_) {}
   }
   clearSelection() {
@@ -2116,7 +2169,7 @@ class Component extends DCLogic {
       return {
         img: d.img, pos: d.pos, alt: (x.alt && x.alt[d.alt]) || '',
         eyebrow: sc.eyebrow || '', title: sc.title || '', body: sc.body || '',
-        cls: on ? 'is-active' : '', mediaCls: on ? 'is-active' : '',
+        cls: on ? 'is-active' : '', mediaCls: on ? 'is-active' : (i === s.settle ? 'is-settling' : ''),
         ariaHidden: on ? undefined : 'true',
         label: (i + 1) + ' / ' + nSlides,
         dotCls: on ? 'is-active' : '', fillCls: on && !stopped ? animCls : '',
@@ -2126,7 +2179,7 @@ class Component extends DCLogic {
         go: () => this.pickSlide(i, i < this.state.slide ? -1 : 1)
       };
     });
-    const heroCls = [s.anim ? 'has-moved' : '', s.wipe ? (s.wipe % 2 ? 'is-wipe-a' : 'is-wipe-b') : '', s.wipe && !s.back ? 'is-fwd' : '', s.dragging ? 'is-dragging' : ''].join(' ');
+    const heroCls = [s.anim ? 'has-moved' : '', s.inSide < 0 ? 'is-in-l' : '', s.outSide > 0 ? 'is-out-r' : '', s.dragging ? 'is-dragging' : ''].join(' ');
 
     const navDefs = [
       { key: 'top', label: (t.nav || {}).home, href: '#sg-top' },

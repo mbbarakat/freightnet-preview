@@ -122,11 +122,11 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-skip:focus,.rv-skip:focus-visible{transform:none; outline:2px solid #fff; outline-offset:0; box-shadow:0 0 0 4px var(--navy)}
 .rv-header{position:sticky; top:0; z-index:50; background:var(--bg); border-block-end:1px solid var(--line)}
 .rv-header-in{display:flex; align-items:center; gap:20px; height:var(--hdr)}
-/* brand mark: original emblem at the inline-start, wordmark beside it (emblem ~2.8x the name size,
+/* brand mark: the client's emblem at the inline-start, wordmark beside it (emblem ~2.8x the name size,
    gap ~0.2x the emblem, as in brand/logo-horizontal.svg); the emblem is never mirrored */
 .rv-brand{--mark-h:48px; --mark-gap:11px; display:inline-flex; align-items:center; justify-content:flex-start; gap:var(--mark-gap); min-height:44px; padding:6px 8px; margin-inline-start:-8px; text-decoration:none; flex:none; transition:background-color .25s}
 .rv-brand:hover{background:var(--bg-2)}
-.rv-brand-mark{display:block; flex:none; width:auto; height:var(--mark-h); aspect-ratio:512 / 431; max-width:none}
+.rv-brand-mark{display:block; flex:none; width:auto; height:var(--mark-h); aspect-ratio:351 / 323; max-width:none}
 .rv-brand-words{display:flex; flex-direction:column; align-items:center; gap:5px; min-width:0; padding-block-start:1px}
 .rv-brand-name{font:800 17px/1 var(--f-brand); letter-spacing:.02em; color:var(--navy); white-space:nowrap}
 .rv-brand-tag{font:700 9.5px/1 var(--f-brand); letter-spacing:.18em; color:var(--crimson); white-space:nowrap; padding-inline-start:.18em}
@@ -148,19 +148,38 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-main{display:block}
 .rv-main:focus{outline:none}
 .rv-hero{position:relative; background:var(--sea)}
-.rv-stage{display:grid; position:relative; isolation:isolate}
-.rv-slide{grid-area:1 / 1; position:relative; z-index:0; display:grid; grid-template-rows:auto 1fr auto; min-height:clamp(600px, 58cqi, 860px); background:var(--sea); opacity:0; visibility:hidden; transition:opacity .6s ease, visibility 0s linear .6s, transform .45s var(--ease)}
-.rv-slide.is-active{opacity:1; visibility:visible; z-index:1; transition:opacity .6s ease, visibility 0s linear 0s, transform .45s var(--ease)}
-/* swipe: a sideways drag on the slides changes the slide; vertical page scroll and pinch zoom stay with the
-   browser. While the drag runs the active slide follows the finger a little (--rv-dx, set by the script),
-   then eases back as the slides cross-fade. Links and images are not dragged natively. */
-.rv-stage{touch-action:pan-y pinch-zoom}
+/* The hero is a gallery. The stage holds four bands: the images (.rv-gal), the headline (.rv-copies), the
+   pagination bar and the text panel (.rv-panels). Desktop: the images fill the hero behind the headline and the
+   panel, with the bar underneath. Up to 1023 px they stack: headline, image, pagination, panel.
+   A sideways drag anywhere on the stage moves the images with the finger (vertical page scroll and pinch zoom
+   stay with the browser); headline and panel change with a short fade when the slide changes. */
+.rv-stage{position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto auto; touch-action:pan-y pinch-zoom}
 .rv-stage :where(a, img){-webkit-user-drag:none}
 .rv-stage.is-dragging{cursor:grabbing; -webkit-user-select:none; user-select:none}
-.rv-stage.is-dragging .rv-slide.is-active{transform:translateX(var(--rv-dx, 0px)); transition:opacity .6s ease, visibility 0s linear 0s}
-.rv-slide-media{position:absolute; inset:0; z-index:-1; overflow:hidden}
+/* desktop: the hero takes at most the window height left under the header and the bar, so the pagination is
+   on the first screen too (never below 560 px) */
+.rv-gal{grid-row:1 / 4; grid-column:1; position:relative; z-index:0; overflow:hidden; min-height:clamp(600px, 58cqi, 860px); min-height:max(560px, min(clamp(600px, 58cqi, 860px), calc(100svh - var(--hdr) - 72px)))}
+.rv-copies{grid-row:1; grid-column:1; z-index:1; display:grid}
+.rv-panels{grid-row:3; grid-column:1; z-index:1; display:grid}
+.rv-hero-bar{grid-row:4; grid-column:1}
+/* image frames share one place: the current one shows; while a drag or a slide runs, the neighbour waits one
+   width to the right (.is-r) or left (.is-l) and the leaving one goes out the other way. --rv-dx is the
+   finger's offset, set by the script during a drag only. */
+.rv-gal-item{position:absolute; inset:0; overflow:hidden; visibility:hidden}
+.rv-gal-item.is-cur,.rv-gal-item.is-nb,.rv-gal-item.is-out{visibility:visible}
+.rv-gal-item.is-cur{transform:translateX(var(--rv-dx, 0px))}
+.rv-gal.is-r .rv-gal-item.is-nb{transform:translateX(calc(100% + var(--rv-dx, 0px)))}
+.rv-gal.is-l .rv-gal-item.is-nb{transform:translateX(calc(-100% + var(--rv-dx, 0px)))}
+.rv-gal.is-r .rv-gal-item.is-out{transform:translateX(-100%)}
+.rv-gal.is-l .rv-gal-item.is-out{transform:translateX(100%)}
+.rv-gal.is-moving .rv-gal-item{transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+/* headline and panel of both slides share one grid cell (the band keeps the taller one's height, so nothing
+   below moves); the current one fades in */
+.rv-slide-copy,.rv-slide-foot{grid-area:1 / 1; opacity:0; visibility:hidden; transition:opacity .2s ease, visibility 0s linear .2s}
+.rv-slide-copy.is-active,.rv-slide-foot.is-active{opacity:1; visibility:visible; transition:opacity .3s ease .08s, visibility 0s linear 0s}
+.rv-slide-media{position:absolute; inset:0; overflow:hidden}
 .rv-kb{position:absolute; inset:0; transform:scale(1.06); transition:transform 8s cubic-bezier(.2,.6,.2,1)}
-.rv-slide.is-active .rv-kb{transform:scale(1)}
+.rv-gal-item.is-cur .rv-kb{transform:scale(1)}
 .rv-media-photo img{width:100%; height:100%; object-fit:cover; object-position:50% 50%}
 [dir="rtl"] .rv-mirror{transform:scaleX(-1)}
 .rv-slide-copy{position:relative; padding-block-start:clamp(44px, 5.4cqi, 88px)}
@@ -174,12 +193,11 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-root:lang(ar) .rv-hero-title{font-size:clamp(46px, 7.4cqi, 112px)}
 .rv-root:lang(ar) .rv-ht-line{display:inline}
 /* daylight haze behind the cover headline (legibility scrim, start side only, fades out before the ship) */
-.rv-slide-a .rv-slide-media::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(to bottom, rgb(255 255 255 / .36) 0%, rgb(255 255 255 / .3) 50%, rgb(255 255 255 / 0) 80%); -webkit-mask-image:linear-gradient(to right, #000 55%, transparent 80%); mask-image:linear-gradient(to right, #000 55%, transparent 80%)}
-[dir="rtl"] .rv-slide-a .rv-slide-media::after{-webkit-mask-image:linear-gradient(to left, #000 55%, transparent 80%); mask-image:linear-gradient(to left, #000 55%, transparent 80%)}
-.rv-slide-a .rv-hero-title{max-width:58cqi}
+.rv-gal-a .rv-slide-media::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(to bottom, rgb(255 255 255 / .36) 0%, rgb(255 255 255 / .3) 50%, rgb(255 255 255 / 0) 80%); -webkit-mask-image:linear-gradient(to right, #000 55%, transparent 80%); mask-image:linear-gradient(to right, #000 55%, transparent 80%)}
+[dir="rtl"] .rv-gal-a .rv-slide-media::after{-webkit-mask-image:linear-gradient(to left, #000 55%, transparent 80%); mask-image:linear-gradient(to left, #000 55%, transparent 80%)}
+.rv-copy-a .rv-hero-title{max-width:58cqi}
 .rv-slide-foot{position:relative; display:flex; align-items:flex-end; padding-block:28px clamp(32px, 3.6cqi, 56px)}
 .rv-panel{background:#fff; padding:clamp(24px, 2.4cqi, 34px); width:min(100%, 500px); position:relative}
-.rv-panel::before{content:''; position:absolute; inset-block-start:0; inset-inline-start:0; width:56px; height:3px; background:var(--crimson)}
 .rv-panel-body{font-size:clamp(17px, 1.35cqi, 19px); line-height:1.55; color:var(--ink); text-wrap:pretty}
 .rv-root:lang(ar) .rv-panel-body{line-height:1.8}
 .rv-actions{display:flex; flex-wrap:wrap; gap:12px; margin-block-start:24px}
@@ -190,8 +208,8 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-hero-archbox::before{content:''; position:absolute; inset:-20px -20px 0 -20px; border:1px solid rgba(55,61,116,.32); border-bottom:0; border-radius:999px 999px 0 0}
 .rv-hero-arch{position:absolute; inset:0; border-radius:999px 999px 0 0; overflow:hidden; background:var(--bg-3)}
 .rv-hero-arch img{width:100%; height:100%; object-fit:cover}
-.rv-slide-b .rv-slide-copy{padding-inline-end:calc(min(38%, 520px) + var(--gutter) + 40px)}
-.rv-slide-b .rv-ht-accent{padding-inline-start:0}
+.rv-copy-b{padding-inline-end:calc(min(38%, 520px) + var(--gutter) + 40px)}
+.rv-copy-b .rv-ht-accent{padding-inline-start:0}
 /* hero bar */
 .rv-hero-bar{background:var(--bg); border-block-end:1px solid var(--line)}
 .rv-hero-bar-in{display:flex; align-items:center; gap:clamp(14px, 2cqi, 28px); min-height:72px}
@@ -202,16 +220,17 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-count{display:flex; flex:none; align-items:baseline; gap:6px; font:italic 400 24px/1 var(--f-num); color:var(--navy); direction:ltr; min-width:64px}
 .rv-count-sep{color:var(--line-2); font-style:normal}
 .rv-count-tot{color:var(--muted)}
-/* dots: one 44 px button per slide; the current one is a navy bar, the others small grey dots */
+/* dots: one 44 px button per slide; the current one is the red bar (the hero's accent marks the current slide),
+   the others small grey dots */
 .rv-dots{display:flex; flex:none}
 .rv-dot{display:inline-grid; place-items:center; width:44px; height:44px; padding:0; background:transparent; border:0; cursor:pointer; transition:background-color .25s}
 .rv-dot:active{transform:scale(.96)}
 .rv-dot-mark{display:block; width:8px; height:8px; border-radius:999px; background:var(--line-2); transition:background-color .25s}
-.rv-dot.is-active .rv-dot-mark{width:26px; background:var(--navy)}
+.rv-dot.is-active .rv-dot-mark{width:26px; background:var(--crimson)}
 /* hover only where there is one (no grey square left behind on a phone after a tap) */
 @media (hover: hover){
   .rv-dot:hover{background:var(--bg-2)}
-  .rv-dot:hover .rv-dot-mark{background:var(--navy)}
+  .rv-dot:not(.is-active):hover .rv-dot-mark{background:var(--navy)}
 }
 .rv-hero-cap{flex:1; min-width:0; display:flex; gap:10px; align-items:baseline; font-size:13.5px; line-height:1.4; color:var(--muted); text-wrap:balance}
 .rv-fig{font:italic 400 15px/1 var(--f-num); color:var(--navy); flex:none}
@@ -508,7 +527,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 /* ---------- 15. Container queries ---------- */
 @container rv (max-width: 1240px){
   .rv-hero-archbox{width:min(35%, 520px)}
-  .rv-slide-b .rv-slide-copy{padding-inline-end:calc(35% + 24px)}
+  .rv-copy-b{padding-inline-end:calc(35% + 24px)}
 }
 @container rv (max-width: 1199px){
   /* values: below 1200 the heading sits above the 2 x 2 grid, so the title keeps its two-line shape */
@@ -525,14 +544,17 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-nav{display:none}
   .rv-menubtn{display:inline-flex}
   .rv-brand{margin-inline-end:auto}
-  /* hero: stacked cover. Headline on the sea tint, photo below, panel overlapping the photo's foot */
-  .rv-slide{display:flex; flex-direction:column; min-height:0}
-  .rv-slide-copy{order:1; padding-block:clamp(36px, 5.4cqi, 56px) clamp(26px, 3.8cqi, 40px)}
-  .rv-slide-b .rv-slide-copy{padding-inline-end:var(--gutter)}
-  .rv-slide-media{order:2; position:relative; inset:auto; z-index:0; height:clamp(340px, 54cqi, 540px)}
-  .rv-slide-a .rv-slide-media::after{display:none}
-  .rv-slide-foot{order:3; z-index:1; margin-block-start:calc(-1 * clamp(64px, 10cqi, 104px)); padding-block:0 clamp(32px, 4.4cqi, 48px)}
-  .rv-slide-a .rv-hero-title,.rv-slide-b .rv-hero-title{max-width:none}
+  /* hero: stacked. Headline on the sea tint, the image, the pagination right under it, then the panel */
+  .rv-stage{display:flex; flex-direction:column}
+  .rv-copies{order:1}
+  .rv-gal{order:2; min-height:0; height:clamp(340px, 54cqi, 540px)}
+  .rv-hero-bar{order:3; background:transparent; border-block-end:0}
+  .rv-panels{order:4}
+  .rv-slide-copy{padding-block:clamp(36px, 5.4cqi, 56px) clamp(26px, 3.8cqi, 40px)}
+  .rv-copy-b{padding-inline-end:var(--gutter)}
+  .rv-gal-a .rv-slide-media::after{display:none}
+  .rv-slide-foot{padding-block:4px clamp(32px, 4.4cqi, 48px)}
+  .rv-copy-a .rv-hero-title,.rv-copy-b .rv-hero-title{max-width:none}
   .rv-hero-title{font-size:calc(clamp(54px, 10cqi, 100px) * var(--ds))}
   .rv-root:lang(ar) .rv-hero-title{font-size:clamp(44px, 8.4cqi, 84px)}
   .rv-hero-archbox{width:auto; height:calc(100% - 32px); aspect-ratio:4 / 5}
@@ -597,10 +619,10 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-h-cta{display:none}
   .rv-langbtn{padding:0 12px}
   .rv-langbtn .rv-ic{display:none}
-  /* hero: the stacked cover, with the panel below the photo */
+  /* hero: headline, image, pagination, then the text and buttons */
   .rv-slide-copy{padding-block:36px 24px}
-  .rv-slide-media{height:min(108cqi, 440px)}
-  .rv-slide-foot{margin-block-start:0; padding-block:0 32px}
+  .rv-gal{height:min(108cqi, 440px)}
+  .rv-slide-foot{padding-block:0 32px}
   .rv-media-photo img{object-position:78% 50%}
   .rv-hero-title{font-size:calc(clamp(44px, 13.4cqi, 64px) * var(--ds))}
   .rv-root:lang(ar) .rv-hero-title{font-size:clamp(38px, 11.6cqi, 56px)}
@@ -608,8 +630,7 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-arch-wrap{justify-content:center}
   .rv-hero-archbox{height:calc(100% - 24px); margin-block-start:24px}
   .rv-hero-archbox::before{inset:-14px -14px 0 -14px}
-  .rv-panel{width:100%; padding:22px 0 0; background:transparent}
-  .rv-panel::before{inset-inline-start:0}
+  .rv-panel{width:100%; padding:4px 0 0; background:transparent}
   .rv-actions{flex-direction:column; align-items:stretch}
   .rv-actions .rv-btn{width:100%}
   /* the hero buttons often land at the foot of the first screen: keep them out of the floating button's lane */
@@ -711,8 +732,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 /* ---------- 16. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
   .rv-root *,.rv-root *::before,.rv-root *::after{animation-duration:1ms!important; animation-iteration-count:1!important; transition-duration:1ms!important; transition-delay:0ms!important}
-  .rv-kb,.rv-slide.is-active .rv-kb{transform:none}
-  .rv-stage.is-dragging .rv-slide.is-active{transform:none}
+  .rv-kb,.rv-gal-item.is-cur .rv-kb{transform:none}
 }
 </style>
 </head>
@@ -725,7 +745,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 <header class="rv-header">
   <div class="rv-wrap rv-header-in">
     <a class="rv-brand" href="#top" aria-label="{{brandLabel}}">
-      <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="57" height="48" decoding="async" />
+      <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="52" height="48" decoding="async" />
       <span class="rv-brand-words"><span class="rv-brand-name" dir="ltr">FREIGHT NET SARL</span><span class="rv-brand-tag" dir="ltr">SEA . AIR . LAND</span></span>
     </a>
     <nav class="rv-nav" aria-label="{{x.mainNav}}">
@@ -749,16 +769,44 @@ html:has(.rv-root){scroll-behavior:smooth}
 
 <section class="rv-hero" aria-roledescription="carousel" aria-label="{{x.carousel}}" onPointerEnter="{{heroEnter}}" onPointerLeave="{{heroLeave}}" onFocus="{{heroFocus}}" onBlur="{{heroBlur}}">
   <h1 class="rv-vh">{{h1}}</h1>
-  <div class="rv-stage {{stageCls}}" aria-live="{{live}}" onPointerDown="{{dragStart}}" onPointerMove="{{dragMove}}" onPointerUp="{{dragEnd}}" onPointerCancel="{{dragCancel}}" onDragStart="{{noNativeDrag}}" onClickCapture="{{dragClick}}">
-    <div class="rv-slide rv-slide-a {{sA.cls}}" role="group" aria-roledescription="slide" aria-label="{{sA.label}}" aria-hidden="{{sA.hidden}}">
-      <div class="rv-slide-media rv-media-photo">
-        <div class="rv-kb"><img class="rv-mirror" src="../img/s2-hero.webp" width="1672" height="941" alt="{{x.alt.hero}}" /></div>
+  <div class="rv-stage {{stageCls}}" ref="{{setStage}}" onPointerDown="{{dragStart}}" onPointerMove="{{dragMove}}" onPointerUp="{{dragEnd}}" onPointerCancel="{{dragCancel}}" onLostPointerCapture="{{dragLost}}" onDragStart="{{noNativeDrag}}" onClickCapture="{{dragClick}}">
+    <div class="rv-gal {{framesCls}}">
+      <div class="rv-gal-item rv-gal-a {{fA.cls}}" aria-hidden="{{fA.hidden}}">
+        <div class="rv-slide-media rv-media-photo">
+          <div class="rv-kb"><img class="rv-mirror" src="../img/s2-hero.webp" width="1672" height="941" alt="{{x.alt.hero}}" /></div>
+        </div>
       </div>
-      <div class="rv-wrap rv-slide-copy">
+      <div class="rv-gal-item rv-gal-b {{fB.cls}}" aria-hidden="{{fB.hidden}}">
+        <div class="rv-slide-media rv-media-tint">
+          <div class="rv-wrap rv-arch-wrap">
+            <div class="rv-hero-archbox">
+              <div class="rv-hero-arch"><div class="rv-kb"><img src="../img/s2-port.webp" width="1200" height="1200" alt="{{x.alt.port}}" /></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rv-copies" aria-live="{{live}}">
+      <div class="rv-wrap rv-slide-copy rv-copy-a {{sA.cls}}" role="group" aria-roledescription="slide" aria-label="{{sA.label}}" aria-hidden="{{sA.hidden}}">
         <p class="rv-eyebrow rv-slide-eyebrow">{{sA.eyebrow}}</p>
         <h2 class="rv-hero-title"><span class="rv-ht-line">{{sA.lead}}</span><span class="rv-ht-line rv-ht-accent">{{sA.accent}}</span></h2>
       </div>
-      <div class="rv-wrap rv-slide-foot">
+      <div class="rv-wrap rv-slide-copy rv-copy-b {{sB.cls}}" role="group" aria-roledescription="slide" aria-label="{{sB.label}}" aria-hidden="{{sB.hidden}}">
+        <p class="rv-eyebrow rv-slide-eyebrow">{{sB.eyebrow}}</p>
+        <h2 class="rv-hero-title"><span class="rv-ht-line">{{sB.lead}}</span><span class="rv-ht-line rv-ht-accent">{{sB.accent}}</span></h2>
+      </div>
+    </div>
+    <div class="rv-hero-bar">
+      <div class="rv-wrap rv-hero-bar-in">
+        <p class="rv-count" aria-hidden="true"><span>{{countCur}}</span><span class="rv-count-sep">/</span><span class="rv-count-tot">{{countTot}}</span></p>
+        <div class="rv-dots">
+          <sc-for list="{{dots}}" as="d" hint-placeholder-count="2"><button type="button" class="rv-dot {{d.cls}}" aria-label="{{d.label}}" aria-current="{{d.current}}" onClick="{{d.go}}"><span class="rv-dot-mark"></span></button></sc-for>
+        </div>
+        <p class="rv-hero-cap" aria-hidden="true"><span class="rv-fig">{{x.fig}} {{countCur}}</span><span>{{heroCap}}</span></p>
+      </div>
+    </div>
+    <div class="rv-panels">
+      <div class="rv-wrap rv-slide-foot {{sA.cls}}" aria-hidden="{{sA.hidden}}">
         <div class="rv-panel">
           <p class="rv-panel-body">{{sA.body}}</p>
           <div class="rv-actions">
@@ -767,20 +815,7 @@ html:has(.rv-root){scroll-behavior:smooth}
           </div>
         </div>
       </div>
-    </div>
-    <div class="rv-slide rv-slide-b {{sB.cls}}" role="group" aria-roledescription="slide" aria-label="{{sB.label}}" aria-hidden="{{sB.hidden}}">
-      <div class="rv-slide-media rv-media-tint">
-        <div class="rv-wrap rv-arch-wrap">
-          <div class="rv-hero-archbox">
-            <div class="rv-hero-arch"><div class="rv-kb"><img src="../img/s2-port.webp" width="1200" height="1200" alt="{{x.alt.port}}" /></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="rv-wrap rv-slide-copy">
-        <p class="rv-eyebrow rv-slide-eyebrow">{{sB.eyebrow}}</p>
-        <h2 class="rv-hero-title"><span class="rv-ht-line">{{sB.lead}}</span><span class="rv-ht-line rv-ht-accent">{{sB.accent}}</span></h2>
-      </div>
-      <div class="rv-wrap rv-slide-foot">
+      <div class="rv-wrap rv-slide-foot {{sB.cls}}" aria-hidden="{{sB.hidden}}">
         <div class="rv-panel">
           <p class="rv-panel-body">{{sB.body}}</p>
           <div class="rv-actions">
@@ -789,15 +824,6 @@ html:has(.rv-root){scroll-behavior:smooth}
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="rv-hero-bar">
-    <div class="rv-wrap rv-hero-bar-in">
-      <p class="rv-count" aria-hidden="true"><span>{{countCur}}</span><span class="rv-count-sep">/</span><span class="rv-count-tot">{{countTot}}</span></p>
-      <div class="rv-dots">
-        <sc-for list="{{dots}}" as="d" hint-placeholder-count="2"><button type="button" class="rv-dot {{d.cls}}" aria-label="{{d.label}}" aria-current="{{d.current}}" onClick="{{d.go}}"><span class="rv-dot-mark"></span></button></sc-for>
-      </div>
-      <p class="rv-hero-cap" aria-hidden="true"><span class="rv-fig">{{x.fig}} {{countCur}}</span><span>{{heroCap}}</span></p>
     </div>
   </div>
 </section>
@@ -1068,7 +1094,7 @@ html:has(.rv-root){scroll-behavior:smooth}
   <div class="rv-wrap">
     <div class="rv-foot-top">
       <a class="rv-brand" href="#top" aria-label="{{brandLabel}}">
-        <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="71" height="60" loading="lazy" decoding="async" />
+        <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="65" height="60" loading="lazy" decoding="async" />
         <span class="rv-brand-words"><span class="rv-brand-name" dir="ltr">FREIGHT NET SARL</span><span class="rv-brand-tag" dir="ltr">SEA . AIR . LAND</span></span>
       </a>
       <p class="rv-foot-line">{{t.footer.line}}</p>
@@ -1102,7 +1128,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 <div class="rv-sheet rv-menu" role="dialog" aria-modal="true" aria-labelledby="rv-menu-title" tabIndex="-1" onKeyDown="{{layerKey}}" ref="{{setMenuEl}}">
   <div class="rv-sheet-head">
     <a class="rv-brand" href="#top" aria-label="{{brandLabel}}" onClick="{{brandSheetGo}}">
-      <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="52" height="44" decoding="async" />
+      <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="48" height="44" decoding="async" />
       <span class="rv-brand-words"><span class="rv-brand-name" dir="ltr">FREIGHT NET SARL</span><span class="rv-brand-tag" dir="ltr">SEA . AIR . LAND</span></span>
     </a>
     <h2 class="rv-sheet-title" id="rv-menu-title">{{t.nav.menu}}</h2>
@@ -1680,6 +1706,7 @@ const RV_SVC_MEDIA = {
   buyship: null
 };
 const RV_DELAY = 7000;
+const RV_SLIDE_MS = 300; /* the images' slide (CSS .rv-gal.is-moving) */
 const RV_FIELDS = ['name', 'email', 'phone', 'service', 'message'];
 const RV_ERRKEY = { name: 'errName', email: 'errEmail', phone: 'errPhone', service: 'errService', message: 'errMessage' };
 
@@ -1709,13 +1736,14 @@ class Component extends DCLogic {
     let rm = false;
     try { rm = !!window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { rm = false; }
     this.state = {
-      lang: null, slide: 0, stopped: false, hover: false, focusIn: false, dragging: false, reduced: rm,
+      lang: null, slide: 0, stopped: false, hover: false, focusIn: false, reduced: rm,
+      phase: 'rest', nb: -1, out: -1, side: 1, moving: false,
       menuOpen: false, waOpen: false, locked: false, openCard: null,
       form: { name: '', email: '', phone: '', service: '', message: '' },
       errors: {}, sending: false, sent: false
     };
     this.timer = null; this.remaining = RV_DELAY; this.startedAt = 0;
-    this.drag = null; this.swallow = false; this.swallowT = null;
+    this.drag = null; this.swallow = false; this.swallowT = null; this.animT = null; this.stageEl = null;
     this.opener = null; this.expectPop = false; this.pendingNav = null; this.navT = null; this.sendT = null;
     this.rootEl = null; this.menuEl = null; this.waEl = null; this.menuCloseEl = null; this.waCloseEl = null; this.sentEl = null;
     this.setRoot = (el) => { this.rootEl = el; };
@@ -1724,6 +1752,7 @@ class Component extends DCLogic {
     this.setMenuClose = (el) => { this.menuCloseEl = el; };
     this.setWaClose = (el) => { this.waCloseEl = el; };
     this.setSentEl = (el) => { this.sentEl = el; };
+    this.setStage = (el) => { this.stageEl = el; };
     this.onPop = this.onPop.bind(this);
     this.onMq = this.onMq.bind(this);
     this.layerKey = this.layerKey.bind(this);
@@ -1733,6 +1762,7 @@ class Component extends DCLogic {
     this.dragMove = this.dragMove.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.dragCancel = this.dragCancel.bind(this);
+    this.dragLost = this.dragLost.bind(this);
     this.dragClick = this.dragClick.bind(this);
     this.noNativeDrag = (e) => { if (e && e.preventDefault) e.preventDefault(); };
     this.heroEnter = this.heroEnter.bind(this);
@@ -1753,7 +1783,7 @@ class Component extends DCLogic {
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer); clearTimeout(this.navT); clearTimeout(this.sendT); clearTimeout(this.pickT); clearTimeout(this.swallowT);
+    clearTimeout(this.timer); clearTimeout(this.navT); clearTimeout(this.sendT); clearTimeout(this.pickT); clearTimeout(this.swallowT); clearTimeout(this.animT);
     window.removeEventListener('popstate', this.onPop);
     try { if (this.mq) { if (this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq); else if (this.mq.removeListener) this.mq.removeListener(this.onMq); } } catch (e) {}
     this.unlock();
@@ -1763,7 +1793,8 @@ class Component extends DCLogic {
      visitor already took over with a swipe or a dot */
   onMq(e) {
     const r = !!(e && e.matches);
-    this.setState({ reduced: r }, () => this.syncTimer());
+    if (r) { clearTimeout(this.animT); this.clearDx(); }
+    this.setState(r ? { reduced: r, phase: 'rest', nb: -1, out: -1, moving: false } : { reduced: r }, () => this.syncTimer());
   }
 
   setLang(next) {
@@ -1788,11 +1819,11 @@ class Component extends DCLogic {
 
   /* ---- slider ---- */
   /* Autoplay runs only while nothing holds it: never under reduced motion, never again once the visitor has
-     swiped or used a dot (`stopped`), and not while a mouse is over the hero, keyboard focus is in it, a drag
+     swiped or used a dot ("stopped"), and not while a mouse is over the hero, keyboard focus is in it, a drag
      runs or a layer is open. */
   holding() {
     const s = this.state;
-    return !!(s.reduced || s.stopped || s.hover || s.focusIn || s.dragging || s.menuOpen || s.waOpen);
+    return !!(s.reduced || s.stopped || s.hover || s.focusIn || s.phase === 'drag' || s.menuOpen || s.waOpen);
   }
   syncTimer() {
     const hold = this.holding();
@@ -1804,17 +1835,90 @@ class Component extends DCLogic {
       this.timer = setTimeout(() => { this.timer = null; this.goTo(this.state.slide + 1, false); }, this.remaining);
     }
   }
-  /* by: true when the visitor asked (swipe, dot): autoplay then stops for good. extra, done: more state to set
-     in the same update and a step to run after it (the end of a drag) */
-  goTo(i, by, extra, done) {
+
+  /* The images move as a gallery. phase: 'rest'; 'drag' (a finger holds them; the neighbour "nb" waits one
+     width to the "side": 1 right, -1 left); 'pre' (a dot or autoplay puts the neighbour in place); 'go' (the
+     new slide slides in, the old one "out" slides away); 'snap' (they slide back). --rv-dx on the stage is the
+     finger's offset during a drag. Headline, panel, dots and count follow "slide" as soon as it changes. */
+  neighbour(side) {
     const n = 2;
-    const nx = ((i % n) + n) % n;
-    if (nx === this.state.slide && !by) return;
+    const step = side * (this.lang() === 'ar' ? -1 : 1);
+    return (((this.state.slide + step) % n) + n) % n;
+  }
+  setDx(px) {
+    try { if (this.stageEl) this.stageEl.style.setProperty('--rv-dx', px.toFixed(1) + 'px'); } catch (e) {}
+  }
+  clearDx() {
+    const el = this.stageEl;
+    try { if (el) { el.style.removeProperty('--rv-dx'); if (!el.getAttribute('style')) el.removeAttribute('style'); } } catch (e) {}
+  }
+  /* images still sliding: stop that slide's clean-up and return where the current image is (px), 0 if none */
+  inFlight() {
+    const ph = this.state.phase;
+    if (ph !== 'go' && ph !== 'snap') return 0;
+    clearTimeout(this.animT);
+    let x = 0;
+    try {
+      const el = this.stageEl && this.stageEl.querySelector('.rv-gal-item.is-cur');
+      const m = el ? /matrix\(([^)]+)\)/.exec(getComputedStyle(el).transform) : null;
+      if (m) x = parseFloat(m[1].split(',')[4]) || 0;
+    } catch (e) { x = 0; }
+    return Math.abs(x) < 0.5 ? 0 : x;
+  }
+  settle() {
+    clearTimeout(this.animT);
+    this.clearDx();
+    const s = this.state;
+    if (s.phase === 'rest' && !s.moving && s.nb < 0 && s.out < 0) return;
+    this.setState({ phase: 'rest', nb: -1, out: -1, moving: false });
+  }
+  /* the neighbour on "side" becomes the current slide: the images slide the rest of the way from where they are */
+  commit(to, side, by) {
     if (this.timer) { clearTimeout(this.timer); this.timer = null; }
     this.remaining = RV_DELAY;
-    const patch = Object.assign({ slide: nx }, extra || {});
+    const patch = { slide: to, side };
     if (by) patch.stopped = true;
-    this.setState(patch, () => { if (done) done(); this.syncTimer(); });
+    if (this.state.reduced) Object.assign(patch, { phase: 'rest', nb: -1, out: -1, moving: false });
+    else Object.assign(patch, { phase: 'go', out: this.state.slide, nb: -1, moving: true });
+    this.setState(patch, () => {
+      this.clearDx();
+      clearTimeout(this.animT);
+      if (!this.state.reduced) this.animT = setTimeout(() => this.settle(), RV_SLIDE_MS + 60);
+      this.syncTimer();
+    });
+  }
+  snapBack() {
+    if (this.state.reduced) { this.setState({ phase: 'rest', nb: -1, out: -1, moving: false }, () => { this.clearDx(); this.syncTimer(); }); return; }
+    this.setState({ phase: 'snap', moving: true }, () => {
+      this.clearDx();
+      clearTimeout(this.animT);
+      this.animT = setTimeout(() => this.settle(), RV_SLIDE_MS + 60);
+      this.syncTimer();
+    });
+  }
+  /* dots and autoplay. by: true when the visitor asked (a dot): autoplay then stops for good. The new image
+     comes in from the side of the order (forward: from the right in English, from the left in Arabic). */
+  goTo(i, by) {
+    const n = 2;
+    const from = this.state.slide;
+    const to = ((i % n) + n) % n;
+    if (to === from) {
+      if (by) { if (this.timer) { clearTimeout(this.timer); this.timer = null; } this.setState({ stopped: true }, () => this.syncTimer()); }
+      return;
+    }
+    const fwd = i > from;
+    let side = fwd === (this.lang() === 'ar') ? -1 : 1;
+    const base = this.inFlight();
+    if (base) {
+      /* images still sliding: carry on from where they are, towards the other slide */
+      side = base < 0 ? 1 : -1;
+      this.setDx(base);
+    }
+    if (this.state.reduced) { this.commit(to, side, by); return; }
+    this.setState({ phase: 'pre', nb: to, out: -1, side, moving: false }, () => {
+      try { if (this.stageEl) void this.stageEl.offsetWidth; } catch (e) {}
+      this.commit(to, side, by);
+    });
   }
 
   /* hover holds autoplay for a mouse only (a tap must not leave it held), focus for keyboard focus only */
@@ -1837,67 +1941,87 @@ class Component extends DCLogic {
     if (this.state.focusIn) this.setState({ focusIn: false }, () => this.syncTimer());
   }
 
-  /* ---- swipe (pointer events on the slides: touch, pen and mouse) ----
+  /* ---- swipe (pointer events on the stage: touch, pen and mouse) ----
      A drag counts once it has moved 10 px, mostly sideways; a mostly vertical one is left to the page scroll.
-     Only then is the pointer captured, so a plain tap or click on a link or button inside still reaches it,
-     while the click that ends a real drag is dropped (dragClick). On release, 40 px or a quick 24 px flick
-     changes the slide: towards the start edge goes forward (left in English, right in Arabic). */
+     Only then is the pointer captured, so a plain tap or click on a link or button still reaches it, while the
+     click that ends a real drag is dropped (dragClick). The images follow the finger 1:1. On release they go on
+     to the neighbour past 20% of the width (at most 120 px; half the width for images caught mid-slide) or on
+     a flick that way (0.3 px/ms, or 40 px in under 300 ms), otherwise back. A press on images still sliding catches them where they are. */
   dragStart(e) {
     /* a new press is a new gesture: a click that follows it is never the end of the previous drag */
     this.swallow = false; clearTimeout(this.swallowT);
     if (!e.isPrimary) { if (this.drag) this.dragCancel({ pointerId: this.drag.id }); return; }
     if (e.pointerType === 'mouse' && e.button !== 0) return;
-    this.drag = { id: e.pointerId, el: e.currentTarget, mouse: e.pointerType === 'mouse', x: e.clientX, y: e.clientY, t: Date.now(), on: false };
+    const base = this.inFlight();
+    this.drag = { id: e.pointerId, el: e.currentTarget, mouse: e.pointerType === 'mouse', x: e.clientX, y: e.clientY,
+      base, caught: !!base, on: false, side: base < 0 ? 1 : -1, vx: 0, lx: e.clientX, lt: e.timeStamp, t0: e.timeStamp };
+    if (base) {
+      this.setDx(base);
+      const side = base < 0 ? 1 : -1;
+      this.setState({ phase: 'drag', nb: this.neighbour(side), out: -1, side, moving: false }, () => this.syncTimer());
+    } else if (this.state.phase !== 'rest') this.settle();
   }
   dragMove(e) {
     const d = this.drag;
     if (!d || e.pointerId !== d.id) return;
     if (d.mouse && !(e.buttons & 1)) { this.dragCancel(e); return; }
-    const dx = e.clientX - d.x, dy = e.clientY - d.y;
+    const fx = e.clientX - d.x, fy = e.clientY - d.y;
     if (!d.on) {
-      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-      if (Math.abs(dx) <= Math.abs(dy) * 1.2) { this.drag = null; return; }
+      if (Math.abs(fx) < 10 && Math.abs(fy) < 10) return;
+      if (Math.abs(fx) <= Math.abs(fy) * 1.2) { this.drag = null; if (d.caught) this.snapBack(); return; }
       d.on = true;
-      try { d.el.setPointerCapture(d.id); } catch (er) { /* the click guard below still applies */ }
-      this.setState({ dragging: true }, () => this.syncTimer());
+      try { d.el.setPointerCapture(d.id); } catch (er) { /* the click guard still applies */ }
+      if (!d.caught) {
+        d.side = fx < 0 ? 1 : -1;
+        this.setState({ phase: 'drag', nb: this.neighbour(d.side), out: -1, side: d.side, moving: false }, () => this.syncTimer());
+      }
     }
     if (d.mouse) { try { const sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (er) {} }
-    if (!this.state.reduced) {
-      /* the slide follows the finger, damped (at most 56 px) */
-      const f = (dx < 0 ? -1 : 1) * 56 * (1 - Math.exp(-Math.abs(dx) / 160));
-      try { d.el.style.setProperty('--rv-dx', f.toFixed(1) + 'px'); } catch (er) {}
-    }
+    const dt = e.timeStamp - d.lt;
+    if (dt > 0) { d.vx = 0.7 * ((e.clientX - d.lx) / dt) + 0.3 * d.vx; d.lx = e.clientX; d.lt = e.timeStamp; }
+    if (this.state.reduced) return;
+    const dx = d.base + fx;
+    this.setDx(dx);
+    /* the neighbour shows on the side the images are pulled away from */
+    const side = dx < 0 ? 1 : (dx > 0 ? -1 : d.side);
+    if (side !== d.side) { d.side = side; this.setState({ side, nb: this.neighbour(side) }); }
   }
   dragEnd(e) {
     const d = this.drag;
     if (!d || e.pointerId !== d.id) return;
     this.drag = null;
-    if (!d.on) return;
-    /* drop the click this release would fire (it lands on the slides while captured; this also covers links) */
+    if (!d.on) { if (d.caught) this.snapBack(); return; }
+    /* drop the click this release would fire (it lands on the stage while captured; the guard covers the rest) */
     this.swallow = true; clearTimeout(this.swallowT);
     this.swallowT = setTimeout(() => { this.swallow = false; }, 0);
-    const dx = e.clientX - d.x;
-    const ax = Math.abs(dx);
-    if (ax >= 40 || (ax >= 24 && Date.now() - d.t < 250)) {
-      const fwd = this.lang() === 'ar' ? dx > 0 : dx < 0;
-      this.goTo(this.state.slide + (fwd ? 1 : -1), true, { dragging: false }, () => this.dragReset(d.el));
-    } else {
-      this.setState({ dragging: false }, () => { this.dragReset(d.el); this.syncTimer(); });
-    }
+    const fx = e.clientX - d.x;
+    const dx = d.base + fx;
+    const v = e.timeStamp - d.lt > 100 ? 0 : d.vx;
+    const w = (this.stageEl && this.stageEl.getBoundingClientRect().width) || 1;
+    const side = dx < 0 ? 1 : -1;
+    /* a flick: still moving fast at release, or a short quick swipe (40 px in under 300 ms) */
+    const quick = e.timeStamp - d.t0 < 300 && Math.abs(fx) >= 40;
+    const flick = Math.abs(dx) >= 24 && (Math.abs(v) >= 0.3 || quick);
+    const dir = Math.abs(v) >= 0.3 ? v : fx;
+    const go = flick ? (dir < 0) === (dx < 0) : Math.abs(dx) > (d.caught ? w * 0.5 : Math.min(w * 0.2, 120));
+    if (go && dx !== 0) this.commit(this.neighbour(side), side, true);
+    else this.snapBack();
   }
   dragCancel(e) {
     const d = this.drag;
     if (!d || (e && e.pointerId !== d.id)) return;
     this.drag = null;
-    if (!d.on) return;
+    if (!d.on && !d.caught) return;
     try { if (d.el.hasPointerCapture && d.el.hasPointerCapture(d.id)) d.el.releasePointerCapture(d.id); } catch (er) {}
-    this.setState({ dragging: false }, () => { this.dragReset(d.el); this.syncTimer(); });
+    this.snapBack();
   }
-  /* runs after the drag class is gone, so the slide eases back from where the finger left it */
-  dragReset(el) {
-    try { el.style.removeProperty('--rv-dx'); if (!el.getAttribute('style')) el.removeAttribute('style'); } catch (er) {}
+  /* the stage lost the capture without a pointerup (the browser took over, the element went away): end like a
+     cancel. A child losing its implicit touch capture when the stage takes it over bubbles here too: ignored */
+  dragLost(e) {
+    if (!e || e.target !== e.currentTarget) return;
+    if (this.drag && this.drag.on && e.pointerId === this.drag.id) this.dragCancel(e);
   }
-  /* capture phase on the slides: the click that ends a real drag never reaches a link or button inside, even
+  /* capture phase on the stage: the click that ends a real drag never reaches a link or button inside, even
      if the pointer capture did not take; keyboard clicks (detail 0) always pass */
   dragClick(e) {
     if (!this.swallow || !e || e.detail === 0) return;
@@ -2081,6 +2205,14 @@ class Component extends DCLogic {
     const slides = (t.hero && t.hero.slides) || [];
     const nSlides = Math.max(1, slides.length);
 
+    /* image frames: the current one, the waiting neighbour (drag, pre, snap) or the leaving one (go) */
+    const frame = (i) => {
+      let cls = '';
+      if (i === s.slide) cls = 'is-cur';
+      else if (i === s.nb && (s.phase === 'drag' || s.phase === 'pre' || s.phase === 'snap')) cls = 'is-nb';
+      else if (i === s.out && s.phase === 'go') cls = 'is-out';
+      return { cls, hidden: i === s.slide ? 'false' : 'true' };
+    };
     const mkSlide = (i) => {
       const sl = slides[i] || {};
       const sp = rvSplit(sl.title);
@@ -2170,8 +2302,9 @@ class Component extends DCLogic {
       dots: slides.map((sl, i) => ({ cls: s.slide === i ? 'is-active' : '', current: s.slide === i ? 'true' : undefined, label: t.hero.goTo + ' ' + (i + 1), go: () => this.goTo(i, true) })),
       countCur: rvPad(s.slide + 1), countTot: rvPad(nSlides),
       heroCap: s.slide === 0 ? x.cap.hero : x.cap.port,
-      stageCls: s.dragging ? 'is-dragging' : '',
-      dragStart: this.dragStart, dragMove: this.dragMove, dragEnd: this.dragEnd, dragCancel: this.dragCancel,
+      stageCls: s.phase === 'drag' ? 'is-dragging' : '', setStage: this.setStage,
+      framesCls: (s.side < 0 ? 'is-l' : 'is-r') + (s.moving ? ' is-moving' : ''), fA: frame(0), fB: frame(1),
+      dragStart: this.dragStart, dragMove: this.dragMove, dragEnd: this.dragEnd, dragCancel: this.dragCancel, dragLost: this.dragLost,
       dragClick: this.dragClick, noNativeDrag: this.noNativeDrag,
       heroEnter: this.heroEnter, heroLeave: this.heroLeave, heroFocus: this.heroFocus, heroBlur: this.heroBlur,
       hServices: rvSplit(t.services.title), hOcean: rvSplit(t.ocean.title), hValues: rvSplit(t.values.title),
