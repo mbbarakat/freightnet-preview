@@ -6,6 +6,8 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0A0D1C">
 <title>Freight Net SARL · Design A: Signal (preview)</title>
+<meta name="dc-title-en" content="Freight Net SARL · Design A: Signal (preview)">
+<meta name="dc-title-ar" content="فريت نت ش.م.م. · التصميم A: Signal (معاينة)">
 <meta name="description" content="Website design preview for Freight Net SARL. Dark and industrial, with night photography and a shipping-manifest feel.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Freight Net SARL · Design A: Signal (preview)">
@@ -19,7 +21,7 @@
 <link rel="apple-touch-icon" href="../img/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';}}catch(e){}})();</script>
+<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';document.title="\u0641\u0631\u064a\u062a \u0646\u062a \u0634.\u0645.\u0645. \u00b7 \u0627\u0644\u062a\u0635\u0645\u064a\u0645 A: Signal (\u0645\u0639\u0627\u064a\u0646\u0629)";}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Archivo:wght@400;500;600;700&amp;family=Cairo:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Montserrat:wght@700;800&amp;family=Noto+Kufi+Arabic:wght@700;800&amp;display=swap">
 <style>
 body{margin:0;background:#0A0D1C}
@@ -166,7 +168,9 @@ body{margin:0;background:#0A0D1C}
 .sg-root[dir="rtl"] .sg-menu-btn{font-family:var(--f-ar);font-size:15px;letter-spacing:0;text-transform:none}
 
 /* ============ 3. HERO ============ */
-.sg-hero{position:relative;isolation:isolate;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;min-height:clamp(620px,56cqi,820px)}
+/* the whole hero is the swipe surface: sideways drags change the slide, vertical ones still scroll the page (pinch zoom kept) */
+.sg-hero{position:relative;isolation:isolate;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;min-height:clamp(620px,56cqi,820px);touch-action:pan-y pinch-zoom}
+.sg-hero.is-dragging{cursor:grabbing;-webkit-user-select:none;user-select:none}
 .sg-hero__stage{position:absolute;inset:0;z-index:-3;direction:ltr;overflow:hidden}
 .sg-root[dir="rtl"] .sg-hero__stage{scale:-1 1}
 .sg-slide__media{position:absolute;inset:0;opacity:0;transition:opacity .12s linear .34s}
@@ -175,10 +179,13 @@ body{margin:0;background:#0A0D1C}
 .sg-slide__media.is-active{opacity:1}
 .sg-slide__img{width:100%;height:100%;object-fit:cover}
 .sg-hero.has-moved .sg-slide__media.is-active .sg-slide__img{animation:sg-push 1.6s cubic-bezier(.2,.7,.2,1) both}
-.sg-hero__wipe{position:absolute;inset:0;z-index:-2;pointer-events:none;transform:translateX(-102%);background:var(--bg);border-inline-end:3px solid var(--red)}
-.sg-root[dir="rtl"] .sg-hero__wipe{scale:-1 1;border-inline-end:0;border-inline-start:3px solid var(--red)}
+/* the wipe travels the way the slides do, its red line on the leading edge: forward (next, autoplay, a swipe toward the start) sweeps toward the inline start, back toward the inline end.
+   Physical sides on purpose: in Arabic the wipe is mirrored with scale, which turns "right" into the inline start */
+.sg-hero__wipe{position:absolute;inset:0;z-index:-2;pointer-events:none;transform:translateX(-102%);background:var(--bg);border-right:3px solid var(--red)}
+.sg-root[dir="rtl"] .sg-hero__wipe{scale:-1 1}
 .sg-hero.is-wipe-a .sg-hero__wipe{animation:sg-wipe-a .8s cubic-bezier(.7,0,.3,1) both}
 .sg-hero.is-wipe-b .sg-hero__wipe{animation:sg-wipe-b .8s cubic-bezier(.7,0,.3,1) both}
+.sg-hero.is-fwd .sg-hero__wipe{animation-direction:reverse;border-right:0;border-left:3px solid var(--red)}
 .sg-hero__scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
     linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
@@ -187,7 +194,9 @@ body{margin:0;background:#0A0D1C}
     linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.92) 30%,rgba(10,13,28,.8) 46%,rgba(10,13,28,.38) 62%,rgba(10,13,28,.06) 80%,rgba(10,13,28,0) 100%),
     linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,.55) 16%,rgba(10,13,28,0) 40%)}
 .sg-hero__inner{position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(64px,7cqi,120px)}
-.sg-hero__stack{display:grid;max-width:min(800px,62%)}
+/* during a sideways drag the copy follows the finger a little and fades slightly (the logic sets --sg-dx and --sg-do; never under reduced motion), and springs back if the drag is let go short */
+.sg-hero__stack{display:grid;max-width:min(800px,62%);transform:translateX(var(--sg-dx,0px));opacity:var(--sg-do,1);transition:transform .3s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
+.sg-hero.is-dragging .sg-hero__stack{transition:none}
 .sg-slide{grid-area:1/1;align-self:end;visibility:hidden;min-width:0}
 .sg-slide.is-active{visibility:visible}
 .sg-slide:not(.is-active) .sg-slide__copy{opacity:0}
@@ -201,25 +210,32 @@ body{margin:0;background:#0A0D1C}
 .sg-slide__text{margin-top:26px;max-width:34em;font-size:clamp(17px,1.4cqi,20px);line-height:1.55;color:var(--soft)}
 .sg-root[dir="rtl"] .sg-slide__text{line-height:1.85}
 .sg-hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.sg-hero__bar{position:relative;display:flex;align-items:center;gap:22px;margin-top:clamp(40px,4.6cqi,72px);padding-block:12px 18px;border-top:1px solid rgba(242,242,245,.2)}
+/* slide dots: one numbered tab per slide at the bar's inline start (the floating WhatsApp button keeps to the inline end, so the two never meet).
+   Current slide: white number, filled red marker, red bar. While the slideshow runs, that bar fills over the slide's time (the fill's end is what advances it);
+   once stopped (a swipe or a dot press, or reduced motion) it stays full */
+.sg-hero__bar{position:relative;display:flex;align-items:center;margin-top:clamp(40px,4.6cqi,72px);padding-block:10px 16px;border-top:1px solid rgba(242,242,245,.2)}
 .sg-hero__bar .sg-plus{top:-8px;inset-inline-start:-8px}
-.sg-count{display:flex;align-items:baseline;gap:8px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;color:var(--muted);direction:ltr}
-.sg-count b{font-weight:700;color:#fff;font-size:15px}
-.sg-dots{display:flex;gap:6px}
-.sg-dot{display:grid;place-items:center;width:64px;height:44px;padding:0;background:transparent;border:0;cursor:pointer}
-.sg-dot__track{position:relative;width:100%;height:3px;background:rgba(242,242,245,.28);overflow:hidden;transition:background-color .15s ease}
-.sg-dot:hover .sg-dot__track{background:rgba(242,242,245,.6)}
+.sg-dots{display:flex;gap:4px;margin-inline-start:-8px}
+.sg-dot{display:flex;flex-direction:column;justify-content:center;gap:10px;width:80px;height:48px;padding:0 8px;background:transparent;border:0;color:var(--muted);cursor:pointer;transition:color .15s ease,transform .12s ease}
+.sg-dot:active{transform:scale(.97)}
+.sg-dot__no{display:flex;align-items:center;gap:9px;font-family:var(--f-mono);font-weight:500;font-size:12px;line-height:1;letter-spacing:.16em}
+.sg-dot__no::before{content:"";width:7px;height:7px;flex:none;border:1px solid currentColor;transition:background-color .15s ease,border-color .15s ease}
+.sg-dot__track{position:relative;display:block;height:3px;background:rgba(242,242,245,.24);overflow:hidden;transition:background-color .15s ease}
 .sg-dot__fill{position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left center}
 .sg-root[dir="rtl"] .sg-dot__fill{transform-origin:right center}
+.sg-dot:hover{color:var(--text)}
+.sg-dot:hover .sg-dot__track{background:rgba(242,242,245,.5)}
+.sg-dot.is-active{color:#fff}
+.sg-dot.is-active .sg-dot__no::before{background:var(--red);border-color:var(--red)}
 .sg-dot.is-active .sg-dot__track{background:rgba(242,242,245,.4)}
+.sg-dot.is-active .sg-dot__fill{transform:none}
 .sg-dot.is-active .sg-dot__fill.sg-anim-a{animation:sg-prog-a 7s linear both}
 .sg-dot.is-active .sg-dot__fill.sg-anim-b{animation:sg-prog-b 7s linear both}
-.sg-hero.is-paused .sg-dot__fill,.sg-hero:focus-within .sg-dot__fill{animation-play-state:paused!important}
-.sg-hero.is-paused .sg-dot.is-active .sg-dot__fill{background:var(--text)}
-.sg-ctrls{display:flex;gap:6px;margin-inline-start:auto}
-.sg-ctrl{display:grid;place-items:center;width:48px;height:48px;padding:0;background:var(--bg);border:1px solid var(--line-2);color:var(--text);cursor:pointer;transition:background-color .15s ease,border-color .15s ease}
-.sg-ctrl:hover{background:var(--bg-3);border-color:#5A6390}
-.sg-ctrl:active{transform:scale(.96)}
+/* the fill holds (and with it the slideshow) during a drag, while the menu or the WhatsApp chooser is open (no slide change behind them), and while keyboard focus
+   is inside the hero (a tap or click, which also leaves focus on a control, does not hold it). :has() gets its own rule, so a browser without it drops only that one */
+.sg-hero.is-dragging .sg-dot__fill{animation-play-state:paused!important}
+.sg-root.is-locked .sg-dot__fill{animation-play-state:paused!important}
+.sg-hero:has(:focus-visible) .sg-dot__fill{animation-play-state:paused!important}
 .sg-hero__label{position:absolute;inset-inline-end:var(--gutter);bottom:clamp(120px,10cqi,150px);z-index:1;min-width:250px;max-width:min(380px,30cqi);background:rgba(10,13,28,.92);border:1px solid var(--line-2);padding:16px 18px}
 .sg-hero__label > div{display:flex;justify-content:space-between;gap:28px;padding-block:7px;border-bottom:1px dashed var(--line-2);font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 .sg-hero__label > div:last-child{border-bottom:0}
@@ -626,9 +642,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-slide__text{margin-top:18px}
   .sg-hero__cta{flex-direction:column;align-items:stretch;margin-top:28px}
   .sg-hero__cta .sg-btn{width:100%}
-  .sg-hero__bar{gap:10px;margin-top:28px;padding-bottom:22px}
-  .sg-dot{width:44px}
-  .sg-ctrl{width:44px;height:44px}
+  .sg-hero__bar{margin-top:28px;padding-bottom:22px}
   .sg-section{padding-block:clamp(56px,16cqi,80px)}
   /* Latin section titles: plain wrapping on phones keeps "your shipment" together (balance would strand a short word) */
   .sg-root:not([dir="rtl"]) .sg-h2{text-wrap:wrap}
@@ -655,7 +669,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-form__grid{grid-template-columns:1fr;gap:20px}
   .sg-form__foot .sg-btn{width:100%}
   .sg-footer__grid{grid-template-columns:1fr;gap:32px}
-  .sg-fab{padding:0;width:56px}
+  .sg-fab,.sg-root[dir="rtl"] .sg-fab{padding:0;width:56px}
   .sg-fab__label{display:none}
   .sg-frame::after{inset:-5px}
   .sg-wa{position:fixed;inset:0;z-index:3;width:auto;display:flex;flex-direction:column;background:var(--bg);border:0;box-shadow:none;overflow-y:auto;overscroll-behavior:contain;
@@ -697,7 +711,6 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-brand--lg{--em:52px;gap:12px}
   .sg-brand--lg .sg-brand__name{font-size:16.5px}
   .sg-brand--lg .sg-brand__tag{font-size:9.5px}
-  .sg-hero__bar .sg-count{display:none}
   .sg-tel__num{font-size:17px}
 }
 
@@ -706,7 +719,6 @@ textarea.sg-input{min-height:148px;resize:vertical}
 }
 @media (prefers-reduced-motion: reduce){
   .sg-root *,.sg-root *::before,.sg-root *::after{animation-duration:1ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:1ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
-  .sg-root .sg-dot.is-active .sg-dot__fill{animation-duration:7s!important}
   .sg-root .sg-hero__wipe{display:none}
 }
 </style>
@@ -752,7 +764,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
 </header>
 
 <main id="sg-main" tabIndex="-1" ref="{{setMain}}">
-<section class="sg-hero {{heroCls}}" id="sg-top" aria-roledescription="carousel" aria-label="{{x.carousel}}" ref="{{setTop}}">
+<section class="sg-hero {{heroCls}}" id="sg-top" aria-roledescription="carousel" aria-label="{{x.carousel}}" ref="{{setTop}}" onPointerDown="{{swipeDown}}" onPointerMove="{{swipeMove}}" onPointerUp="{{swipeUp}}" onPointerCancel="{{swipeCancel}}" onClickCapture="{{swipeClick}}" onDragStart="{{swipeNoDrag}}">
   <div class="sg-hero__stage">
     <div class="sg-slide__media {{slides.0.mediaCls}}" aria-hidden="{{slides.0.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-hero.webp" alt="{{slides.0.alt}}" width="1672" height="941" decoding="async" style="object-position: {{slides.0.pos}}"/></div>
     <div class="sg-slide__media sg-slide__media--b {{slides.1.mediaCls}}" aria-hidden="{{slides.1.ariaHidden}}"><img class="sg-slide__img" src="../img/s1-packaging.webp" alt="{{slides.1.alt}}" width="1200" height="800" decoding="async" style="object-position: {{slides.1.pos}}"/></div>
@@ -761,7 +773,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   <div class="sg-hero__scrim" aria-hidden="true"></div>
   <div class="sg-wrap sg-hero__inner">
     <h1 class="sg-vh">{{h1}}</h1>
-    <div class="sg-hero__stack">
+    <div class="sg-hero__stack" aria-live="{{heroLive}}">
       <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
         <div class="sg-slide {{s.cls}}" role="group" aria-roledescription="slide" aria-label="{{s.label}}" aria-hidden="{{s.ariaHidden}}">
           <div class="sg-slide__copy">
@@ -778,19 +790,10 @@ textarea.sg-input{min-height:148px;resize:vertical}
     </div>
     <div class="sg-hero__bar">
       <span class="sg-plus" aria-hidden="true"></span>
-      <p class="sg-count" aria-hidden="true"><b>{{slideNo}}</b><span>/</span><span>{{slideTotal}}</span></p>
       <div class="sg-dots">
         <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
-          <button type="button" class="sg-dot {{s.dotCls}}" onClick="{{s.go}}" aria-label="{{s.goLabel}}" aria-current="{{s.current}}"><span class="sg-dot__track"><span class="sg-dot__fill {{s.fillCls}}" onAnimationEnd="{{onProgEnd}}"></span></span></button>
+          <button type="button" class="sg-dot {{s.dotCls}}" onClick="{{s.go}}" aria-label="{{s.goLabel}}" aria-current="{{s.current}}"><span class="sg-dot__no" aria-hidden="true">{{s.no}}</span><span class="sg-dot__track" aria-hidden="true"><span class="sg-dot__fill {{s.fillCls}}" onAnimationEnd="{{onProgEnd}}"></span></span></button>
         </sc-for>
-      </div>
-      <div class="sg-ctrls">
-        <button type="button" class="sg-ctrl" onClick="{{prevSlide}}" aria-label="{{t.hero.prev}}"><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></button>
-        <button type="button" class="sg-ctrl" onClick="{{togglePause}}" aria-label="{{pauseLabel}}">
-          <sc-if value="{{playing}}" hint-placeholder-val="{{ true }}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
-          <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg></sc-if>
-        </button>
-        <button type="button" class="sg-ctrl" onClick="{{nextSlide}}" aria-label="{{t.hero.next}}"><svg class="sg-ico sg-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
       </div>
     </div>
   </div>
@@ -1081,7 +1084,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
 </footer>
 
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
-  <div class="sg-sheet" id="{{ids.menu}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.menuTitle}}" onKeyDown="{{menuKey}}">
+  <div class="sg-sheet" id="{{ids.menu}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.menuTitle}}" tabIndex="-1" onKeyDown="{{menuKey}}">
     <div class="sg-sheet__head">
       <a class="sg-brand" href="#sg-top" onClick="{{goHome}}" aria-label="{{x.brandHome}}">
         <img class="sg-brand__emblem" src="../img/emblem-on-dark.svg" alt="" width="57" height="48" decoding="async"/>
@@ -1109,7 +1112,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
   <button type="button" class="sg-fab" onClick="{{toggleWa}}" onKeyDown="{{fabKey}}" aria-label="{{t.whatsapp.title}}" aria-haspopup="dialog" aria-expanded="{{waExpanded}}" ref="{{setFab}}"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path></svg><span class="sg-fab__label">{{t.whatsapp.button}}</span></button>
   <sc-if value="{{waOpen}}" hint-placeholder-val="{{ false }}">
     <button type="button" class="sg-scrim" tabIndex="-1" aria-hidden="true" onClick="{{closeWa}}"></button>
-    <div class="sg-wa" id="{{ids.wa}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.waTitle}}" aria-describedby="{{ids.waSub}}" onKeyDown="{{waKey}}">
+    <div class="sg-wa" id="{{ids.wa}}" role="dialog" aria-modal="true" aria-labelledby="{{ids.waTitle}}" aria-describedby="{{ids.waSub}}" tabIndex="-1" onKeyDown="{{waKey}}">
       <div class="sg-wa__head">
         <div>
           <h2 class="sg-wa__title" id="{{ids.waTitle}}">{{t.whatsapp.title}}</h2>
@@ -1676,6 +1679,7 @@ function sgMerge(base, over) {
   return over === undefined || over === null || over === '' ? base : over;
 }
 function sgPad(n) { return (n < 10 ? '0' : '') + n; }
+function sgReduced() { try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } }
 
 class Component extends DCLogic {
   constructor(props) {
@@ -1684,8 +1688,10 @@ class Component extends DCLogic {
     let urlLang = null;
     try { const v = new URLSearchParams(window.location.search).get('lang'); if (v === 'ar' || v === 'en') urlLang = v; } catch (e) {}
     this.urlLang = urlLang;
+    this.reduced = sgReduced();
     this.state = {
-      lang: null, slide: 0, anim: 0, wipe: 0, paused: false,
+      // held: a person chose a slide (swipe or dot), so the slideshow stops for good; reduced: prefers-reduced-motion, no slideshow at all
+      lang: null, slide: 0, anim: 0, wipe: 0, back: false, held: false, reduced: this.reduced, dragging: false,
       menuOpen: false, waOpen: false, openSvc: 0, hoverSvc: null,
       form: { name: '', email: '', phone: '', service: '', message: '' },
       errors: {}, sending: false, sent: false
@@ -1704,7 +1710,16 @@ class Component extends DCLogic {
     this.refName = ref('f_name'); this.refEmail = ref('f_email'); this.refPhone = ref('f_phone');
     this.refService = ref('f_service'); this.refMessage = ref('f_message');
 
-    this.toggleLang = () => this.setState(s => ({ lang: this.lang(s) === 'ar' ? 'en' : 'ar' }));
+    this.toggleLang = () => {
+      const next = this.lang() === 'ar' ? 'en' : 'ar';
+      this.setState({ lang: next });
+      // keep the choice in the address (reload / shared link); replaceState keeps history.state, so a layer's Back sentinel survives
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.set('lang', next);
+        window.history.replaceState(window.history.state, '', u.href);
+      } catch (e) {}
+    };
     this.goHome = e => this.goTo('top', e);
     this.goContact = e => this.goTo('contact', e);
     this.skip = e => {
@@ -1713,14 +1728,25 @@ class Component extends DCLogic {
       if (m) { try { m.focus({ preventScroll: true }); } catch (_) { m.focus(); } this.scrollEl(m); }
     };
 
-    this.nextSlide = () => this.goSlide(this.state.slide + 1);
-    this.prevSlide = () => this.goSlide(this.state.slide - 1);
-    this.togglePause = () => this.setState(s => ({ paused: !s.paused }));
+    // the slideshow's timer is the current dot's fill animation: its end advances the slide, so the bar never shows one thing while the timer does another
+    // (hover, keyboard focus and a drag hold the fill in CSS, which holds the timer with it)
     this.onProgEnd = e => {
       if (e && e.animationName && String(e.animationName).indexOf('sg-prog') !== 0) return;
-      if (this.state.paused) return;
-      this.goSlide(this.state.slide + 1);
+      if (this.state.held || this.state.reduced || this.reduced) return;
+      this.goSlide(this.state.slide + 1, 1);
     };
+    // swipe: pointer handlers on the hero itself (no window or document listeners)
+    this.drag = null;
+    this.swallow = false;
+    this.swipeDown = e => this.swipeStart(e);
+    this.swipeMove = e => this.swipeTrack(e);
+    this.swipeUp = e => this.swipeEnd(e, false);
+    this.swipeCancel = e => this.swipeEnd(e, true);
+    // the click that ends a real drag must not press the link or button the drag started on (a plain tap is untouched).
+    // Pointer clicks only: a keyboard press (detail 0) right after a touch swipe, which makes no click, must still work
+    this.swipeClick = e => { if (this.swallow && e.detail !== 0) { this.swallow = false; e.preventDefault(); e.stopPropagation(); } };
+    // no native dragging of the hero's links and photos: a mouse drag is a swipe
+    this.swipeNoDrag = e => { e.preventDefault(); };
 
     this.svcLeave = () => { if (this.state.hoverSvc !== null) this.setState({ hoverSvc: null }); };
 
@@ -1760,12 +1786,14 @@ class Component extends DCLogic {
     try {
       this.mq = window.matchMedia('(prefers-reduced-motion: reduce)');
       this.reduced = !!this.mq.matches;
-      if (this.reduced) this.setState({ paused: true });
-      this.onMq = ev => { this.reduced = !!ev.matches; if (ev.matches) this.setState({ paused: true }); };
+      if (this.reduced !== this.state.reduced) this.setState({ reduced: this.reduced });
+      this.onMq = ev => { this.reduced = !!ev.matches; this.setState({ reduced: this.reduced }); };
       if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq); else if (this.mq.addListener) this.mq.addListener(this.onMq);
     } catch (e) {}
     this.onPop = () => this.handlePop();
     window.addEventListener('popstate', this.onPop);
+    // reloaded while a layer was open: that sentinel (and the entry under it) still hold 'manual'; give them back 'auto'
+    try { const hs = window.history.state; if (hs && hs.__fnBack != null && window.history.scrollRestoration === 'manual') { window.history.scrollRestoration = 'auto'; this.prevRestore = 'auto'; } } catch (e) {}
   }
 
   componentWillUnmount() {
@@ -1773,17 +1801,105 @@ class Component extends DCLogic {
     try { if (this.mq) { if (this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq); else if (this.mq.removeListener) this.mq.removeListener(this.onMq); } } catch (e) {}
     this.timers.forEach(id => clearTimeout(id));
     clearTimeout(this.navTimer);
+    clearTimeout(this.swallowTimer);
     this.lockScroll(false);
+    this.restoreScrollMode();
   }
 
   later(fn, ms) { const id = setTimeout(fn, ms); this.timers.push(id); return id; }
 
   /* ---------- slider ---------- */
-  goSlide(i) {
+  // dir: 1 forward (next), -1 back; the wipe travels that way
+  goSlide(i, dir) {
     const n = SG_SLIDES.length;
     const next = ((i % n) + n) % n;
     if (next === this.state.slide) return;
-    this.setState(s => ({ slide: next, anim: s.anim + 1, wipe: s.wipe + 1 }));
+    this.setState(s => ({ slide: next, anim: s.anim + 1, wipe: s.wipe + 1, back: dir < 0 }));
+  }
+  // a person chose a slide (dot or swipe): the slideshow stops for good
+  pickSlide(i, dir) {
+    if (!this.state.held) this.setState({ held: true });
+    this.goSlide(i, dir);
+  }
+
+  /* ---------- swipe ----------
+     A drag becomes a swipe once it has moved 10 px, mostly sideways (a mostly vertical one is left to the page scroll; touch-action keeps that native).
+     Only then is the pointer captured, so a tap still reaches the link or button under it. Let go at 40 px or more, or after a quick flick (24 px, 0.3 px/ms),
+     and the slide changes: the finger's direction, mirrored in Arabic (LTR: toward the left = next; RTL: toward the right = next). */
+  swipeStart(e) {
+    this.swallow = false;
+    const d = this.drag;
+    // another pointer while a swipe is live: a second finger (pinch or two-finger gesture) drops the swipe, the copy springs back and the slide
+    // and slideshow stay as they were; any other pointer (another device) is ignored. Neither can take the drag over
+    if (d && d.on && e.pointerId !== d.id) {
+      if (!e.isPrimary) this.swipeEnd({ pointerId: d.id }, true);
+      return;
+    }
+    if (!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) { this.drag = null; return; }
+    this.drag ={ id: e.pointerId, mouse: e.pointerType === 'mouse', x0: e.clientX, y0: e.clientY, on: false, pts: [[e.clientX, e.timeStamp]] };
+  }
+  swipeTrack(e) {
+    const d = this.drag;
+    if (!d || e.pointerId !== d.id) return;
+    if (d.mouse && !(e.buttons & 1)) { this.swipeEnd(e, true); return; }
+    const dx = e.clientX - d.x0, dy = e.clientY - d.y0;
+    if (!d.on) {
+      const ax = Math.abs(dx), ay = Math.abs(dy);
+      if (ax < 10 && ay < 10) return;
+      if (ax < ay * 1.2) { this.drag = null; return; }
+      d.on = true;
+      try { e.currentTarget.setPointerCapture(d.id); } catch (_) {}
+      this.setState({ dragging: true });
+    }
+    if (d.mouse) this.clearSelection();
+    d.pts.push([e.clientX, e.timeStamp]);
+    if (d.pts.length > 8) d.pts.shift();
+    this.follow(dx);
+  }
+  swipeEnd(e, cancel) {
+    const d = this.drag;
+    if (!d || e.pointerId !== d.id) return;
+    this.drag = null;
+    if (!d.on) return;
+    let step = 0;
+    if (cancel) {
+      // a cancelled swipe may still hold the pointer (a second finger ended it while the first is down): let it go
+      try { const el = this.els.top; if (el && el.hasPointerCapture && el.hasPointerCapture(d.id)) el.releasePointerCapture(d.id); } catch (_) {}
+    } else {
+      this.swallow = true;
+      clearTimeout(this.swallowTimer);
+      this.swallowTimer = setTimeout(() => { this.swallow = false; }, 400);
+      const x = e.clientX, t = e.timeStamp, dx = x - d.x0, ax = Math.abs(dx);
+      // speed over the last 100 ms of the drag
+      let p = d.pts[d.pts.length - 1];
+      for (let k = d.pts.length - 1; k >= 0 && t - d.pts[k][1] <= 100; k--) p = d.pts[k];
+      const v = (x - p[0]) / Math.max(1, t - p[1]);
+      if (ax >= 40 || (ax >= 24 && Math.abs(v) >= 0.3 && (v < 0) === (dx < 0))) step = (dx < 0) !== (this.lang() === 'ar') ? 1 : -1;
+    }
+    this.unfollow(step !== 0);
+    this.setState({ dragging: false });
+    if (step) this.pickSlide(this.state.slide + step, step);
+  }
+  // a light follow: the copy moves a third of the drag, at most 64 px, fading to .65 at that point (none under reduced motion)
+  follow(dx) {
+    const el = this.els.top;
+    if (!el || this.reduced) return;
+    const f = Math.max(-64, Math.min(64, dx / 3));
+    try { el.style.setProperty('--sg-dx', f.toFixed(1) + 'px'); el.style.setProperty('--sg-do', (1 - Math.abs(f) / 64 * 0.35).toFixed(3)); } catch (_) {}
+  }
+  // let go: a short drag springs back; when the slide changes the copy snaps home at once (transitions are still off), as the new slide's copy rises in from nothing
+  unfollow(snap) {
+    const el = this.els.top;
+    if (!el) return;
+    try {
+      el.style.removeProperty('--sg-dx');
+      el.style.removeProperty('--sg-do');
+      if (!el.getAttribute('style')) el.removeAttribute('style');
+      if (snap) { const st = el.querySelector('.sg-hero__stack'); if (st) { const cs = window.getComputedStyle(st); void cs.transform; void cs.opacity; } }
+    } catch (_) {}
+  }
+  clearSelection() {
+    try { const sel = window.getSelection && window.getSelection(); if (sel && sel.rangeCount && !sel.isCollapsed) sel.removeAllRanges(); } catch (_) {}
   }
 
   /* ---------- scrolling to sections ---------- */
@@ -1855,6 +1971,8 @@ class Component extends DCLogic {
     // one layer at a time
     const other = name === 'menu' ? 'wa' : 'menu';
     if (this.state[other + 'Open']) this.closeLayer(other, { restoreFocus: false, silent: true });
+    // the entry under the layer must not jump back to the scroll position saved when the layer opened (a section scroll may still be running then); pushState copies the mode to the sentinel
+    if (!this.layers.length) { try { if ('scrollRestoration' in window.history) { if (this.prevRestore === undefined) this.prevRestore = window.history.scrollRestoration; window.history.scrollRestoration = 'manual'; } } catch (e) {} }
     let pushed = false;
     try {
       const st = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
@@ -1893,9 +2011,15 @@ class Component extends DCLogic {
       });
       clearTimeout(this.navTimer);
       this.navTimer = setTimeout(() => this.runPending(), 450);
-    } else if (o.then) {
-      this.later(o.then, 30);
+    } else {
+      if (!this.layers.length) this.restoreScrollMode();
+      if (o.then) this.later(o.then, 30);
     }
+  }
+  restoreScrollMode() {
+    if (this.prevRestore === undefined) return;
+    try { window.history.scrollRestoration = this.prevRestore; } catch (e) {}
+    this.prevRestore = undefined;
   }
   runPending() {
     clearTimeout(this.navTimer);
@@ -1905,11 +2029,15 @@ class Component extends DCLogic {
   handlePop() {
     if (this.ignorePop > 0) {
       this.ignorePop -= 1;
+      if (!this.layers.length) this.restoreScrollMode();
       if (this.pendingNav) this.later(() => this.runPending(), 16);
       return;
     }
     const top = this.layers[this.layers.length - 1];
-    if (top) this.closeLayer(top.name, { fromPop: true });
+    if (top) { this.closeLayer(top.name, { fromPop: true }); return; }
+    this.restoreScrollMode();
+    // an ordinary entry with no layer open (e.g. the one under a sentinel left by a reload with a layer open) still holds 'manual': give it back 'auto'
+    try { const hs = window.history.state; if (!(hs && hs.__fnBack != null) && window.history.scrollRestoration === 'manual') window.history.scrollRestoration = 'auto'; } catch (e) {}
   }
   layerKey(name, e) {
     if (e.key === 'Escape' || e.key === 'Esc') {
@@ -1924,7 +2052,8 @@ class Component extends DCLogic {
       if (!list.length) return;
       const first = list[0], last = list[list.length - 1];
       const act = document.activeElement;
-      if (e.shiftKey && (act === first || !box.contains(act))) { e.preventDefault(); last.focus(); }
+      // the layer itself takes focus when plain text in it is clicked (tabIndex -1, so Escape still reaches it): Shift+Tab from there wraps to the last control
+      if (e.shiftKey && (act === first || act === box || !box.contains(act))) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && (act === last || !box.contains(act))) { e.preventDefault(); first.focus(); }
     }
   }
@@ -1979,6 +2108,7 @@ class Component extends DCLogic {
     const slidesCopy = hero.slides || [];
     const nSlides = Math.min(SG_SLIDES.length, slidesCopy.length) || SG_SLIDES.length;
     const animCls = s.anim % 2 ? 'sg-anim-b' : 'sg-anim-a';
+    const stopped = !!(s.held || s.reduced);
 
     const slides = SG_SLIDES.slice(0, nSlides).map((d, i) => {
       const sc = slidesCopy[i] || {};
@@ -1989,14 +2119,14 @@ class Component extends DCLogic {
         cls: on ? 'is-active' : '', mediaCls: on ? 'is-active' : '',
         ariaHidden: on ? undefined : 'true',
         label: (i + 1) + ' / ' + nSlides,
-        dotCls: on ? 'is-active' : '', fillCls: on ? animCls : '',
+        dotCls: on ? 'is-active' : '', fillCls: on && !stopped ? animCls : '',
         current: on ? 'true' : undefined,
+        no: sgPad(i + 1),
         goLabel: (hero.goTo || 'Go to slide') + ' ' + (i + 1),
-        go: () => this.goSlide(i)
+        go: () => this.pickSlide(i, i < this.state.slide ? -1 : 1)
       };
     });
-    // the media layer needs the is-active class on a wrapper: mirror into slide__media via a separate class
-    const heroCls = [s.paused ? 'is-paused' : '', s.anim ? 'has-moved' : '', s.wipe ? (s.wipe % 2 ? 'is-wipe-a' : 'is-wipe-b') : ''].join(' ');
+    const heroCls = [s.anim ? 'has-moved' : '', s.wipe ? (s.wipe % 2 ? 'is-wipe-a' : 'is-wipe-b') : '', s.wipe && !s.back ? 'is-fwd' : '', s.dragging ? 'is-dragging' : ''].join(' ');
 
     const navDefs = [
       { key: 'top', label: (t.nav || {}).home, href: '#sg-top' },
@@ -2075,9 +2205,8 @@ class Component extends DCLogic {
       strip: { place: address[address.length - 1] || '' }, heroLabel,
       langSr: (t.nav || {}).langLabel ? ' (' + t.nav.langLabel + ')' : '',
       nav, slides, heroCls,
-      slideNo: sgPad(s.slide + 1), slideTotal: sgPad(nSlides),
-      playing: !s.paused, paused: !!s.paused,
-      pauseLabel: s.paused ? hero.play : hero.pause,
+      // the slide copy is announced only once a person drives the slides, never while it turns on its own
+      heroLive: stopped ? 'polite' : 'off',
       facts, services, viewer, viewerNow: { code: vNow.code || '', no: vNow.no || '', title: vNow.title || '' },
       values, tels, calls, emails, insta, ctaLines, address, mapsUrl: C.mapsUrl || '#',
       aboutImg: { src: SG_IMG.land, alt: (x.alt && x.alt.land) || '' },
@@ -2094,7 +2223,8 @@ class Component extends DCLogic {
       setMenuBtn: this.setMenuBtn, setMenuClose: this.setMenuClose, setFab: this.setFab, setWaClose: this.setWaClose, setSuccess: this.setSuccess,
       refName: this.refName, refEmail: this.refEmail, refPhone: this.refPhone, refService: this.refService, refMessage: this.refMessage,
       toggleLang: this.toggleLang, goHome: this.goHome, goContact: this.goContact, skip: this.skip,
-      nextSlide: this.nextSlide, prevSlide: this.prevSlide, togglePause: this.togglePause, onProgEnd: this.onProgEnd,
+      onProgEnd: this.onProgEnd,
+      swipeDown: this.swipeDown, swipeMove: this.swipeMove, swipeUp: this.swipeUp, swipeCancel: this.swipeCancel, swipeClick: this.swipeClick, swipeNoDrag: this.swipeNoDrag,
       openMenu: this.openMenu, closeMenu: this.closeMenu, openWa: this.openWa, toggleWa: this.toggleWa, fabKey: this.fabKey, closeWa: this.closeWa, menuKey: this.menuKey, waKey: this.waKey,
       onName: this.onName, onEmail: this.onEmail, onPhone: this.onPhone, onService: this.onService, onMessage: this.onMessage,
       submit: this.submit, again: this.again

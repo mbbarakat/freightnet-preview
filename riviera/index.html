@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#FFFFFF">
 <title>Freight Net SARL · Design B: Riviera (preview)</title>
+<meta name="dc-title-en" content="Freight Net SARL · Design B: Riviera (preview)">
+<meta name="dc-title-ar" content="فريت نت ش.م.م. · التصميم B: Riviera (معاينة)">
 <meta name="description" content="Website design preview for Freight Net SARL. Light and editorial, with Mediterranean daylight photography.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Freight Net SARL · Design B: Riviera (preview)">
@@ -19,7 +21,7 @@
 <link rel="apple-touch-icon" href="../img/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';}}catch(e){}})();</script>
+<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';document.title="\u0641\u0631\u064a\u062a \u0646\u062a \u0634.\u0645.\u0645. \u00b7 \u0627\u0644\u062a\u0635\u0645\u064a\u0645 B: Riviera (\u0645\u0639\u0627\u064a\u0646\u0629)";}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;family=Instrument+Sans:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;family=Montserrat:wght@700;800&amp;family=Noto+Sans+Arabic:wght@400;500;600&amp;display=swap">
 <style>
 body{margin:0}
@@ -39,6 +41,8 @@ html:has(.rv-root){scroll-behavior:smooth}
   --ds:1; --w-disp:400; --lh-disp:1.02; --lh-hero:.96; --track-disp:-.015em;
   --lh-body:1.6; --gutter:clamp(16px, 4.45cqi, 64px); --gap:clamp(16px, 2.2cqi, 32px);
   --sec:clamp(72px, 9cqi, 136px); --hdr:76px;
+  /* lane kept free for the floating WhatsApp button: 16px inset + 153px labelled button + 8px gap */
+  --fab-room:177px;
   --ease:cubic-bezier(.22,.61,.24,1);
   container-type:inline-size; container-name:rv;
   position:relative; overflow-x:clip; min-width:0;
@@ -136,7 +140,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-langbtn-txt{font-size:15.5px; font-weight:500; line-height:1}
 .rv-langbtn-txt:lang(ar){font-family:'Noto Sans Arabic',sans-serif; font-size:16px}
 .rv-langbtn-txt:lang(en){font-family:'Instrument Sans',sans-serif}
-.rv-menubtn{display:none; align-items:center; gap:10px; min-height:44px; min-width:44px; padding:0 12px; background:var(--bg); border:1px solid var(--line); color:var(--navy); cursor:pointer; font-weight:500; transition:background-color .25s}
+.rv-menubtn{display:none; align-items:center; justify-content:center; gap:10px; min-height:44px; min-width:44px; padding:0 12px; background:var(--bg); border:1px solid var(--line); color:var(--navy); cursor:pointer; font-weight:500; transition:background-color .25s}
 .rv-menubtn:hover{background:var(--bg-2)}
 .rv-menubtn:active{transform:scale(.98)}
 
@@ -145,8 +149,15 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-main:focus{outline:none}
 .rv-hero{position:relative; background:var(--sea)}
 .rv-stage{display:grid; position:relative; isolation:isolate}
-.rv-slide{grid-area:1 / 1; position:relative; z-index:0; display:grid; grid-template-rows:auto 1fr auto; min-height:clamp(600px, 58cqi, 860px); background:var(--sea); opacity:0; visibility:hidden; transition:opacity .6s ease, visibility 0s linear .6s}
-.rv-slide.is-active{opacity:1; visibility:visible; z-index:1; transition:opacity .6s ease, visibility 0s linear 0s}
+.rv-slide{grid-area:1 / 1; position:relative; z-index:0; display:grid; grid-template-rows:auto 1fr auto; min-height:clamp(600px, 58cqi, 860px); background:var(--sea); opacity:0; visibility:hidden; transition:opacity .6s ease, visibility 0s linear .6s, transform .45s var(--ease)}
+.rv-slide.is-active{opacity:1; visibility:visible; z-index:1; transition:opacity .6s ease, visibility 0s linear 0s, transform .45s var(--ease)}
+/* swipe: a sideways drag on the slides changes the slide; vertical page scroll and pinch zoom stay with the
+   browser. While the drag runs the active slide follows the finger a little (--rv-dx, set by the script),
+   then eases back as the slides cross-fade. Links and images are not dragged natively. */
+.rv-stage{touch-action:pan-y pinch-zoom}
+.rv-stage :where(a, img){-webkit-user-drag:none}
+.rv-stage.is-dragging{cursor:grabbing; -webkit-user-select:none; user-select:none}
+.rv-stage.is-dragging .rv-slide.is-active{transform:translateX(var(--rv-dx, 0px)); transition:opacity .6s ease, visibility 0s linear 0s}
 .rv-slide-media{position:absolute; inset:0; z-index:-1; overflow:hidden}
 .rv-kb{position:absolute; inset:0; transform:scale(1.06); transition:transform 8s cubic-bezier(.2,.6,.2,1)}
 .rv-slide.is-active .rv-kb{transform:scale(1)}
@@ -184,26 +195,26 @@ html:has(.rv-root){scroll-behavior:smooth}
 /* hero bar */
 .rv-hero-bar{background:var(--bg); border-block-end:1px solid var(--line)}
 .rv-hero-bar-in{display:flex; align-items:center; gap:clamp(14px, 2cqi, 28px); min-height:72px}
-.rv-count{display:flex; align-items:baseline; gap:6px; font:italic 400 24px/1 var(--f-num); color:var(--navy); direction:ltr; min-width:64px}
+/* count and dots sit at the inline start, clear of the floating WhatsApp button at the inline end; the caption
+   (wider screens) stops before the button's lane (the inner max() subtracts the wrap's side margin on wide
+   screens, where the lane is already free) */
+.rv-hero-bar-in{padding-inline-end:max(var(--gutter), calc(var(--fab-room) - max(0px, (100cqi - 1312px) / 2 - var(--gutter))))}
+.rv-count{display:flex; flex:none; align-items:baseline; gap:6px; font:italic 400 24px/1 var(--f-num); color:var(--navy); direction:ltr; min-width:64px}
 .rv-count-sep{color:var(--line-2); font-style:normal}
 .rv-count-tot{color:var(--muted)}
-.rv-segs{display:flex; gap:6px}
-.rv-seg{position:relative; width:64px; height:44px; padding:0; background:transparent; border:0; cursor:pointer; transition:background-color .25s}
-.rv-seg:hover{background:var(--bg-2)}
-.rv-seg-track{position:absolute; inset-inline:8px; top:21px; height:2px; background:var(--line); overflow:hidden}
-.rv-seg.is-active .rv-seg-track{top:20px; height:4px; background:var(--line-2)}
-.rv-seg-fill{position:absolute; inset:0; background:var(--navy); transform:scaleX(0); transform-origin:left center}
-[dir="rtl"] .rv-seg-fill{transform-origin:right center}
-.rv-seg.is-active .rv-seg-fill{animation:rv-fill 7s linear forwards}
-.rv-root.is-holding .rv-seg.is-active .rv-seg-fill{animation-play-state:paused}
-.rv-root.is-static .rv-seg.is-active .rv-seg-fill{animation:none; transform:scaleX(1)}
-@keyframes rv-fill{from{transform:scaleX(0)} to{transform:scaleX(1)}}
+/* dots: one 44 px button per slide; the current one is a navy bar, the others small grey dots */
+.rv-dots{display:flex; flex:none}
+.rv-dot{display:inline-grid; place-items:center; width:44px; height:44px; padding:0; background:transparent; border:0; cursor:pointer; transition:background-color .25s}
+.rv-dot:active{transform:scale(.96)}
+.rv-dot-mark{display:block; width:8px; height:8px; border-radius:999px; background:var(--line-2); transition:background-color .25s}
+.rv-dot.is-active .rv-dot-mark{width:26px; background:var(--navy)}
+/* hover only where there is one (no grey square left behind on a phone after a tap) */
+@media (hover: hover){
+  .rv-dot:hover{background:var(--bg-2)}
+  .rv-dot:hover .rv-dot-mark{background:var(--navy)}
+}
 .rv-hero-cap{flex:1; min-width:0; display:flex; gap:10px; align-items:baseline; font-size:13.5px; line-height:1.4; color:var(--muted); text-wrap:balance}
 .rv-fig{font:italic 400 15px/1 var(--f-num); color:var(--navy); flex:none}
-.rv-ctrls{display:flex; gap:6px; margin-inline-start:auto}
-.rv-ctrl{display:inline-grid; place-items:center; width:44px; height:44px; padding:0; background:var(--bg); border:1px solid var(--line); color:var(--navy); cursor:pointer; transition:background-color .25s, border-color .25s}
-.rv-ctrl:hover{background:var(--bg-2); border-color:var(--line-2)}
-.rv-ctrl:active{transform:scale(.96)}
 
 /* ---------- 5. Facts ---------- */
 .rv-facts{border-block-end:1px solid var(--line)}
@@ -485,6 +496,8 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-sheet-phones a{display:inline-flex; align-items:center; min-height:44px; color:var(--navy); text-decoration:none; padding:0 6px; margin-inline-start:-6px}
 .rv-sheet-phones a:hover{background:var(--bg-2)}
 .rv-wa-sheet .rv-sheet-body{padding:20px var(--gutter)}
+/* the layer boxes take focus (tabindex -1) when plain text inside them is clicked, so Escape keeps working */
+.rv-sheet:focus-visible,.rv-wa:focus-visible{outline:none}
 
 /* short display paragraphs and small headings (2 to 4 lines): balanced, so no line ends on one or two words */
 .rv-zig-dt,.rv-fact-lbl,.rv-panel-body,.rv-vbody,.rv-opt-body,.rv-ded-body,.rv-cta-body{text-wrap:balance}
@@ -504,7 +517,10 @@ html:has(.rv-root){scroll-behavior:smooth}
 }
 @container rv (max-width: 1023px){
   /* the root is the query container and cannot restyle itself: set the header height on its children */
-  .rv-root > *{--hdr:68px}
+  .rv-root > *{--hdr:68px; --fab-room:80px}
+  /* floating WhatsApp button: icon only (56px, name kept for screen readers), so its lane stays narrow */
+  .rv-fab{padding:0; width:56px}
+  .rv-fab-txt{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
   .rv-header .rv-brand{--mark-h:44px; --mark-gap:10px}
   .rv-nav{display:none}
   .rv-menubtn{display:inline-flex}
@@ -596,12 +612,11 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-panel::before{inset-inline-start:0}
   .rv-actions{flex-direction:column; align-items:stretch}
   .rv-actions .rv-btn{width:100%}
+  /* the hero buttons often land at the foot of the first screen: keep them out of the floating button's lane */
+  .rv-actions{padding-inline-end:max(0px, calc(var(--fab-room) - var(--gutter)))}
   .rv-hero-bar-in{min-height:64px; gap:10px}
   .rv-hero-cap{display:none}
   .rv-count{min-width:0; font-size:20px}
-  .rv-segs{gap:2px}
-  .rv-seg{width:44px}
-  .rv-ctrls{gap:4px}
   .rv-facts-grid{grid-template-columns:minmax(0,1fr)}
   .rv-fact{padding-inline:0; padding-block:22px 24px; border-inline-start:0; border-block-start:1px solid var(--line)}
   .rv-fact-val{font-size:calc(42px * var(--ds))}
@@ -655,8 +670,6 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-fcol-phone{grid-column:2; grid-row:2}
   .rv-fcol-social{grid-column:2; grid-row:3}
   .rv-foot-top{grid-template-columns:minmax(0,1fr)}
-  .rv-fab{padding:0; width:56px}
-  .rv-fab-txt{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
   /* chooser becomes a full-screen sheet */
   .rv-scrim{display:none}
   .rv-wa{position:fixed; inset:0; width:auto; bottom:0; border:0; box-shadow:none; display:flex; flex-direction:column; overflow-y:auto; padding-block-end:env(safe-area-inset-bottom, 0px)}
@@ -679,7 +692,6 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-header .rv-brand-tag,.rv-sheet-head .rv-brand-tag{font-size:8px}
   .rv-langbtn{padding:0 10px}
   .rv-sheet-title{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
-  .rv-hero-bar-in{gap:6px}
   .rv-phone-acts{width:100%}
   .rv-phone-acts .rv-chip{flex:1; justify-content:center}
 }
@@ -694,13 +706,13 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-header .rv-brand{padding-inline-end:4px}
   .rv-langbtn{padding:0 6px; min-width:44px; justify-content:center}
   .rv-langbtn-txt,.rv-langbtn-txt:lang(ar){font-size:14px}
-  .rv-count{display:none}
 }
 
 /* ---------- 16. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
   .rv-root *,.rv-root *::before,.rv-root *::after{animation-duration:1ms!important; animation-iteration-count:1!important; transition-duration:1ms!important; transition-delay:0ms!important}
   .rv-kb,.rv-slide.is-active .rv-kb{transform:none}
+  .rv-stage.is-dragging .rv-slide.is-active{transform:none}
 }
 </style>
 </head>
@@ -735,9 +747,9 @@ html:has(.rv-root){scroll-behavior:smooth}
 
 <main class="rv-main" id="rv-main" tabIndex="-1">
 
-<section class="rv-hero" aria-roledescription="carousel" aria-label="{{x.carousel}}" onMouseEnter="{{heroEnter}}" onMouseLeave="{{heroLeave}}" onFocus="{{heroFocus}}" onBlur="{{heroBlur}}">
+<section class="rv-hero" aria-roledescription="carousel" aria-label="{{x.carousel}}" onPointerEnter="{{heroEnter}}" onPointerLeave="{{heroLeave}}" onFocus="{{heroFocus}}" onBlur="{{heroBlur}}">
   <h1 class="rv-vh">{{h1}}</h1>
-  <div class="rv-stage" aria-live="{{live}}">
+  <div class="rv-stage {{stageCls}}" aria-live="{{live}}" onPointerDown="{{dragStart}}" onPointerMove="{{dragMove}}" onPointerUp="{{dragEnd}}" onPointerCancel="{{dragCancel}}" onDragStart="{{noNativeDrag}}" onClickCapture="{{dragClick}}">
     <div class="rv-slide rv-slide-a {{sA.cls}}" role="group" aria-roledescription="slide" aria-label="{{sA.label}}" aria-hidden="{{sA.hidden}}">
       <div class="rv-slide-media rv-media-photo">
         <div class="rv-kb"><img class="rv-mirror" src="../img/s2-hero.webp" width="1672" height="941" alt="{{x.alt.hero}}" /></div>
@@ -782,18 +794,10 @@ html:has(.rv-root){scroll-behavior:smooth}
   <div class="rv-hero-bar">
     <div class="rv-wrap rv-hero-bar-in">
       <p class="rv-count" aria-hidden="true"><span>{{countCur}}</span><span class="rv-count-sep">/</span><span class="rv-count-tot">{{countTot}}</span></p>
-      <div class="rv-segs">
-        <sc-for list="{{dots}}" as="d" hint-placeholder-count="2"><button type="button" class="rv-seg {{d.cls}}" aria-label="{{d.label}}" aria-current="{{d.current}}" onClick="{{d.go}}"><span class="rv-seg-track"><span class="rv-seg-fill"></span></span></button></sc-for>
+      <div class="rv-dots">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="2"><button type="button" class="rv-dot {{d.cls}}" aria-label="{{d.label}}" aria-current="{{d.current}}" onClick="{{d.go}}"><span class="rv-dot-mark"></span></button></sc-for>
       </div>
       <p class="rv-hero-cap" aria-hidden="true"><span class="rv-fig">{{x.fig}} {{countCur}}</span><span>{{heroCap}}</span></p>
-      <div class="rv-ctrls">
-        <button type="button" class="rv-ctrl" aria-label="{{t.hero.prev}}" onClick="{{prev}}"><svg class="rv-ic rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
-        <button type="button" class="rv-ctrl" aria-label="{{pauseLabel}}" onClick="{{togglePause}}">
-          <sc-if value="{{showPauseIcon}}" hint-placeholder-val="{{ true }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="4" height="16" rx="1"></rect><rect x="6" y="4" width="4" height="16" rx="1"></rect></svg></sc-if>
-          <sc-if value="{{showPlayIcon}}" hint-placeholder-val="{{ false }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></sc-if>
-        </button>
-        <button type="button" class="rv-ctrl" aria-label="{{t.hero.next}}" onClick="{{next}}"><svg class="rv-ic rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
-      </div>
     </div>
   </div>
 </section>
@@ -1095,7 +1099,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 </footer>
 
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
-<div class="rv-sheet rv-menu" role="dialog" aria-modal="true" aria-labelledby="rv-menu-title" onKeyDown="{{layerKey}}" ref="{{setMenuEl}}">
+<div class="rv-sheet rv-menu" role="dialog" aria-modal="true" aria-labelledby="rv-menu-title" tabIndex="-1" onKeyDown="{{layerKey}}" ref="{{setMenuEl}}">
   <div class="rv-sheet-head">
     <a class="rv-brand" href="#top" aria-label="{{brandLabel}}" onClick="{{brandSheetGo}}">
       <img class="rv-brand-mark" src="../img/emblem.svg" alt="" width="52" height="44" decoding="async" />
@@ -1118,7 +1122,7 @@ html:has(.rv-root){scroll-behavior:smooth}
 <div class="rv-dock">
   <sc-if value="{{waOpen}}" hint-placeholder-val="{{ false }}">
     <button type="button" class="rv-scrim" tabIndex="-1" aria-hidden="true" onClick="{{closeLayer}}"></button>
-    <div class="rv-wa" role="dialog" aria-modal="true" aria-labelledby="rv-wa-title" aria-describedby="rv-wa-sub" onKeyDown="{{layerKey}}" ref="{{setWaEl}}">
+    <div class="rv-wa" role="dialog" aria-modal="true" aria-labelledby="rv-wa-title" aria-describedby="rv-wa-sub" tabIndex="-1" onKeyDown="{{layerKey}}" ref="{{setWaEl}}">
       <div class="rv-wa-head">
         <div>
           <h2 class="rv-wa-title" id="rv-wa-title">{{t.whatsapp.title}}</h2>
@@ -1701,13 +1705,17 @@ class Component extends DCLogic {
     let ul = null;
     try { ul = new URLSearchParams(window.location.search).get('lang'); } catch (e) { ul = null; }
     this.urlLang = ul === 'ar' || ul === 'en' ? ul : null;
+    /* reduced motion: the slideshow never advances by itself (swipe and dots still work) */
+    let rm = false;
+    try { rm = !!window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { rm = false; }
     this.state = {
-      lang: null, slide: 0, paused: false, hover: false, focusIn: false, reduced: false,
+      lang: null, slide: 0, stopped: false, hover: false, focusIn: false, dragging: false, reduced: rm,
       menuOpen: false, waOpen: false, locked: false, openCard: null,
       form: { name: '', email: '', phone: '', service: '', message: '' },
       errors: {}, sending: false, sent: false
     };
     this.timer = null; this.remaining = RV_DELAY; this.startedAt = 0;
+    this.drag = null; this.swallow = false; this.swallowT = null;
     this.opener = null; this.expectPop = false; this.pendingNav = null; this.navT = null; this.sendT = null;
     this.rootEl = null; this.menuEl = null; this.waEl = null; this.menuCloseEl = null; this.waCloseEl = null; this.sentEl = null;
     this.setRoot = (el) => { this.rootEl = el; };
@@ -1721,6 +1729,16 @@ class Component extends DCLogic {
     this.layerKey = this.layerKey.bind(this);
     this.closeLayer = this.closeLayer.bind(this);
     this.submit = this.submit.bind(this);
+    this.dragStart = this.dragStart.bind(this);
+    this.dragMove = this.dragMove.bind(this);
+    this.dragEnd = this.dragEnd.bind(this);
+    this.dragCancel = this.dragCancel.bind(this);
+    this.dragClick = this.dragClick.bind(this);
+    this.noNativeDrag = (e) => { if (e && e.preventDefault) e.preventDefault(); };
+    this.heroEnter = this.heroEnter.bind(this);
+    this.heroLeave = this.heroLeave.bind(this);
+    this.heroFocus = this.heroFocus.bind(this);
+    this.heroBlur = this.heroBlur.bind(this);
     this.on = {};
     RV_FIELDS.forEach((k) => { this.on[k] = (e) => this.setField(k, e && e.target ? e.target.value : ''); });
   }
@@ -1731,17 +1749,37 @@ class Component extends DCLogic {
       if (this.mq.addEventListener) this.mq.addEventListener('change', this.onMq); else if (this.mq.addListener) this.mq.addListener(this.onMq);
     } catch (e) { this.mq = null; }
     window.addEventListener('popstate', this.onPop);
-    this.setState({ reduced: !!(this.mq && this.mq.matches) }, () => this.syncTimer());
+    this.onMq({ matches: !!(this.mq && this.mq.matches) });
   }
 
   componentWillUnmount() {
-    clearTimeout(this.timer); clearTimeout(this.navT); clearTimeout(this.sendT);
+    clearTimeout(this.timer); clearTimeout(this.navT); clearTimeout(this.sendT); clearTimeout(this.pickT); clearTimeout(this.swallowT);
     window.removeEventListener('popstate', this.onPop);
     try { if (this.mq) { if (this.mq.removeEventListener) this.mq.removeEventListener('change', this.onMq); else if (this.mq.removeListener) this.mq.removeListener(this.onMq); } } catch (e) {}
     this.unlock();
   }
 
-  onMq(e) { this.setState({ reduced: !!(e && e.matches) }, () => this.syncTimer()); }
+  /* reduced motion holds the slideshow (see holding()); turning it off later lets autoplay run, unless the
+     visitor already took over with a swipe or a dot */
+  onMq(e) {
+    const r = !!(e && e.matches);
+    this.setState({ reduced: r }, () => this.syncTimer());
+  }
+
+  setLang(next) {
+    this.setState({ lang: next });
+    this.langToUrl(next);
+  }
+  /* keep the chosen language in the URL (?lang=) so a reload or a shared link shows it; replaceState keeps
+     history.state (an open layer's Back sentinel), the other query parameters and the hash */
+  langToUrl(l) {
+    try {
+      const u = new URL(window.location.href);
+      if (u.searchParams.get('lang') === l) return;
+      u.searchParams.set('lang', l);
+      window.history.replaceState(window.history.state, '', u.href);
+    } catch (e) { /* the host page may not allow URL changes */ }
+  }
 
   lang() {
     const l = this.state.lang || this.urlLang || this.props.lang;
@@ -1749,9 +1787,12 @@ class Component extends DCLogic {
   }
 
   /* ---- slider ---- */
+  /* Autoplay runs only while nothing holds it: never under reduced motion, never again once the visitor has
+     swiped or used a dot (`stopped`), and not while a mouse is over the hero, keyboard focus is in it, a drag
+     runs or a layer is open. */
   holding() {
     const s = this.state;
-    return !!(s.paused || s.hover || s.focusIn || s.reduced || s.menuOpen || s.waOpen);
+    return !!(s.reduced || s.stopped || s.hover || s.focusIn || s.dragging || s.menuOpen || s.waOpen);
   }
   syncTimer() {
     const hold = this.holding();
@@ -1760,16 +1801,107 @@ class Component extends DCLogic {
       this.remaining = Math.max(300, this.remaining - (Date.now() - this.startedAt));
     } else if (!hold && !this.timer) {
       this.startedAt = Date.now();
-      this.timer = setTimeout(() => { this.timer = null; this.goTo(this.state.slide + 1, true); }, this.remaining);
+      this.timer = setTimeout(() => { this.timer = null; this.goTo(this.state.slide + 1, false); }, this.remaining);
     }
   }
-  goTo(i) {
+  /* by: true when the visitor asked (swipe, dot): autoplay then stops for good. extra, done: more state to set
+     in the same update and a step to run after it (the end of a drag) */
+  goTo(i, by, extra, done) {
     const n = 2;
     const nx = ((i % n) + n) % n;
-    if (nx === this.state.slide) return;
+    if (nx === this.state.slide && !by) return;
     if (this.timer) { clearTimeout(this.timer); this.timer = null; }
     this.remaining = RV_DELAY;
-    this.setState({ slide: nx }, () => this.syncTimer());
+    const patch = Object.assign({ slide: nx }, extra || {});
+    if (by) patch.stopped = true;
+    this.setState(patch, () => { if (done) done(); this.syncTimer(); });
+  }
+
+  /* hover holds autoplay for a mouse only (a tap must not leave it held), focus for keyboard focus only */
+  heroEnter(e) {
+    if (!e || e.pointerType !== 'mouse' || this.state.hover) return;
+    this.setState({ hover: true }, () => this.syncTimer());
+  }
+  heroLeave(e) {
+    if (!this.state.hover || (e && e.pointerType && e.pointerType !== 'mouse')) return;
+    this.setState({ hover: false }, () => this.syncTimer());
+  }
+  heroFocus(e) {
+    let kb = false;
+    try { kb = !!(e && e.target && e.target.matches(':focus-visible')); } catch (er) { kb = false; }
+    if (kb !== this.state.focusIn) this.setState({ focusIn: kb }, () => this.syncTimer());
+  }
+  heroBlur(e) {
+    const to = e && e.relatedTarget;
+    if (to && e.currentTarget && e.currentTarget.contains(to)) return;
+    if (this.state.focusIn) this.setState({ focusIn: false }, () => this.syncTimer());
+  }
+
+  /* ---- swipe (pointer events on the slides: touch, pen and mouse) ----
+     A drag counts once it has moved 10 px, mostly sideways; a mostly vertical one is left to the page scroll.
+     Only then is the pointer captured, so a plain tap or click on a link or button inside still reaches it,
+     while the click that ends a real drag is dropped (dragClick). On release, 40 px or a quick 24 px flick
+     changes the slide: towards the start edge goes forward (left in English, right in Arabic). */
+  dragStart(e) {
+    /* a new press is a new gesture: a click that follows it is never the end of the previous drag */
+    this.swallow = false; clearTimeout(this.swallowT);
+    if (!e.isPrimary) { if (this.drag) this.dragCancel({ pointerId: this.drag.id }); return; }
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    this.drag = { id: e.pointerId, el: e.currentTarget, mouse: e.pointerType === 'mouse', x: e.clientX, y: e.clientY, t: Date.now(), on: false };
+  }
+  dragMove(e) {
+    const d = this.drag;
+    if (!d || e.pointerId !== d.id) return;
+    if (d.mouse && !(e.buttons & 1)) { this.dragCancel(e); return; }
+    const dx = e.clientX - d.x, dy = e.clientY - d.y;
+    if (!d.on) {
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      if (Math.abs(dx) <= Math.abs(dy) * 1.2) { this.drag = null; return; }
+      d.on = true;
+      try { d.el.setPointerCapture(d.id); } catch (er) { /* the click guard below still applies */ }
+      this.setState({ dragging: true }, () => this.syncTimer());
+    }
+    if (d.mouse) { try { const sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (er) {} }
+    if (!this.state.reduced) {
+      /* the slide follows the finger, damped (at most 56 px) */
+      const f = (dx < 0 ? -1 : 1) * 56 * (1 - Math.exp(-Math.abs(dx) / 160));
+      try { d.el.style.setProperty('--rv-dx', f.toFixed(1) + 'px'); } catch (er) {}
+    }
+  }
+  dragEnd(e) {
+    const d = this.drag;
+    if (!d || e.pointerId !== d.id) return;
+    this.drag = null;
+    if (!d.on) return;
+    /* drop the click this release would fire (it lands on the slides while captured; this also covers links) */
+    this.swallow = true; clearTimeout(this.swallowT);
+    this.swallowT = setTimeout(() => { this.swallow = false; }, 0);
+    const dx = e.clientX - d.x;
+    const ax = Math.abs(dx);
+    if (ax >= 40 || (ax >= 24 && Date.now() - d.t < 250)) {
+      const fwd = this.lang() === 'ar' ? dx > 0 : dx < 0;
+      this.goTo(this.state.slide + (fwd ? 1 : -1), true, { dragging: false }, () => this.dragReset(d.el));
+    } else {
+      this.setState({ dragging: false }, () => { this.dragReset(d.el); this.syncTimer(); });
+    }
+  }
+  dragCancel(e) {
+    const d = this.drag;
+    if (!d || (e && e.pointerId !== d.id)) return;
+    this.drag = null;
+    if (!d.on) return;
+    try { if (d.el.hasPointerCapture && d.el.hasPointerCapture(d.id)) d.el.releasePointerCapture(d.id); } catch (er) {}
+    this.setState({ dragging: false }, () => { this.dragReset(d.el); this.syncTimer(); });
+  }
+  /* runs after the drag class is gone, so the slide eases back from where the finger left it */
+  dragReset(el) {
+    try { el.style.removeProperty('--rv-dx'); if (!el.getAttribute('style')) el.removeAttribute('style'); } catch (er) {}
+  }
+  /* capture phase on the slides: the click that ends a real drag never reaches a link or button inside, even
+     if the pointer capture did not take; keyboard clicks (detail 0) always pass */
+  dragClick(e) {
+    if (!this.swallow || !e || e.detail === 0) return;
+    e.preventDefault(); e.stopPropagation();
   }
 
   /* ---- layers (menu sheet, WhatsApp chooser) ---- */
@@ -1777,27 +1909,51 @@ class Component extends DCLogic {
     const w = this.rootEl ? this.rootEl.clientWidth : (window.innerWidth || 1440);
     return w <= 640;
   }
-  lock() {
+  /* A classic scrollbar disappears under overflow:hidden and the page would widen by its width, which can flip
+     a container query behind the layer (phone to tablet layout, with a scroll jump). Desktop popover: keep the
+     scrollbar's room (scrollbar-gutter), so nothing behind it moves. Full-screen sheets must span the whole
+     window (no empty strip), so the page keeps its width instead: the root is pinned to it while locked. */
+  lock(popover) {
     if (this.lockedDoc) return;
-    try { const de = document.documentElement; this.prevOverflow = de.style.overflow; de.style.overflow = 'hidden'; this.lockedDoc = true; } catch (e) {}
+    try {
+      const de = document.documentElement;
+      this.prevOverflow = de.style.overflow; this.prevGutter = de.style.scrollbarGutter;
+      this.pinEl = null;
+      if (window.innerWidth > de.clientWidth) {
+        if (popover) de.style.scrollbarGutter = 'stable';
+        else if (this.rootEl) {
+          this.pinEl = this.rootEl; this.prevWidth = this.rootEl.style.width;
+          this.rootEl.style.width = this.rootEl.getBoundingClientRect().width + 'px';
+        }
+      }
+      de.style.overflow = 'hidden'; this.lockedDoc = true;
+    } catch (e) {}
   }
   unlock() {
     if (!this.lockedDoc) return;
-    try { document.documentElement.style.overflow = this.prevOverflow || ''; } catch (e) {}
+    try {
+      const de = document.documentElement;
+      de.style.overflow = this.prevOverflow || ''; de.style.scrollbarGutter = this.prevGutter || '';
+      const el = this.pinEl; this.pinEl = null;
+      if (el) { el.style.width = this.prevWidth || ''; if (!el.getAttribute('style')) el.removeAttribute('style'); }
+    } catch (e) {}
     this.lockedDoc = false;
   }
   openLayer(key, e) {
     if (this.state.menuOpen || this.state.waOpen) return;
+    /* the menu is always a full-screen sheet; the WhatsApp chooser is a popover above 640 px */
+    const popover = key === 'waOpen' && !this.isCompact();
     this.opener = (e && e.currentTarget) || document.activeElement;
     try {
       const st = window.history.state;
       const base = st && typeof st === 'object' ? st : {};
       window.history.pushState(Object.assign({}, base, { __fnBack: 1 }), '');
     } catch (err) { /* no back support */ }
-    const sheet = key === 'menuOpen' || this.isCompact();
-    const patch = { locked: sheet }; patch[key] = true;
+    /* every layer locks page scroll (sheets and the desktop popover alike), so the page cannot move behind it and
+       the Back-sentinel pop on close leaves the visitor where they are */
+    const patch = { locked: true }; patch[key] = true;
     this.setState(patch, () => {
-      if (sheet) this.lock();
+      this.lock(popover);
       const el = key === 'menuOpen' ? this.menuCloseEl : this.waCloseEl;
       if (el) { try { el.focus({ preventScroll: true }); } catch (er) { el.focus(); } }
       this.syncTimer();
@@ -1833,6 +1989,10 @@ class Component extends DCLogic {
     });
   }
   onPop() {
+    /* a Back lands on an entry with its own URL (for example the one under a layer's sentinel, after the language
+       was switched in the open menu, or one from before a reload of ?lang=ar): keep the shown language in it */
+    const l = this.state.lang || this.urlLang;
+    if (l) this.langToUrl(l);
     if (this.expectPop) {
       this.expectPop = false; clearTimeout(this.navT);
       const f = this.pendingNav; this.pendingNav = null;
@@ -1850,7 +2010,8 @@ class Component extends DCLogic {
       .filter((el) => el.getClientRects().length > 0);
     if (!list.length) return;
     const first = list[0]; const last = list[list.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    /* the box itself holds focus after a click on plain text inside it (tabindex -1): Shift+Tab wraps from there too */
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === box)) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
   scrollToId(id) {
@@ -1901,8 +2062,12 @@ class Component extends DCLogic {
       const errors = Object.assign({}, s.errors); delete errors.service;
       return { form, errors, sent: false };
     }, () => {
-      const el = document.getElementById('rv-f-service');
-      if (el) { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+      /* wait for the link's own fragment navigation, which moves focus to the (unfocusable) target and so to <body> */
+      clearTimeout(this.pickT);
+      this.pickT = setTimeout(() => {
+        const el = document.getElementById('rv-f-service');
+        if (el) { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+      }, 0);
     });
   }
 
@@ -1982,7 +2147,7 @@ class Component extends DCLogic {
     });
 
     const values = ((t.values && t.values.items) || []).map((v, i) => Object.assign({}, v, { num: rvPad(i + 1) }));
-    const rootCls = [holding ? 'is-holding' : '', s.reduced ? 'is-static' : '', s.locked ? 'is-locked' : ''].join(' ');
+    const rootCls = s.locked ? 'is-locked' : '';
 
     return {
       lang, dir: lang === 'ar' ? 'rtl' : 'ltr', t, x, c, rootCls,
@@ -1990,7 +2155,7 @@ class Component extends DCLogic {
       setMenuClose: this.setMenuClose, setWaClose: this.setWaClose, setSentEl: this.setSentEl,
       brandLabel: 'Freight Net SARL, ' + t.nav.home,
       langBtnLang: lang === 'ar' ? 'en' : 'ar',
-      toggleLang: () => this.setState({ lang: lang === 'ar' ? 'en' : 'ar' }),
+      toggleLang: () => this.setLang(lang === 'ar' ? 'en' : 'ar'),
       navItems, brandSheetGo: navItems[0].sheetGo,
       menuOpen: s.menuOpen, waOpen: s.waOpen,
       menuExp: s.menuOpen ? 'true' : 'false', waExp: s.waOpen ? 'true' : 'false',
@@ -2001,17 +2166,14 @@ class Component extends DCLogic {
       h1: (t.legal || 'Freight Net SARL') + ' · ' + (t.tagline || ''),
       sA: mkSlide(0), sB: mkSlide(1),
       live: holding ? 'polite' : 'off',
-      dots: slides.map((sl, i) => ({ cls: s.slide === i ? 'is-active' : '', current: s.slide === i ? 'true' : 'false', label: t.hero.goTo + ' ' + (i + 1), go: () => this.goTo(i) })),
+      /* aria-current only on the current dot (undefined leaves the attribute out) */
+      dots: slides.map((sl, i) => ({ cls: s.slide === i ? 'is-active' : '', current: s.slide === i ? 'true' : undefined, label: t.hero.goTo + ' ' + (i + 1), go: () => this.goTo(i, true) })),
       countCur: rvPad(s.slide + 1), countTot: rvPad(nSlides),
       heroCap: s.slide === 0 ? x.cap.hero : x.cap.port,
-      prev: () => this.goTo(s.slide - 1), next: () => this.goTo(s.slide + 1),
-      togglePause: () => this.setState((st) => ({ paused: !st.paused }), () => this.syncTimer()),
-      pauseLabel: s.paused ? t.hero.play : t.hero.pause,
-      showPauseIcon: !s.paused, showPlayIcon: !!s.paused,
-      heroEnter: () => this.setState({ hover: true }, () => this.syncTimer()),
-      heroLeave: () => this.setState({ hover: false }, () => this.syncTimer()),
-      heroFocus: () => { if (!this.state.focusIn) this.setState({ focusIn: true }, () => this.syncTimer()); },
-      heroBlur: (e) => { const to = e && e.relatedTarget; if (to && e.currentTarget && e.currentTarget.contains(to)) return; this.setState({ focusIn: false }, () => this.syncTimer()); },
+      stageCls: s.dragging ? 'is-dragging' : '',
+      dragStart: this.dragStart, dragMove: this.dragMove, dragEnd: this.dragEnd, dragCancel: this.dragCancel,
+      dragClick: this.dragClick, noNativeDrag: this.noNativeDrag,
+      heroEnter: this.heroEnter, heroLeave: this.heroLeave, heroFocus: this.heroFocus, heroBlur: this.heroBlur,
       hServices: rvSplit(t.services.title), hOcean: rvSplit(t.ocean.title), hValues: rvSplit(t.values.title),
       hAbout: rvSplit(t.about.title), hForm: rvSplit(f.title), hCta: rvSplit(t.cta.title), hContact: rvSplit(t.contactSection.title),
       zig, arc, svcTotal: rvPad(total), glyph: lang === 'ar' ? 'و' : '&',

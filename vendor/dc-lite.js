@@ -328,6 +328,9 @@
       var dir = el.getAttribute('dir');
       if (lang && html.getAttribute('lang') !== lang) html.setAttribute('lang', lang);
       if (dir && html.getAttribute('dir') !== dir) html.setAttribute('dir', dir);
+      // tab title follows the language when the page provides both (preview pages built by build.py)
+      var t = document.querySelector('meta[name="dc-title-' + (/^ar\b/.test(lang || '') ? 'ar' : 'en') + '"]');
+      if (t && t.content && document.title !== t.content) document.title = t.content;
     }
     sync();
     try {

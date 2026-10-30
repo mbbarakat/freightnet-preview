@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#F5F7FB">
 <title>Freight Net SARL · Design C: Clay (preview)</title>
+<meta name="dc-title-en" content="Freight Net SARL · Design C: Clay (preview)">
+<meta name="dc-title-ar" content="فريت نت ش.م.م. · التصميم C: Clay (معاينة)">
 <meta name="description" content="Website design preview for Freight Net SARL. Friendly and modern, with rounded cards and 3D illustrations.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Freight Net SARL · Design C: Clay (preview)">
@@ -19,7 +21,7 @@
 <link rel="apple-touch-icon" href="../img/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';}}catch(e){}})();</script>
+<script>(function(){try{var l=new URLSearchParams(location.search).get('lang');if(l==='ar'){var d=document.documentElement;d.lang='ar';d.dir='rtl';document.title="\u0641\u0631\u064a\u062a \u0646\u062a \u0634.\u0645.\u0645. \u00b7 \u0627\u0644\u062a\u0635\u0645\u064a\u0645 C: Clay (\u0645\u0639\u0627\u064a\u0646\u0629)";}}catch(e){}})();</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600..800&amp;family=Montserrat:wght@700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;700&amp;display=swap">
 <style>
 body{margin:0}
@@ -108,12 +110,9 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 .cl-btn--block{width:100%}
 .cl-btn .cl-i{transition:transform .3s var(--bounce)}
 .cl-btn[disabled]{cursor:progress;opacity:.82}
-.cl-round{width:48px;height:48px;border-radius:50%;border:0;background:#fff;color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none;box-shadow:var(--clay-soft);transition:background-color .2s,transform .25s var(--bounce)}
-.cl-round:active{transform:scale(.94)}
 @media (hover:hover){
   .cl-btn:hover{background:var(--b-bg-h)}
   .cl-btn:hover .cl-go{transform:translateX(3px)}
-  .cl-round:hover{background:var(--bg-3)}
 }
 
 /* ---------- 5. Header ---------- */
@@ -200,7 +199,11 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 
 /* ---------- 6. Hero ---------- */
 .cl-hero{padding-block-start:6px}
-.cl-hero__panel{position:relative;overflow:hidden;isolation:isolate;background:var(--sky);border-radius:var(--r-xl);display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"art" "copy" "actions";padding:18px 20px 24px;row-gap:6px}
+/* the whole panel is the swipe surface: vertical pans and pinch-zoom stay with the browser, sideways drags come
+   to the pointer handlers. While a drag is under way the current words and picture follow it a little. */
+.cl-hero__panel{position:relative;overflow:hidden;isolation:isolate;background:var(--sky);border-radius:var(--r-xl);display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"art" "copy" "actions";padding:18px 20px 24px;row-gap:16px;touch-action:pan-y pinch-zoom}
+.cl-hero__panel.is-drag{-webkit-user-select:none;user-select:none;cursor:grabbing}
+.cl-hero__panel.is-drag .cl-slide.is-active,.cl-hero__panel.is-drag .cl-hero__img.is-active{transform:translateX(var(--cl-dx,0px));transition:none}
 .cl-hero__copy{grid-area:copy;display:grid;align-self:end;position:relative;z-index:1}
 .cl-slide{grid-area:1 / 1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:18px;opacity:0;visibility:hidden;transform:translateX(calc(var(--cl-x) * 28px));transition:opacity .3s var(--out),transform .3s var(--out),visibility 0s linear .3s}
 .cl-slide.is-active{opacity:1;visibility:visible;transform:none;transition-delay:0s}
@@ -208,22 +211,31 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 .cl-chip::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:inset -2px -2px 0 rgb(0 0 0 / .16)}
 .cl-hero__title{font:800 var(--t-hero)/.97 var(--f-display);letter-spacing:-.04em;color:var(--navy);text-wrap:balance;max-width:11.5em}
 .cl-hero__body{font-size:clamp(1.05rem,.95rem + .45cqi,1.28rem);line-height:1.55;color:var(--body);max-width:31em}
-.cl-hero__actions{grid-area:actions;display:flex;flex-direction:column;gap:22px;margin-top:26px;position:relative;z-index:1}
+.cl-hero__actions{grid-area:actions;display:flex;flex-direction:column;gap:22px;margin-top:16px;position:relative;z-index:1}
 .cl-hero__ctas{display:flex;flex-wrap:wrap;gap:12px}
-.cl-hero__ctrl{display:flex;align-items:center;gap:6px}
-.cl-dots{display:flex;align-items:center}
-.cl-dot{width:44px;height:44px;display:grid;place-items:center;border:0;padding:0;background:none;cursor:pointer;border-radius:50%}
-.cl-dot__pill{position:relative;display:block;width:14px;height:14px;border-radius:var(--pill);border:2.5px solid var(--navy);overflow:hidden;transition:background-color .2s}
-.cl-dot.is-active .cl-dot__pill{width:42px;background:rgb(255 255 255 / .55)}
-.cl-dot__fill{position:absolute;inset:0;background:var(--navy);transform:scaleX(0);transform-origin:left center}
+/* slide picker: one 44px button per slide in a white pill tray that sits on the art's orbit, centred under the
+   picture. It must never share the WhatsApp button's lane at the inline end: that only gets close in the two-column
+   layout just above 860px (English, where the button is widest), so there the tray leans toward the inline start
+   by up to 30px, easing back to centred by 970px (see the 860px container query). The current slide's
+   pill is long and navy; while the slideshow plays it fills with crimson over 7s, and the end of that fill is
+   what moves to the next slide (fillDone in the script), so progress and slide change always agree. Once the
+   slideshow has stopped for good (a dot, a swipe, reduced motion) the current pill is solid crimson. */
+.cl-dots{position:absolute;z-index:2;inset-block-end:0;inset-inline:0;width:max-content;margin-inline:auto;display:flex;align-items:center;padding-inline:4px;background:#fff;border-radius:var(--pill);box-shadow:var(--clay-soft)}
+.cl-dot{width:44px;height:44px;display:grid;place-items:center;border:0;padding:0;background:none;cursor:pointer;border-radius:var(--pill)}
+.cl-dot.is-active{width:62px}
+.cl-dot:focus-visible{outline-offset:-3px}
+.cl-dot__pill{position:relative;display:block;width:12px;height:12px;border-radius:var(--pill);background:var(--edge);overflow:hidden;transition:background-color .2s}
+.cl-dot.is-active .cl-dot__pill{width:34px;background:var(--navy)}
+.cl-dot.is-active .cl-dot__pill::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 -2px 0 rgb(0 0 0 / .22),inset 0 1px 0 rgb(255 255 255 / .18)}
+.cl-dot__fill{position:absolute;inset:0;background:var(--crimson);transform:scaleX(0);transform-origin:left center}
 .cl-root[dir="rtl"] .cl-dot__fill{transform-origin:right center}
 .cl-dot.is-active .cl-dot__fill{animation:cl-fill 7s linear forwards;animation-play-state:paused}
 .cl-root.is-playing .cl-dot.is-active .cl-dot__fill{animation-play-state:running}
-.cl-root.is-still .cl-dot.is-active .cl-dot__fill{animation:none;transform:scaleX(1)}
-.cl-hero__sep{width:1px;height:28px;background:rgb(55 61 116 / .25);margin-inline:8px}
-@media (hover:hover){ .cl-dot:hover .cl-dot__pill{background:#fff} }
+.cl-root.is-still .cl-dot.is-active .cl-dot__fill{animation:none;transform:none}
+@media (hover:hover){ .cl-dot:not(.is-active):hover .cl-dot__pill{background:var(--navy)} }
 /* art */
 .cl-hero__art{grid-area:art;position:relative;display:grid;place-items:center;width:min(100%,330px);aspect-ratio:1;justify-self:center}
+@media (hover:hover) and (pointer:fine){ .cl-hero__art{cursor:grab} }
 .cl-hero__float{grid-area:1 / 1;width:100%;height:100%;display:grid;place-items:center;animation:cl-float 1.5s var(--out) .15s both}
 .cl-hero__halo{position:absolute;inset:9%;border-radius:50%;background:rgb(255 255 255 / .42)}
 .cl-hero__orbit{position:absolute;inset:1.5%;border-radius:50%;border:2.5px dashed rgb(255 255 255 / .9)}
@@ -243,16 +255,13 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-hero__panel{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);grid-template-areas:"copy art" "actions art";column-gap:28px;row-gap:0;padding:clamp(44px,5cqi,76px);padding-block-end:clamp(96px,8cqi,124px);min-height:560px}
   .cl-hero__art{width:min(100%,560px);align-self:center}
   .cl-hero__actions{margin-top:34px}
+  /* the tray centres between its insets, so an end inset of X moves it X/2 toward the start: 30px at 860, 0 from 970 */
+  .cl-dots{inset-inline-end:clamp(0px,(970px - 100cqi) * .55,64px)}
 }
 @container cl (max-width:519px){
   .cl-hero__ctas .cl-btn{width:100%}
   .cl-hero__panel{border-radius:32px}
   .cl-slide{gap:14px}
-}
-@container cl (max-width:359px){
-  .cl-hero__sep{display:none}
-  .cl-hero__ctrl{gap:2px}
-  .cl-hero__ctrl .cl-round{width:44px;height:44px}
 }
 .cl-root[lang="ar"] .cl-hero__title{font-weight:700;letter-spacing:0;line-height:1.28;font-size:calc(var(--t-hero) * .84)}
 .cl-root[lang="ar"] .cl-chip{letter-spacing:0;text-transform:none;font-weight:500;font-size:14px}
@@ -724,7 +733,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
 .cl-fab.is-narrow .cl-fab__label{display:none}
 .cl-scrim{position:fixed;inset:0;z-index:1;margin:0;padding:0;border:0;background:rgb(0 0 0 / .45);cursor:pointer;animation:cl-fade .2s var(--out) both}
 .cl-wa{z-index:2;background:#fff;color:var(--body)}
-.cl-wa--pop{position:absolute;inset-block-end:calc(18px + 58px + 14px + env(safe-area-inset-bottom));inset-inline-end:18px;width:392px;max-width:calc(100vw - 36px);padding:22px;border-radius:30px;box-shadow:0 30px 60px -24px rgb(16 20 40 / .5);animation:cl-pop-in .22s var(--out) both}
+.cl-wa--pop{position:absolute;inset-block-end:calc(18px + 58px + 14px + env(safe-area-inset-bottom));inset-inline-end:18px;width:392px;max-width:calc(100vw - 36px);padding:22px;border-radius:30px;box-shadow:0 30px 60px -24px rgb(16 20 40 / .5);animation:cl-pop-in .22s var(--out) both;max-height:calc(100vh - 102px - env(safe-area-inset-bottom));max-height:calc(100dvh - 102px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain}
 .cl-wa--sheet{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);animation:cl-sheet-in .22s var(--out) both}
 .cl-wa__head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
 .cl-wa--sheet .cl-wa__head{position:sticky;top:0;align-items:center;min-height:68px;padding:10px 14px 10px 22px;background:var(--bg)}
@@ -760,7 +769,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
 @keyframes cl-flash{0%,100%{box-shadow:inset 0 0 0 1.5px var(--edge)}25%,60%{box-shadow:0 0 0 5px rgb(255 200 69 / .9)}}
 @media (prefers-reduced-motion: reduce){
   .cl-root *,.cl-root *::before,.cl-root *::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
-  .cl-dot.is-active .cl-dot__fill{animation:none!important;transform:scaleX(1)}
+  .cl-dot.is-active .cl-dot__fill{animation:none!important;transform:none}
 }
 </style>
 </head>
@@ -802,9 +811,9 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
 
 <main id="main" tabIndex="-1">
 
-<section class="cl-hero cl-wrap" aria-roledescription="carousel" aria-label="{{x.heroLabel}}" onMouseEnter="{{heroEnter}}" onMouseLeave="{{heroLeave}}" onFocus="{{heroFocus}}" onBlur="{{heroBlur}}">
+<section class="cl-hero cl-wrap" aria-roledescription="carousel" aria-label="{{x.heroLabel}}" onPointerEnter="{{heroEnter}}" onPointerLeave="{{heroLeave}}" onFocus="{{heroFocus}}" onBlur="{{heroBlur}}">
   <h1 class="cl-sr">{{h1}}</h1>
-  <div class="cl-hero__panel">
+  <div class="cl-hero__panel {{panelCls}}" onPointerDown="{{swipeDown}}" onPointerMove="{{swipeMove}}" onPointerUp="{{swipeUp}}" onPointerCancel="{{swipeCancel}}" onLostPointerCapture="{{swipeLost}}" onDragStart="{{noDrag}}">
     <div class="cl-hero__copy" aria-live="{{heroLive}}">
       <sc-for list="{{slides}}" as="s" hint-placeholder-count="2">
         <div class="cl-slide {{s.cls}}" role="group" aria-roledescription="slide" aria-label="{{s.label}}" aria-hidden="{{s.ariaHidden}}">
@@ -825,27 +834,18 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
         <img class="cl-hero__img cl-hero__img--ship {{slides.1.cls}}" src="../img/s3-ocean.webp" alt="{{slides.1.alt}}" aria-hidden="{{slides.1.ariaHidden}}" width="800" height="800" decoding="async">
       </div>
       <span class="cl-peb cl-peb--sun" aria-hidden="true"></span>
+      <div class="cl-dots" onAnimationEnd="{{fillDone}}">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="2">
+          <button class="cl-dot {{d.cls}}" type="button" onClick="{{d.go}}" aria-label="{{d.label}}" aria-current="{{d.current}}"><span class="cl-dot__pill" aria-hidden="true"><span class="cl-dot__fill"></span></span></button>
+        </sc-for>
+      </div>
     </div>
     <div class="cl-hero__actions">
       <div class="cl-hero__ctas">
-        <a class="cl-btn" href="#contact">{{t.hero.ctaQuote}}<svg class="cl-i cl-flip cl-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+        <a class="cl-btn" href="#contact" onClick="{{heroLink}}">{{t.hero.ctaQuote}}<svg class="cl-i cl-flip cl-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
         <button class="cl-btn cl-btn--light" type="button" onClick="{{openWaHero}}" aria-haspopup="dialog" aria-expanded="{{waExpHero}}">
           <svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path><g transform="translate(7.4 6.9) scale(.42)" stroke-width="4.6"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></g></svg>
           {{t.hero.ctaWhatsapp}}
-        </button>
-      </div>
-      <div class="cl-hero__ctrl">
-        <button class="cl-round" type="button" onClick="{{prevSlide}}" aria-label="{{t.hero.prev}}"><svg class="cl-i cl-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg></button>
-        <div class="cl-dots">
-          <sc-for list="{{dots}}" as="d" hint-placeholder-count="2">
-            <button class="cl-dot {{d.cls}}" type="button" onClick="{{d.go}}" aria-label="{{d.label}}" aria-current="{{d.current}}"><span class="cl-dot__pill"><span class="cl-dot__fill"></span></span></button>
-          </sc-for>
-        </div>
-        <button class="cl-round" type="button" onClick="{{nextSlide}}" aria-label="{{t.hero.next}}"><svg class="cl-i cl-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg></button>
-        <span class="cl-hero__sep" aria-hidden="true"></span>
-        <button class="cl-round" type="button" onClick="{{togglePlay}}" aria-label="{{playLabel}}">
-          <sc-if value="{{showPause}}" hint-placeholder-val="{{ true }}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="4" height="16" rx="1.2"></rect><rect x="6" y="4" width="4" height="16" rx="1.2"></rect></svg></sc-if>
-          <sc-if value="{{showPlay}}" hint-placeholder-val="{{ false }}"><svg class="cl-i cl-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5z"></path></svg></sc-if>
         </button>
       </div>
     </div>
@@ -1195,7 +1195,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
 </div>
 
 <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
-  <div class="cl-sheet" id="cl-menu" role="dialog" aria-modal="true" aria-labelledby="cl-menu-title" onKeyDown="{{onLayerKey}}">
+  <div class="cl-sheet" id="cl-menu" role="dialog" aria-modal="true" aria-labelledby="cl-menu-title" tabIndex="-1" onKeyDown="{{onLayerKey}}">
     <div class="cl-sheet__head">
       <h2 class="cl-sheet__title" id="cl-menu-title">{{t.nav.menu}}</h2>
       <button class="cl-x" id="cl-menu-close" type="button" onClick="{{closeMenu}}" aria-label="{{t.nav.close}}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
@@ -1230,7 +1230,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
     <sc-if value="{{waPop}}" hint-placeholder-val="{{ true }}">
       <button class="cl-scrim" type="button" tabIndex="-1" aria-hidden="true" onClick="{{closeWa}}"></button>
     </sc-if>
-    <div class="cl-wa {{waCls}}" id="cl-wa" role="dialog" aria-modal="true" aria-labelledby="cl-wa-title" aria-describedby="cl-wa-sub" onKeyDown="{{onLayerKey}}">
+    <div class="cl-wa {{waCls}}" id="cl-wa" role="dialog" aria-modal="true" aria-labelledby="cl-wa-title" aria-describedby="cl-wa-sub" tabIndex="-1" onKeyDown="{{onLayerKey}}">
       <div class="cl-wa__head">
         <h2 class="cl-wa__title" id="cl-wa-title">{{t.whatsapp.title}}</h2>
         <button class="cl-x" id="cl-wa-close" type="button" onClick="{{closeWa}}" aria-label="{{t.whatsapp.close}}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
@@ -1768,7 +1768,6 @@ const CL_IMG = {
   packaging: '../img/s3-packaging.webp',
   buyship: '../img/s3-buyship.webp'
 };
-const CL_DELAY = 7000;
 const CL_FIELDS = ['name', 'email', 'phone', 'service', 'message'];
 const CL_EMPTY = { name: '', email: '', phone: '', service: '', message: '' };
 
@@ -1779,32 +1778,46 @@ class Component extends DCLogic {
     try { const q = new URLSearchParams(window.location.search).get('lang'); if (q === 'ar' || q === 'en') urlLang = q; } catch (e) {}
     this.urlLang = urlLang;
     this.state = {
-      lang: null, slide: 0, userPaused: false, hover: false, focusIn: false, reduced: false,
+      lang: null, slide: 0, stopped: false, hover: false, focusIn: false, dragging: false, reduced: false,
       menuOpen: false, waOpen: false, waFrom: null, narrow: false, compact: false,
       openSvc: null, load: 'fcl',
       form: Object.assign({}, CL_EMPTY), errors: {}, tried: false, sending: false, success: false, flash: false
     };
     this._depth = 0; this._histOk = false; this._ignorePop = 0; this._pendingNav = null;
-    this._remaining = CL_DELAY; this._tSlide = 0; this._tPlaying = false; this._t = null;
 
-    this.toggleLang = () => this.setState({ lang: this.lang() === 'ar' ? 'en' : 'ar' });
-    this.prevSlide = () => this.setState(s => ({ slide: (s.slide + this.slideCount() - 1) % this.slideCount() }));
-    this.nextSlide = () => this.setState(s => ({ slide: (s.slide + 1) % this.slideCount() }));
-    this.togglePlay = () => this.setState(s => ({ userPaused: !s.userPaused }));
-    this.heroEnter = () => { if (!this.state.hover) this.setState({ hover: true }); };
+    this.toggleLang = () => this.setState({ lang: this.lang() === 'ar' ? 'en' : 'ar' }, () => this.syncLangUrl());
+    /* The slideshow pauses while a mouse is over the hero (a finger's tap must not hold it: touch pointers are
+       ignored) and while it holds keyboard focus (:focus-visible, so a tap or click that focuses a button does
+       not count). A dot or a swipe stops it for good. */
+    this.heroEnter = (e) => { if (e && e.pointerType === 'mouse' && !this.state.hover) this.setState({ hover: true }); };
     this.heroLeave = () => { if (this.state.hover) this.setState({ hover: false }); };
-    this.heroFocus = () => { if (!this.state.focusIn) this.setState({ focusIn: true }); };
+    this.heroFocus = (e) => {
+      let kb = true;
+      try { kb = !!(e && e.target && e.target.matches(':focus-visible')); } catch (err) {}
+      if (kb !== this.state.focusIn) this.setState({ focusIn: kb });
+    };
     this.heroBlur = (e) => {
       const root = e.currentTarget; const next = e.relatedTarget;
       if (!next || !root || !root.contains(next)) { if (this.state.focusIn) this.setState({ focusIn: false }); }
     };
+    this.swipeDown = (e) => this.swDown(e);
+    this.swipeMove = (e) => this.swMove(e);
+    this.swipeUp = (e) => this.swEnd(e, false);
+    this.swipeCancel = (e) => this.swEnd(e, true);
+    /* the panel lost its capture before the release (not the child's implicit touch capture handing over to it, and
+       not the release itself: by then the drag is already over): end the drag without changing the slide */
+    this.swipeLost = (e) => { if (e && e.target === e.currentTarget && this._sw && this._sw.on) this.swEnd(e, true); };
+    this.noDrag = (e) => { if (e && e.preventDefault) e.preventDefault(); };
+    this.onFillDone = (e) => this.fillDone(e);
+    /* the click that ends a sideways drag is not a tap: it must not follow the link or press the button under it */
+    this.heroLink = (e) => { if (this.dragClick(e) && e && e.preventDefault) e.preventDefault(); };
     this.pickFcl = () => this.setState({ load: 'fcl' });
     this.pickLcl = () => this.setState({ load: 'lcl' });
 
     this.openMenu = (e) => this.openLayer('menu', e);
     this.closeMenu = () => this.closeLayer('menu', {});
     this.openWa = (e) => this.openLayer('wa', e, 'fab');
-    this.openWaHero = (e) => this.openLayer('wa', e, 'hero');
+    this.openWaHero = (e) => { if (!this.dragClick(e)) this.openLayer('wa', e, 'hero'); };
     this.openWaCard = (e) => this.openLayer('wa', e, 'card');
     this.closeWa = () => this.closeLayer('wa', {});
     this.closeWaLink = () => this.closeLayer('wa', { noFocus: false });
@@ -1825,7 +1838,7 @@ class Component extends DCLogic {
 
     this.onPop = () => this.handlePop();
     this.measure = () => this.doMeasure();
-    this.onMotion = () => { const r = !!(this._mq && this._mq.matches); this.setState(r ? { reduced: true, userPaused: true } : { reduced: false }); };
+    this.onMotion = () => { const r = !!(this._mq && this._mq.matches); this.setState(r ? { reduced: true, stopped: true } : { reduced: false }); };
   }
 
   lang() {
@@ -1833,6 +1846,19 @@ class Component extends DCLogic {
     return COPY[l] ? l : 'en';
   }
   slideCount() { const t = COPY[this.lang()] || COPY.en; return Math.max(1, ((t.hero && t.hero.slides) || []).length); }
+  /* Keep a language picked with the button in ?lang= (other parameters and the hash kept). history.state is passed
+     through so a layer's Back sentinel survives; also re-run after popstate, since stepping back off a sentinel
+     lands on an entry that still has the old URL. */
+  syncLangUrl() {
+    const l = this.state.lang;
+    if (l !== 'en' && l !== 'ar') return;
+    try {
+      const u = new URL(window.location.href);
+      if (u.searchParams.get('lang') === l) return;
+      u.searchParams.set('lang', l);
+      window.history.replaceState(window.history.state, '', u.href);
+    } catch (e) {}
+  }
 
   /* ---------- lifecycle ---------- */
   componentDidMount() {
@@ -1847,11 +1873,12 @@ class Component extends DCLogic {
       if (el && window.ResizeObserver) { this._ro = new ResizeObserver(this.measure); this._ro.observe(el); }
     } catch (e) {}
     const reduced = !!(this._mq && this._mq.matches);
-    this.setState(reduced ? { reduced: true, userPaused: true } : { reduced: false }, () => { this.doMeasure(); this.syncTimer(); });
+    this.setState(reduced ? { reduced: true, stopped: true } : { reduced: false }, () => this.doMeasure());
   }
-  componentDidUpdate() { this.syncTimer(); this.syncLock(); }
+  componentDidUpdate() { this.syncLock(); }
   componentWillUnmount() {
-    clearTimeout(this._t); clearTimeout(this._navT); clearTimeout(this._flashT); clearTimeout(this._sendT);
+    clearTimeout(this._navT); clearTimeout(this._flashT); clearTimeout(this._sendT);
+    this._sw = null;
     this._depth = 0; this.resetRestore(0);
     window.removeEventListener('popstate', this.onPop);
     window.removeEventListener('resize', this.measure);
@@ -1870,22 +1897,91 @@ class Component extends DCLogic {
   }
 
   /* ---------- slider ---------- */
+  /* Whether the slideshow runs: drives .is-playing on the root, which runs or pauses the dot's fill, the
+     slideshow's only clock (fillDone). Never under reduced motion. */
   isPlaying(s) {
     s = s || this.state;
-    return !s.userPaused && !s.hover && !s.focusIn && !s.menuOpen && !s.waOpen && this.slideCount() > 1;
+    return !s.stopped && !s.reduced && !s.hover && !s.focusIn && !s.dragging && !s.menuOpen && !s.waOpen && this.slideCount() > 1;
   }
-  syncTimer() {
-    const playing = this.isPlaying();
-    if (this.state.slide !== this._tSlide) {
-      this._tSlide = this.state.slide; this._remaining = CL_DELAY; clearTimeout(this._t); this._tPlaying = false;
+  pickSlide(i, e) {
+    if (this.dragClick(e)) { if (e && e.preventDefault) e.preventDefault(); return; }
+    this.setState({ slide: i, stopped: true });
+  }
+  /* true only for the click that ends a sideways drag: it comes right after that drag's release and before any new
+     press (swDown clears the window), and it is a pointer click (keyboard clicks have detail 0 and always count) */
+  dragClick(e) {
+    if (e && e.detail === 0) return false;
+    return Date.now() - (this._dragEnd || 0) < 400;
+  }
+  /* Swipe: pointer handlers on the hero panel (template attributes, no global listeners). A press only becomes a
+     drag once it has moved 10px and mostly sideways; a mostly vertical move is left to the browser (page scroll
+     on touch, text selection with a mouse). Capture is taken only then, so a plain tap still reaches the link or
+     button under it. On release a move of 40px, or a quick flick of 24px, changes the slide: toward the start
+     side (left in English, right in Arabic) goes to the next one. */
+  swDown(e) {
+    this._dragEnd = 0;
+    const old = this._sw;
+    if (old) { this._sw = null; this.swReset(old); if (old.on) this.setState({ dragging: false }); }
+    if (!e || !e.isPrimary || this.slideCount() < 2) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    this._sw = { id: e.pointerId, el: e.currentTarget, x0: e.clientX, y0: e.clientY, t0: Date.now(), dx: 0, on: false, off: false };
+  }
+  swMove(e) {
+    const g = this._sw;
+    if (!g || e.pointerId !== g.id) return;
+    /* No button down any more: the release happened outside the panel without capture (a text-selection flick out of
+       the hero, say) and never reached swEnd. Drop that press instead of turning a plain hover into a drag. Touch and
+       a pen in contact report buttons 1 while down, so they are not affected. */
+    if (!e.buttons) { this.swEnd(e, true); return; }
+    if (g.off) return;
+    const dx = e.clientX - g.x0, dy = e.clientY - g.y0;
+    if (!g.on) {
+      const ax = Math.abs(dx), ay = Math.abs(dy);
+      if (ax < 10 && ay < 10) return;
+      if (ax <= ay) { g.off = true; return; }
+      g.on = true;
+      try { g.el.setPointerCapture(e.pointerId); } catch (err) {}
+      try { const sel = window.getSelection(); if (sel && sel.rangeCount) sel.removeAllRanges(); } catch (err) {}
+      this.setState({ dragging: true });
     }
-    if (playing && !this._tPlaying) {
-      this._tPlaying = true; this._tStart = Date.now(); clearTimeout(this._t);
-      this._t = setTimeout(() => { this._tPlaying = false; this.setState(s => ({ slide: (s.slide + 1) % this.slideCount() })); }, this._remaining);
-    } else if (!playing && this._tPlaying) {
-      this._tPlaying = false; clearTimeout(this._t);
-      this._remaining = Math.max(300, this._remaining - (Date.now() - this._tStart));
+    g.dx = dx; g.dy = dy;
+    if (!this.state.reduced) {
+      const f = Math.max(-56, Math.min(56, dx * 0.35));
+      try { g.el.style.setProperty('--cl-dx', f.toFixed(1) + 'px'); } catch (err) {}
     }
+  }
+  swEnd(e, cancelled) {
+    const g = this._sw;
+    if (!g || e.pointerId !== g.id) return;
+    this._sw = null;
+    if (!g.on) return;
+    this.swReset(g);
+    this._dragEnd = Date.now();
+    const dx = cancelled ? g.dx : e.clientX - g.x0;
+    const dy = cancelled ? g.dy : e.clientY - g.y0;
+    const ax = Math.abs(dx);
+    const patch = { dragging: false };
+    if (!cancelled && ax > Math.abs(dy) && (ax >= 40 || (ax >= 24 && this._dragEnd - g.t0 <= 250))) {
+      const n = this.slideCount();
+      const step = (dx < 0 ? 1 : -1) * (this.lang() === 'ar' ? -1 : 1);
+      patch.slide = (this.state.slide + step + n) % n;
+      patch.stopped = true;
+    }
+    this.setState(patch);
+  }
+  swReset(g) {
+    if (!g || !g.el) return;
+    try { if (g.el.hasPointerCapture && g.el.hasPointerCapture(g.id)) g.el.releasePointerCapture(g.id); } catch (err) {}
+    try { g.el.style.removeProperty('--cl-dx'); if (!g.el.getAttribute('style')) g.el.removeAttribute('style'); } catch (err) {}
+  }
+  /* The slideshow's clock is the current dot's fill animation itself (cl-fill, 7s): when it completes, the next
+     slide comes. So the visible progress and the slide change cannot disagree, and pausing (.is-playing off)
+     holds both at once. A fill that completes in the same frame as a pause still counts (it is full). */
+  fillDone(e) {
+    if (!e || e.animationName !== 'cl-fill') return;
+    const s = this.state;
+    if (s.stopped || s.reduced || this.slideCount() < 2) return;
+    this.setState(st => ({ slide: (st.slide + 1) % this.slideCount() }));
   }
 
   /* ---------- layers: menu sheet and WhatsApp chooser ---------- */
@@ -1945,6 +2041,7 @@ class Component extends DCLogic {
     return stepped;
   }
   handlePop() {
+    this.syncLangUrl();
     if (this._ignorePop > 0) { this._ignorePop--; this.flushNav(); this.resetRestore(800); return; }
     if (this.state.waOpen) { this._depth = Math.max(0, this._depth - 1); this.closeLayer('wa', { fromPop: true }); }
     else if (this.state.menuOpen) { this._depth = Math.max(0, this._depth - 1); this.closeLayer('menu', { fromPop: true }); }
@@ -1971,7 +2068,8 @@ class Component extends DCLogic {
         .filter(el => el.getClientRects().length > 0);
       if (!list.length) return;
       const first = list[0], last = list[list.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      /* the layer itself takes focus (tabIndex -1) after a click on plain text in it: Shift+Tab from there wraps too */
+      if (e.shiftKey && (document.activeElement === first || document.activeElement === root)) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   }
@@ -2029,14 +2127,33 @@ class Component extends DCLogic {
       this.setState({ sending: false, success: true, form: Object.assign({}, CL_EMPTY), errors: {}, tried: false }, () => this.focusId('cl-success'));
     }, 900);
   }
-  quoteFor(id) {
+  /* A card's "Get a quote" is a real #contact link: Ctrl/Cmd/Shift/Alt or non-primary clicks keep the browser's own
+     behaviour (new tab, window...). A plain click pre-fills the Service field and scrolls there itself, but still
+     records #contact in history (as the link would), so Back returns to the card instead of leaving the site.
+     No layer is open here, so history.state carries no Back sentinel and popstate has nothing to close. */
+  quoteFor(id, e) {
+    if (e && (e.defaultPrevented || e.button > 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) return;
+    if (e && e.preventDefault) e.preventDefault();
+    try { if (window.location.hash !== '#contact') window.history.pushState(window.history.state, '', '#contact'); } catch (err) {}
     this.setState(s => {
       const form = Object.assign({}, s.form, { service: id });
       const errors = Object.assign({}, s.errors, { service: null });
       return { form, errors, flash: true, success: false };
-    });
+    }, () => this.showQuote());
     clearTimeout(this._flashT);
     this._flashT = setTimeout(() => this.setState({ flash: false }), 1500);
+  }
+  /* Land on Contact (as the #contact link did) when the pre-filled Service field is then on screen; in the stacked
+     layout the form sits below the contact cards, so centre the field instead. Focus goes to the section as before. */
+  showQuote() {
+    const sec = document.getElementById('contact');
+    if (!sec) return;
+    const sel = document.getElementById('cl-f-service');
+    const below = sel ? sel.getBoundingClientRect().bottom - sec.getBoundingClientRect().top + 96 : 0;
+    const target = sel && below > window.innerHeight - 16 ? sel : sec;
+    const behavior = this.state.reduced ? 'auto' : 'smooth';
+    try { target.scrollIntoView({ behavior, block: target === sel ? 'center' : 'start' }); } catch (err) { target.scrollIntoView(); }
+    try { sec.focus({ preventScroll: true }); } catch (err) {}
   }
 
   /* ---------- render values ---------- */
@@ -2061,9 +2178,9 @@ class Component extends DCLogic {
     }));
     const dots = slides.map((sl, i) => ({
       cls: i === slideIdx ? 'is-active' : '',
-      current: i === slideIdx ? 'true' : 'false',
+      current: i === slideIdx ? 'true' : undefined,
       label: (t.hero.goTo || '') + ' ' + (i + 1),
-      go: () => this.setState({ slide: i })
+      go: (e) => this.pickSlide(i, e)
     }));
 
     const services = ((t.services && t.services.items) || []).map(it => {
@@ -2075,7 +2192,7 @@ class Component extends DCLogic {
         expanded: open ? 'true' : 'false',
         panelId: 'cl-svc-d-' + it.id,
         toggle: () => this.setState(st => ({ openSvc: st.openSvc === it.id ? null : it.id })),
-        quote: () => this.quoteFor(it.id)
+        quote: (e) => this.quoteFor(it.id, e)
       };
     });
     const svc = {};
@@ -2098,7 +2215,7 @@ class Component extends DCLogic {
     });
 
     const isFcl = s.load !== 'lcl';
-    const rootCls = [playing ? 'is-playing' : '', s.reduced ? 'is-still' : ''].join(' ').trim();
+    const rootCls = [playing ? 'is-playing' : '', s.stopped || s.reduced ? 'is-still' : ''].join(' ').trim();
 
     return {
       lang, dir: lang === 'ar' ? 'rtl' : 'ltr', otherLang: lang === 'ar' ? 'en' : 'ar',
@@ -2120,10 +2237,10 @@ class Component extends DCLogic {
       waCls: s.narrow ? 'cl-wa--sheet' : 'cl-wa--pop', fabCls: s.narrow ? 'is-narrow' : '',
       openWa: this.openWa, closeWa: this.closeWa, closeWaLink: this.closeWaLink,
       slides, dots, heroLive: playing ? 'off' : 'polite',
-      prevSlide: this.prevSlide, nextSlide: this.nextSlide, togglePlay: this.togglePlay,
-      showPause: !s.userPaused, showPlay: !!s.userPaused,
-      playLabel: s.userPaused ? t.hero.play : t.hero.pause,
+      panelCls: s.dragging ? 'is-drag' : '',
       heroEnter: this.heroEnter, heroLeave: this.heroLeave, heroFocus: this.heroFocus, heroBlur: this.heroBlur,
+      swipeDown: this.swipeDown, swipeMove: this.swipeMove, swipeUp: this.swipeUp, swipeCancel: this.swipeCancel, swipeLost: this.swipeLost,
+      noDrag: this.noDrag, heroLink: this.heroLink, fillDone: this.onFillDone,
       services,
       isFcl, isLcl: !isFcl, segCls: isFcl ? '' : 'is-lcl',
       fclCls: isFcl ? 'is-active' : '', lclCls: isFcl ? '' : 'is-active',
