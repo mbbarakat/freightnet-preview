@@ -130,6 +130,12 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-brand-words{display:flex; flex-direction:column; align-items:center; gap:5px; min-width:0; padding-block-start:1px}
 .rv-brand-name{font:800 17px/1 var(--f-brand); letter-spacing:.02em; color:var(--navy); white-space:nowrap}
 .rv-brand-tag{font:700 9.5px/1 var(--f-brand); letter-spacing:.18em; color:var(--crimson); white-space:nowrap; padding-inline-start:.18em}
+/* header mark: sized in em of the name so emblem, name, tagline and gaps grow together; it fills the 76 px bar
+   (60 px emblem) once the row has room, and stays smaller where the nav and buttons need the space */
+.rv-header .rv-brand{font-size:clamp(17px, calc(17px + (100cqi - 1024px) * .035), 21px); --mark-h:2.85em; --mark-gap:.62em}
+.rv-header .rv-brand-name{font-size:1em}
+.rv-header .rv-brand-tag{font-size:.55em}
+.rv-header .rv-brand-words{gap:.28em}
 .rv-nav{display:flex; align-items:center; gap:2px; margin-inline:auto}
 .rv-nav-link{display:inline-flex; align-items:center; min-height:44px; padding:0 15px; font-size:15.5px; font-weight:500; color:var(--ink); text-decoration:none; transition:background-color .25s var(--ease)}
 .rv-nav-link:hover{background:var(--bg-2)}
@@ -507,6 +513,9 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-err{display:flex; align-items:flex-start; gap:8px; font-size:14px; line-height:1.45; color:var(--crimson); font-weight:500}
 .rv-err .rv-ic{margin-block-start:1px}
 .rv-form-foot{grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-block-start:6px}
+.rv-senderr{flex:1 1 100%}
+/* spam trap: invisible, out of the tab order, hidden from screen readers; bots fill it in, people never see it */
+.rv-hp{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; opacity:0; pointer-events:none}
 .rv-status:empty{display:none}
 .rv-success{margin-block-start:22px; display:grid; grid-template-columns:auto 1fr; gap:6px 16px; align-items:start; padding:24px; background:#fff; border:1px solid var(--line)}
 .rv-success:focus{outline:2px solid var(--navy); outline-offset:3px}
@@ -676,7 +685,11 @@ html:has(.rv-root){scroll-behavior:smooth}
   /* floating WhatsApp button: icon only (56px, name kept for screen readers), so its lane stays narrow */
   .rv-fab{padding:0; width:56px}
   .rv-fab-txt{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
-  .rv-header .rv-brand{--mark-h:44px; --mark-gap:10px}
+  /* 68 px bar: the mark grows to a 54 px emblem as the row gains room (below about 740 px the row is full in Arabic) */
+  .rv-header .rv-brand,.rv-sheet-head .rv-brand{font-size:clamp(16px, calc(16px + (100cqi - 730px) * .03), 19px); --mark-h:2.85em; --mark-gap:.62em}
+  .rv-sheet-head .rv-brand-name{font-size:1em}
+  .rv-sheet-head .rv-brand-tag{font-size:.55em}
+  .rv-sheet-head .rv-brand-words{gap:.28em}
   .rv-nav{display:none}
   .rv-menubtn{display:inline-flex}
   .rv-brand{margin-inline-end:auto}
@@ -764,9 +777,10 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-header-in{gap:10px}
   .rv-brand-name{font-size:15px}
   .rv-brand-tag{font-size:8.5px}
-  /* compact mark: name, emblem (2.6x the name) and gap scale together with the frame, so the header
-     row always fits (about 37 px emblem at 390, 39 px from 410 up, 30 px at 320) */
-  .rv-header .rv-brand,.rv-sheet-head .rv-brand{font-size:clamp(11.5px, calc(5.8cqi - 8.3px), 15px); --mark-h:2.6em; --mark-gap:.6em}
+  /* compact mark: name, emblem (3x the name) and gap scale together with the frame, so the header
+     row always fits, also in Arabic where the buttons are wider (about 43 px emblem at 390, 45 px from 404 up,
+     38 px at 360; below 360 the emblem keeps 2.6x, 30 px at 320) */
+  .rv-header .rv-brand,.rv-sheet-head .rv-brand{font-size:clamp(11.5px, calc(5.8cqi - 8.3px), 15px); --mark-h:3em; --mark-gap:.6em}
   .rv-header .rv-brand-name,.rv-sheet-head .rv-brand-name{font-size:1em}
   .rv-brand-words{gap:4px}
   .rv-foot-top .rv-brand{--mark-h:54px; --mark-gap:12px}
@@ -880,6 +894,17 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-form{grid-template-columns:minmax(0,1fr); row-gap:18px}
 }
 @container rv (max-width: 479px){
+  .rv-menubtn-txt{display:none}
+  .rv-menubtn{padding:0}
+}
+@container rv (max-width: 389px){
+  .rv-header .rv-brand,.rv-sheet-head .rv-brand{--mark-h:2.8em}
+}
+@container rv (max-width: 359px){
+  .rv-header .rv-brand,.rv-sheet-head .rv-brand{--mark-h:2.6em}
+}
+@container rv (min-width: 641px) and (max-width: 719px){
+  /* the Arabic menu label does not fit beside the language and quote buttons here: icon only (aria-label kept) */
   .rv-menubtn-txt{display:none}
   .rv-menubtn{padding:0}
 }
@@ -1226,19 +1251,20 @@ html:has(.rv-root){scroll-behavior:smooth}
         <div class="rv-status" role="status" aria-live="polite"><sc-if value="{{sent}}" hint-placeholder-val="{{ false }}"><div class="rv-success" tabIndex="-1" ref="{{setSentEl}}"><svg class="rv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg><p class="rv-success-txt">{{f.success}}</p><button type="button" class="rv-btn rv-btn-line" onClick="{{another}}">{{x.sendAnother}}</button></div></sc-if></div>
         <sc-if value="{{notSent}}" hint-placeholder-val="{{ true }}">
         <form class="rv-form" noValidate="" aria-labelledby="rv-form-h" onSubmit="{{submit}}">
+          <div class="rv-hp" aria-hidden="true"><label for="rv-f-website">Website</label><input id="rv-f-website" type="text" name="website" tabIndex="-1" autoComplete="off" /></div>
           <div class="rv-field">
             <label class="rv-label" for="rv-f-name"><span>{{f.name}}</span><span class="rv-req">{{f.required}}</span></label>
-            <input class="rv-input" id="rv-f-name" type="text" name="name" autoComplete="name" required="" value="{{form.name}}" onChange="{{on.name}}" aria-invalid="{{inv.name}}" aria-describedby="{{desc.name}}" />
+            <input class="rv-input" id="rv-f-name" type="text" name="name" autoComplete="name" maxLength="120" required="" value="{{form.name}}" onChange="{{on.name}}" aria-invalid="{{inv.name}}" aria-describedby="{{desc.name}}" />
             <sc-if value="{{err.name}}" hint-placeholder-val="{{ false }}"><p class="rv-err" id="rv-e-name"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>{{err.name}}</span></p></sc-if>
           </div>
           <div class="rv-field">
             <label class="rv-label" for="rv-f-email"><span>{{f.email}}</span><span class="rv-req">{{f.required}}</span></label>
-            <input class="rv-input" id="rv-f-email" type="email" name="email" autoComplete="email" inputMode="email" dir="ltr" required="" value="{{form.email}}" onChange="{{on.email}}" aria-invalid="{{inv.email}}" aria-describedby="{{desc.email}}" />
+            <input class="rv-input" id="rv-f-email" type="email" name="email" autoComplete="email" inputMode="email" dir="ltr" maxLength="254" required="" value="{{form.email}}" onChange="{{on.email}}" aria-invalid="{{inv.email}}" aria-describedby="{{desc.email}}" />
             <sc-if value="{{err.email}}" hint-placeholder-val="{{ false }}"><p class="rv-err" id="rv-e-email"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>{{err.email}}</span></p></sc-if>
           </div>
           <div class="rv-field">
             <label class="rv-label" for="rv-f-phone"><span>{{f.phone}}</span><span class="rv-req">{{f.required}}</span></label>
-            <input class="rv-input" id="rv-f-phone" type="tel" name="phone" autoComplete="tel" inputMode="tel" dir="ltr" required="" value="{{form.phone}}" onChange="{{on.phone}}" aria-invalid="{{inv.phone}}" aria-describedby="{{desc.phone}}" />
+            <input class="rv-input" id="rv-f-phone" type="tel" name="phone" autoComplete="tel" inputMode="tel" dir="ltr" maxLength="40" required="" value="{{form.phone}}" onChange="{{on.phone}}" aria-invalid="{{inv.phone}}" aria-describedby="{{desc.phone}}" />
             <sc-if value="{{err.phone}}" hint-placeholder-val="{{ false }}"><p class="rv-err" id="rv-e-phone"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>{{err.phone}}</span></p></sc-if>
           </div>
           <div class="rv-field">
@@ -1251,11 +1277,12 @@ html:has(.rv-root){scroll-behavior:smooth}
           </div>
           <div class="rv-field rv-field-full">
             <label class="rv-label" for="rv-f-message"><span>{{f.message}}</span><span class="rv-req">{{f.required}}</span></label>
-            <textarea class="rv-input rv-textarea" id="rv-f-message" name="message" rows="5" required="" value="{{form.message}}" onChange="{{on.message}}" aria-invalid="{{inv.message}}" aria-describedby="{{desc.message}}"></textarea>
+            <textarea class="rv-input rv-textarea" id="rv-f-message" name="message" rows="5" maxLength="5000" required="" value="{{form.message}}" onChange="{{on.message}}" aria-invalid="{{inv.message}}" aria-describedby="{{desc.message}}"></textarea>
             <sc-if value="{{err.message}}" hint-placeholder-val="{{ false }}"><p class="rv-err" id="rv-e-message"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>{{err.message}}</span></p></sc-if>
           </div>
           <div class="rv-form-foot">
             <button type="submit" class="rv-btn rv-btn-primary" aria-disabled="{{sending}}">{{submitLabel}}<svg class="rv-ic rv-ic-sm rv-arrow rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+            <sc-if value="{{sendErr}}" hint-placeholder-val="{{ false }}"><p class="rv-err rv-senderr" role="alert"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>{{f.errSend}}</p></sc-if>
           </div>
         </form>
         </sc-if>
@@ -1365,7 +1392,8 @@ const COPY = {
     ],
     "emails": [
       "info@freightnet-lb.com",
-      "sales@freightnet-lb.com"
+      "sales@freightnet-lb.com",
+      "ceo@freightnet-lb.com"
     ],
     "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Fawaz+Building+Oumara+Road+Choueifat+Lebanon",
     "social": [
@@ -1464,14 +1492,14 @@ const COPY = {
         {
           "id": "land",
           "title": "Land freight",
-          "short": "Road transport within Lebanon, with a full truckload (FTL) or part of one (LTL).",
+          "short": "Road transport from Lebanon to all Arab and Asian countries, by full truckload (FTL) or less than truckload (LTL).",
           "detailTitle": "Road transport from start to finish",
-          "detail": "We plan each road journey within Lebanon around your cargo, with a suitable truck and a sensible route. Take a full truckload (FTL) for your own goods, or share a truck (LTL) and pay only for the space you use. We keep you updated from loading to delivery."
+          "detail": "We plan each road journey from Lebanon to Arab and Asian countries around your cargo, with a suitable truck and a sensible route. Take a full truckload (FTL) for your own goods, or share a truck (LTL) and pay only for the space you use. We keep you updated from loading to delivery."
         },
         {
           "id": "crossborder",
           "title": "Cross-border trucking",
-          "short": "Road transport across borders, door to door, with the border paperwork taken care of.",
+          "short": "Road and sea transport across borders, door to door, with the border paperwork taken care of.",
           "detailTitle": "Across the border, door to door",
           "detail": "We collect your goods from the sender's door and deliver them across the border to the receiver's door. We prepare the paperwork for the border crossing and keep you updated along the way."
         },
@@ -1584,7 +1612,8 @@ const COPY = {
         "errEmail": "Please enter a full email address, such as name@example.com.",
         "errPhone": "Please enter your phone number.",
         "errService": "Please choose a service from the list.",
-        "errMessage": "Please tell us briefly what you need."
+        "errMessage": "Please tell us briefly what you need.",
+        "errSend": "Sorry, your message could not be sent. Please try again, or reach us on WhatsApp or by email."
       }
     },
     "whatsapp": {
@@ -1674,14 +1703,14 @@ const COPY = {
         {
           "id": "land",
           "title": "الشحن البري",
-          "short": "نقل بالشاحنات داخل لبنان، بحمولة شاحنة كاملة (FTL) أو بحمولة جزئية (LTL).",
+          "short": "نقل بالشاحنات من لبنان إلى جميع الدول العربية والآسيوية، بحمولة شاحنة كاملة (FTL) أو بحمولة جزئية (LTL).",
           "detailTitle": "نقل بري من البداية إلى النهاية",
-          "detail": "نخطّط كل رحلة برية داخل لبنان بحسب بضائعكم، مع الشاحنة المناسبة والطريق الأنسب. احجزوا شاحنة كاملة (FTL) لبضائعكم وحدها، أو اختاروا حمولة جزئية (LTL) تتشارك فيها بضائعكم الشاحنة مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+          "detail": "نخطّط كل رحلة برية من لبنان إلى الدول العربية والآسيوية بحسب بضائعكم، مع الشاحنة المناسبة والطريق الأنسب. احجزوا شاحنة كاملة (FTL) لبضائعكم وحدها، أو اختاروا حمولة جزئية (LTL) تتشارك فيها بضائعكم الشاحنة مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها. ونبقيكم على اطّلاع من التحميل حتى التسليم."
         },
         {
           "id": "crossborder",
           "title": "النقل البري عبر الحدود",
-          "short": "نقل بالشاحنات عبر الحدود من الباب إلى الباب، ونتولّى مستندات العبور.",
+          "short": "نقل بري وبحري عبر الحدود من الباب إلى الباب، ونتولّى مستندات العبور.",
           "detailTitle": "عبر الحدود، من الباب إلى الباب",
           "detail": "نستلم بضائعكم من باب المرسِل وننقلها عبر الحدود حتى باب المستلِم. نُعِدّ المستندات اللازمة لعبور الحدود، ونبقيكم على اطّلاع طوال الطريق."
         },
@@ -1794,7 +1823,8 @@ const COPY = {
         "errEmail": "يُرجى إدخال بريد إلكتروني كامل، مثل name@example.com.",
         "errPhone": "يُرجى إدخال رقم هاتفكم.",
         "errService": "يُرجى اختيار خدمة من القائمة.",
-        "errMessage": "يُرجى كتابة ما تحتاجون إليه باختصار."
+        "errMessage": "يُرجى كتابة ما تحتاجون إليه باختصار.",
+        "errSend": "عذرًا، تعذّر إرسال رسالتكم. يُرجى المحاولة مرة أخرى، أو التواصل معنا عبر واتساب أو البريد الإلكتروني."
       }
     },
     "whatsapp": {
@@ -1958,7 +1988,7 @@ class Component extends DCLogic {
       phase: 'rest', nb: -1, out: -1, side: 1, moving: false,
       menuOpen: false, waOpen: false, locked: false, openCard: null,
       form: { name: '', email: '', phone: '', service: '', message: '' },
-      errors: {}, sending: false, sent: false
+      errors: {}, sending: false, sent: false, sendErr: false
     };
     this.timer = null; this.remaining = RV_DELAY; this.startedAt = 0;
     this.drag = null; this.swallow = false; this.swallowT = null; this.animT = null; this.stageEl = null;
@@ -2366,8 +2396,10 @@ class Component extends DCLogic {
   /* ---- form ---- */
   check(k, v) {
     const s = String(v || '');
-    if (k === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim()) ? null : RV_ERRKEY[k];
-    if (k === 'phone') return s.replace(/\D/g, '').length >= 6 ? null : RV_ERRKEY[k];
+    /* same rule as the live site's server (site/src/worker.js), so the form never accepts what the server refuses */
+    if (k === 'email') return /^[A-Za-z0-9.!#$%&'*+\/=?^_`{|}~-]+@(?:[A-Za-z0-9-]+\.)+(?:[A-Za-z]{2,}|xn--[A-Za-z0-9-]{2,})$/.test(s.trim()) ? null : RV_ERRKEY[k];
+    /* digits in any script count (Arabic-Indic too) */
+    if (k === 'phone') return s.replace(/\P{Nd}/gu, '').length >= 6 ? null : RV_ERRKEY[k];
     return s.trim() ? null : RV_ERRKEY[k];
   }
   setField(k, v) {
@@ -2385,16 +2417,39 @@ class Component extends DCLogic {
     RV_FIELDS.forEach((k) => { const r = this.check(k, this.state.form[k]); if (r) errors[k] = r; });
     const first = RV_FIELDS.find((k) => errors[k]);
     if (first) {
-      this.setState({ errors }, () => { const el = document.getElementById('rv-f-' + first); if (el) el.focus(); });
+      this.setState({ errors, sendErr: false }, () => { const el = document.getElementById('rv-f-' + first); if (el) el.focus(); });
       return;
     }
-    this.setState({ errors: {}, sending: true });
+    this.setState({ errors: {}, sending: true, sendErr: false });
+    const done = () => this.setState({ sending: false, sent: true, form: { name: '', email: '', phone: '', service: '', message: '' } }, () => {
+      if (this.sentEl) { try { this.sentEl.focus({ preventScroll: true }); } catch (er) { this.sentEl.focus(); } }
+    });
+    /* the live site (freightnet-lb.com) sets window.FN_FORM_ENDPOINT and the message is emailed to the
+       company; the canvas and the design previews have no endpoint and only show the thank-you */
+    const ep = (typeof window !== 'undefined' && window.FN_FORM_ENDPOINT) || '';
     clearTimeout(this.sendT);
-    this.sendT = setTimeout(() => {
-      this.setState({ sending: false, sent: true, form: { name: '', email: '', phone: '', service: '', message: '' } }, () => {
-        if (this.sentEl) { try { this.sentEl.focus({ preventScroll: true }); } catch (er) { this.sentEl.focus(); } }
-      });
-    }, 700);
+    if (!ep) { this.sendT = setTimeout(done, 700); return; }
+    const fv = this.state.form;
+    const svc = ((COPY.en.services && COPY.en.services.items) || []).find((it) => it.id === fv.service);
+    const trap = e && e.target && e.target.elements && e.target.elements.website;
+    /* give up after 20 s so a dropped connection shows the error (with WhatsApp and email) instead of hanging */
+    const ac = typeof AbortController === 'function' ? new AbortController() : null;
+    const stop = setTimeout(() => { if (ac) ac.abort(); }, 20000);
+    const fail = () => { clearTimeout(stop); this.setState({ sending: false, sendErr: true }); };
+    fetch(ep, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: ac ? ac.signal : undefined,
+      body: JSON.stringify({ name: fv.name, email: fv.email.trim(), phone: fv.phone, service: svc ? svc.title : fv.service,
+        message: fv.message, lang: this.lang(), website: trap ? trap.value : '' })
+    }).then((r) => r.json().catch(() => ({})).then((d) => {
+      clearTimeout(stop);
+      if (r.ok && d && d.ok) { done(); return; }
+      /* the server named fields it would not accept: show them as field errors, which the visitor can fix */
+      const bad = d && d.error === 'fields' && Array.isArray(d.fields) ? RV_FIELDS.filter((k) => d.fields.indexOf(k) >= 0) : [];
+      if (!bad.length) { fail(); return; }
+      const errs = {};
+      bad.forEach((k) => { errs[k] = RV_ERRKEY[k]; });
+      this.setState({ sending: false, errors: errs }, () => { const el = document.getElementById('rv-f-' + bad[0]); if (el) el.focus(); });
+    }), fail);
   }
   pick(id) {
     /* the link itself scrolls to the form (#rv-quote); show the pre-selected service by focusing it,
@@ -2537,8 +2592,8 @@ class Component extends DCLogic {
       values, phones, callOnly, emails, social, figContact: rvPad(nSlides + zig.length + 1),
       f, form: s.form, on: this.on, err, inv, desc, submit: this.submit,
       sent: s.sent, notSent: !s.sent, sending: s.sending ? 'true' : 'false',
-      submitLabel: s.sending ? f.sending : f.submit,
-      another: () => this.setState({ sent: false }, () => { const el = document.getElementById('rv-f-name'); if (el) el.focus(); }),
+      submitLabel: s.sending ? f.sending : f.submit, sendErr: !!s.sendErr,
+      another: () => this.setState({ sent: false, sendErr: false }, () => { const el = document.getElementById('rv-f-name'); if (el) el.focus(); }),
       svcOptions: items.map((e) => ({ value: e.it.id, label: e.it.title }))
     };
   }
