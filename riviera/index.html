@@ -149,16 +149,69 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-main:focus{outline:none}
 .rv-hero{position:relative; background:var(--sea)}
 /* The hero is a gallery. The stage holds four bands: the images (.rv-gal), the headline (.rv-copies), the
-   pagination bar and the text panel (.rv-panels). Desktop: the images fill the hero behind the headline and the
-   panel, with the bar underneath. Up to 1023 px they stack: headline, image, pagination, panel.
+   pagination bar and the text panel (.rv-panels). Wider than 640 px the images fill the hero behind the headline
+   and the panel, with the bar underneath. Phones stack them: headline, image, pagination, panel.
    A sideways drag anywhere on the stage moves the images with the finger (vertical page scroll and pinch zoom
    stay with the browser); headline and panel change with a short fade when the slide changes. */
 .rv-stage{position:relative; isolation:isolate; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto auto; touch-action:pan-y pinch-zoom}
 .rv-stage :where(a, img){-webkit-user-drag:none}
 .rv-stage.is-dragging{cursor:grabbing; -webkit-user-select:none; user-select:none}
-/* desktop: the hero takes at most the window height left under the header and the bar, so the pagination is
-   on the first screen too (never below 560 px) */
-.rv-gal{grid-row:1 / 4; grid-column:1; position:relative; z-index:0; overflow:hidden; min-height:clamp(600px, 58cqi, 860px); min-height:max(560px, min(clamp(600px, 58cqi, 860px), calc(100svh - var(--hdr) - 72px)))}
+/* Wider than 640 px both slides share one composition. Slide 1's picture (the client's scene, 1672 x 941) covers
+   the hero; the eyebrow and the headline sit at the top of the inline start, over the open sky, and the white panel
+   stands at the foot of the first screen. Slide 2 keeps the same type, panel and pagination and only swaps the
+   picture side for the arch. The scene's subjects, as fractions of the picture: the plane from 16.5% down (its nose)
+   and from 64.3% across; the ship from 30.2% across (its bow), its masts from 42% down, its containers from 48.9%
+   (left of the front mast, 37.4% across, there is only sky above them), its keel 76% down; the truck from 67.6%
+   across, its wheels 86.1% down; the sea line 71.8% down, the low sun 19% across. cqi is the page width everywhere
+   in the hero.
+   --gal-h  the picture's height: the window height left under the header and the bar (so the pagination is on the
+            first screen too), within 600-860 px (41cqi above ~2100 px), never less than the plane and the truck need
+            with 10 + 8 px to spare (39.1cqi: 69.6% of the picture at the page width)
+   --fsb    where the first screen ends, from the hero's top: the panel stands on it
+   --ih, --iw, --ix  the picture's size when it covers the hero, and its offset at the inline start (only a picture
+            wider than the page is cropped there, so the plane's tail stays 16 px inside)
+   --panel-h  the panel: its top padding, the intro (--lines at --plh), the buttons on the bar's middle line
+   --keel-y the top of what stands under the ship (the panel); the keel keeps 12 px above it
+   --py     how far the picture rises (its top's offset, 0 or less). --py-lo and --py-hi bound it: the picture covers
+            the hero, the plane's nose stays 10 px under the header (closer only when that keeps the truck's wheels in
+            view), the truck's wheels 8 px over the picture's foot, the keel over the panel. Within them it sits as
+            low as it may, so the headline has room above the ship, but no lower than the full-size headline needs
+            (--py-head; the keel then keeps 24 px). Where they cannot all hold (windows over 2.6 : 1 under the
+            header), the keel comes first: the picture rises until up to 40 px of the plane's nose hide under the
+            header, and the window's foot crops the truck's wheels
+   --hf     the headline size: its caps, then the room above the ship (over the masts, or down to the containers when
+            the last line ends before the front mast), and the last line ends 16 px before the plane. Per language, in
+            headline sizes: --hk the height under the eyebrow (two lines and the last one's descent), --hw the widest
+            line; --heb is the eyebrow's box and 8 px.
+   Short windows (section 15) give the bar's place to the picture and set the count and the dots by the panel. */
+.rv-stage{
+  --bar-h:72px; --panel-w:600px; --lines:2; --plh:1.55; --btn-h:48px;
+  --wrap0:max(var(--gutter), (100cqi - 1312px) / 2);
+  --gal-h:max(39.1cqi + 18px, min(clamp(600px, 58cqi, max(860px, 41cqi)), 100svh - var(--hdr) - var(--bar-h)));
+  --fsb:min(var(--gal-h) + var(--bar-h), 100svh - var(--hdr));
+  --ih:max(56.28cqi, var(--gal-h)); --iw:calc(1.7768 * var(--ih));
+  --ix:clamp(100cqi - var(--iw), 100cqi - 16px - .951 * var(--iw), 0px);
+  --pad:clamp(20px, min(2.4cqi, 3.4svh), 34px); --fb:clamp(17px, 1.35cqi, 19px);
+  --panel-h:calc(var(--pad) + var(--lines) * var(--plh) * var(--fb) + 28px + var(--btn-h));
+  --keel-y:calc(var(--fsb) - var(--panel-h));
+  --tp:clamp(28px, min(5.4cqi, 9svh - 28px), 88px); --tm:clamp(14px, min(2cqi, 2.4svh), 28px);
+  --hcap:min(6.9cqi, 10.8svh, 100px); --hlo:48px; --hhi:100px; --hk:2.09; --heb:24px; --hw:6.46;
+  --py-cover:calc(var(--gal-h) - var(--ih));
+  --py-plane:calc(10px - .165 * var(--ih));
+  --py-truck:calc(var(--gal-h) - 8px - .861 * var(--ih));
+  --py-keel:calc(var(--keel-y) - 12px - .76 * var(--ih));
+  --py-head:calc(var(--hcap) * var(--hk) + var(--tp) + var(--tm) + var(--heb) - .42 * var(--ih));
+  --py-hi:min(0px, var(--py-truck), var(--py-keel));
+  --py-lo:max(var(--py-cover), min(var(--py-plane), max(var(--py-plane) - 10px, var(--py-hi))));
+  --py:max(var(--py-cover), var(--py-plane) - 50px, min(var(--py-keel), max(var(--py-lo), min(var(--py-hi), max(var(--py-keel) - 12px, var(--py-head))))));
+  --hf-masts:calc((var(--py) + .42 * var(--ih) - var(--tp) - var(--tm) - var(--heb)) / var(--hk));
+  --hf-boxes:calc((var(--py) + .489 * var(--ih) - var(--tp) - var(--tm) - var(--heb)) / var(--hk));
+  --hf-mast:calc((var(--ix) + .374 * var(--iw) - 12px - var(--wrap0)) / var(--hw));
+  --hf-plane:calc((var(--ix) + .643 * var(--iw) - 16px - var(--wrap0)) / var(--hw));
+  --hf:clamp(var(--hlo), min(var(--hcap), max(var(--hf-masts), min(var(--hf-boxes), var(--hf-mast))), var(--hf-plane)), var(--hhi));
+}
+.rv-root:lang(ar) .rv-stage{--plh:1.7; --hcap:min(5.6cqi, 9.2svh, 86px); --hlo:42px; --hhi:86px; --hk:2.73; --heb:26px; --hw:7.4}
+.rv-gal{grid-row:1 / 4; grid-column:1; position:relative; z-index:0; overflow:hidden; min-height:var(--gal-h)}
 .rv-copies{grid-row:1; grid-column:1; z-index:1; display:grid}
 .rv-panels{grid-row:3; grid-column:1; z-index:1; display:grid}
 .rv-hero-bar{grid-row:4; grid-column:1}
@@ -180,43 +233,59 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-slide-media{position:absolute; inset:0; overflow:hidden}
 .rv-kb{position:absolute; inset:0; transform:scale(1.06); transition:transform 8s cubic-bezier(.2,.6,.2,1)}
 .rv-gal-item.is-cur .rv-kb{transform:scale(1)}
-.rv-media-photo img{width:100%; height:100%; object-fit:cover; object-position:50% 50%}
 [dir="rtl"] .rv-mirror{transform:scaleX(-1)}
-.rv-slide-copy{position:relative; padding-block-start:clamp(44px, 5.4cqi, 88px)}
+.rv-slide-copy{position:relative; padding-block-start:var(--tp); padding-inline-end:calc(min(38%, 520px) + var(--gutter) + 40px)}
 .rv-slide-eyebrow{display:flex; align-items:center; gap:14px}
 .rv-slide-eyebrow::before{content:''; width:44px; height:1px; background:currentColor; flex:none}
-.rv-hero-title{margin-block-start:clamp(18px, 2cqi, 28px); font-family:var(--f-serif); font-weight:var(--w-disp); font-size:calc(clamp(54px, 8.7cqi, 132px) * var(--ds)); line-height:var(--lh-hero); letter-spacing:var(--track-disp); color:var(--navy); text-wrap:balance}
+.rv-hero-title{margin-block-start:var(--tm); font-family:var(--f-serif); font-weight:var(--w-disp); font-size:var(--hf); line-height:var(--lh-hero); letter-spacing:var(--track-disp); color:var(--navy); text-wrap:balance}
 .rv-ht-line{display:block}
 .rv-ht-accent{font-style:italic; padding-inline-start:.55em}
+.rv-copy-b .rv-ht-accent{padding-inline-start:0}
+/* slide 2's lead always breaks after "logistics" (three lines, like the Arabic), whatever the headline size */
+.rv-copy-b .rv-hero-title{max-inline-size:6.6em}
 .rv-root:lang(ar) .rv-ht-accent{font-style:normal; font-weight:400; padding-inline-start:0}
-/* Arabic: ~0.85x the Latin size, lead and accent flow together and balance over two lines */
-.rv-root:lang(ar) .rv-hero-title{font-size:clamp(46px, 7.4cqi, 112px)}
+/* Arabic: lead and accent flow together and balance over two or three lines (11em keeps slide 1's on two) */
+.rv-root:lang(ar) .rv-hero-title{max-inline-size:11em}
 .rv-root:lang(ar) .rv-ht-line{display:inline}
-/* daylight haze behind the cover headline (legibility scrim, start side only, fades out before the ship) */
-.rv-gal-a .rv-slide-media::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(to bottom, rgb(255 255 255 / .36) 0%, rgb(255 255 255 / .3) 50%, rgb(255 255 255 / 0) 80%); -webkit-mask-image:linear-gradient(to right, #000 55%, transparent 80%); mask-image:linear-gradient(to right, #000 55%, transparent 80%)}
-[dir="rtl"] .rv-gal-a .rv-slide-media::after{-webkit-mask-image:linear-gradient(to left, #000 55%, transparent 80%); mask-image:linear-gradient(to left, #000 55%, transparent 80%)}
-.rv-copy-a .rv-hero-title{max-width:58cqi}
-.rv-slide-foot{position:relative; display:flex; align-items:flex-end; padding-block:28px clamp(32px, 3.6cqi, 56px)}
-.rv-panel{background:#fff; padding:clamp(24px, 2.4cqi, 34px); width:min(100%, 500px); position:relative}
-.rv-panel-body{font-size:clamp(17px, 1.35cqi, 19px); line-height:1.55; color:var(--ink); text-wrap:pretty}
-.rv-root:lang(ar) .rv-panel-body{line-height:1.8}
-.rv-actions{display:flex; flex-wrap:wrap; gap:12px; margin-block-start:24px}
-/* slide 2: arch on sea tint */
+/* slide 1's picture is a size container, so the clamp()s keep it covering the hero's real box */
+.rv-media-photo{container-type:size; background:var(--sea)}
+.rv-media-photo img{width:100%; height:100%; object-fit:cover; object-position:clamp(100cqw - 1.7768 * max(56.28cqw, 100cqh), 100cqw - 16px - 1.69 * max(56.28cqw, 100cqh), 0px) clamp(100cqh - max(56.28cqw, 100cqh), var(--py), 0px)}
+.rv-media-photo .rv-kb{transform-origin:30% 76%}
+[dir="rtl"] .rv-media-photo .rv-kb{transform-origin:70% 76%}
+/* sea haze behind the eyebrow and the headline: slide 2's sea tint over the sky, so the navy serif keeps the same
+   pale ground across a swipe. It thins out over the ship's masts and is gone before the plane. It belongs to the
+   gallery, not to the moving frame, so it stays under the headline while a finger drags either picture; it fades
+   out while slide 2 rests. */
+.rv-stage{--to-end:to right; --start:left}
+[dir="rtl"] .rv-stage{--to-end:to left; --start:right}
+.rv-gal::after{content:''; position:absolute; inset:0; z-index:1; pointer-events:none; transition:opacity .3s ease; --hz-in:min(var(--wrap0) + 6.5 * var(--hf) + 40px, var(--ix) + .643 * var(--iw) - 200px); --hz-out:min(var(--wrap0) + 6.5 * var(--hf) + 320px, var(--ix) + .643 * var(--iw) - 10px); background:linear-gradient(to bottom, color-mix(in srgb, var(--sea) 82%, transparent) 0, color-mix(in srgb, var(--sea) 70%, transparent) calc(var(--py) + .3 * var(--ih)), transparent calc(var(--py) + .489 * var(--ih) + 20px)); -webkit-mask-image:linear-gradient(var(--to-end), #000 var(--hz-in), transparent var(--hz-out)); mask-image:linear-gradient(var(--to-end), #000 var(--hz-in), transparent var(--hz-out))}
+.rv-stage:not(.is-dragging) .rv-gal:not(.is-moving):not(:has(> .rv-gal-a.is-cur))::after{opacity:0}
+/* the panel stands on the first screen's foot: its buttons share the bar's middle line with the count and the
+   dots, which follow it. The panel row lets clicks through to the bar; the panel takes them. Both slides' panels
+   fill the shared cell, so a longer intro on one slide never moves the panel's top on a swipe. */
+.rv-panels{margin-block-end:calc(var(--gal-h) - var(--fsb)); pointer-events:none}
+.rv-slide-foot{position:relative; display:flex; padding-block-start:28px}
+.rv-panel{display:flex; flex-direction:column; width:min(100%, var(--panel-w)); min-height:var(--panel-h); padding:var(--pad) var(--pad) 12px; background:#fff; position:relative; pointer-events:auto}
+.rv-panel-body{font-size:var(--fb); line-height:var(--plh); color:var(--ink); text-wrap:pretty}
+.rv-actions{display:flex; flex-wrap:wrap; gap:12px; margin-block-start:auto; padding-block-start:16px}
+/* slide 2: the arch on slide 1's horizon, in slide 1's colours drawn flat. The upper sky is the sea tint (the
+   headline's ground on both slides); towards the photo's sea line it warms to a sunset peach, a hairline marks the
+   horizon, and the sea below is a deeper blue; the low sun's glow sits where the photo's does */
 .rv-media-tint{background:var(--sea)}
+.rv-gal-b .rv-media-tint{--hz:calc(var(--py) + .718 * var(--ih)); background:radial-gradient(calc(.3 * var(--iw)) calc(.13 * var(--ih)) at var(--start) calc(var(--ix) + .19 * var(--iw)) top var(--hz), rgb(255 226 196 / .85), rgb(255 226 196 / 0)), linear-gradient(to bottom, var(--sea) 0, var(--sea) calc(var(--hz) - .36 * var(--ih)), #F1E5DD calc(var(--hz) - .14 * var(--ih)), #F8DFC8 calc(var(--hz) - 1px), rgb(55 61 116 / .3) calc(var(--hz) - 1px), rgb(55 61 116 / .3) var(--hz), #B9D3E4 var(--hz), #CDE1ED 100%)}
 .rv-arch-wrap{height:100%; display:flex; justify-content:flex-end; align-items:flex-end}
 .rv-hero-archbox{position:relative; width:min(38%, 520px); height:88%}
 .rv-hero-archbox::before{content:''; position:absolute; inset:-20px -20px 0 -20px; border:1px solid rgba(55,61,116,.32); border-bottom:0; border-radius:999px 999px 0 0}
 .rv-hero-arch{position:absolute; inset:0; border-radius:999px 999px 0 0; overflow:hidden; background:var(--bg-3)}
 .rv-hero-arch img{width:100%; height:100%; object-fit:cover}
-.rv-copy-b{padding-inline-end:calc(min(38%, 520px) + var(--gutter) + 40px)}
-.rv-copy-b .rv-ht-accent{padding-inline-start:0}
+.rv-hero-arch::after{content:''; position:absolute; inset:0; background:linear-gradient(to top, rgb(255 168 104 / .32), rgb(255 168 104 / 0) 60%); mix-blend-mode:soft-light; pointer-events:none}
 /* hero bar */
 .rv-hero-bar{background:var(--bg); border-block-end:1px solid var(--line)}
-.rv-hero-bar-in{display:flex; align-items:center; gap:clamp(14px, 2cqi, 28px); min-height:72px}
-/* count and dots sit at the inline start, clear of the floating WhatsApp button at the inline end; the caption
-   (wider screens) stops before the button's lane (the inner max() subtracts the wrap's side margin on wide
-   screens, where the lane is already free) */
-.rv-hero-bar-in{padding-inline-end:max(var(--gutter), calc(var(--fab-room) - max(0px, (100cqi - 1312px) / 2 - var(--gutter))))}
+.rv-hero-bar-in{display:flex; align-items:center; gap:clamp(14px, 2cqi, 28px); min-height:var(--bar-h)}
+/* desktop: count and dots follow the panel, clear of the floating WhatsApp button at the inline end; the caption
+   stops before the button's lane (the inner max() subtracts the wrap's side margin on wide screens, where the
+   lane is already free) */
+.rv-hero-bar-in{padding-inline:calc(var(--gutter) + var(--panel-w) + clamp(24px, 3cqi, 40px)) max(var(--gutter), calc(var(--fab-room) - max(0px, (100cqi - 1312px) / 2 - var(--gutter))))}
 .rv-count{display:flex; flex:none; align-items:baseline; gap:6px; font:italic 400 24px/1 var(--f-num); color:var(--navy); direction:ltr; min-width:64px}
 .rv-count-sep{color:var(--line-2); font-style:normal}
 .rv-count-tot{color:var(--muted)}
@@ -232,7 +301,8 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-dot:hover{background:var(--bg-2)}
   .rv-dot:not(.is-active):hover .rv-dot-mark{background:var(--navy)}
 }
-.rv-hero-cap{flex:1; min-width:0; display:flex; gap:10px; align-items:baseline; font-size:13.5px; line-height:1.4; color:var(--muted); text-wrap:balance}
+.rv-hero-cap{flex:1; min-width:0; display:flex; gap:10px; align-items:baseline; font-size:13.5px; line-height:1.4; color:var(--muted); white-space:nowrap}
+.rv-hero-cap > :last-child{overflow:hidden; text-overflow:ellipsis}
 .rv-fig{font:italic 400 15px/1 var(--f-num); color:var(--navy); flex:none}
 
 /* ---------- 5. Facts ---------- */
@@ -256,10 +326,11 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-zig.is-flip .rv-zig-media{grid-column:6 / span 7}
 .rv-zig.is-flip .rv-zig-text{grid-column:1 / span 4}
 .rv-frame{position:relative; aspect-ratio:4 / 3; overflow:hidden; background:var(--bg-2)}
-.rv-frame img{width:100%; height:100%; object-fit:cover; transform:scale(var(--z, 1)); transform-origin:var(--zo, 50% 50%); transition:transform 1.4s var(--ease)}
-.rv-crop-quay{--z:1.35; --zo:100% 42%}
+/* the hover zoom is on `scale` (with the slow transition); a photo without text may face the other way in Arabic
+   (.rv-mirror, on `transform`, no transition), so a language switch flips it at once instead of squashing it */
+.rv-frame img{width:100%; height:100%; object-fit:cover; scale:var(--z, 1); transform-origin:var(--zo, 50% 50%); transition:scale 1.4s var(--ease)}
 @media (hover: hover) and (pointer: fine){
-  .rv-zig-media:hover .rv-frame img{transform:scale(calc(var(--z, 1) * 1.04))}
+  .rv-zig-media:hover .rv-frame img{scale:calc(var(--z, 1) * 1.04)}
 }
 .rv-cap{display:flex; gap:10px; align-items:baseline; margin-block-start:14px; font-size:13.5px; line-height:1.45; color:var(--muted)}
 .rv-idx{display:flex; align-items:center; gap:14px; font:italic 400 20px/1 var(--f-num); color:var(--navy)}
@@ -407,6 +478,8 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-chip:active{transform:scale(.98)}
 .rv-mail{display:flex; flex-direction:column; align-items:flex-start}
 .rv-mail .rv-link{margin-block-start:0; overflow-wrap:anywhere; text-align:start}
+.rv-social{display:flex; flex-direction:column; align-items:flex-start}
+.rv-dblock .rv-social .rv-link{margin-block-start:0}
 /* form */
 .rv-formcard{grid-column:1 / -1; grid-row:2; display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); column-gap:var(--gap); row-gap:8px; margin-block-start:clamp(48px, 6cqi, 96px); background:var(--bg-2); padding:clamp(22px, 3.6cqi, 56px); scroll-margin-top:calc(var(--hdr) + 20px)}
 .rv-formcard .rv-btn-ghost:hover{background:var(--bg-3)}
@@ -454,10 +527,11 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-root:lang(ar) .rv-foot-line{font-style:normal; line-height:1.7}
 .rv-foot-grid{display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); column-gap:var(--gap); row-gap:32px; padding-block:clamp(32px, 3.6cqi, 48px)}
 .rv-fcol{min-width:0}
+/* the social column holds two handles (the longer @freight.net.sarl must fit at 1024): three columns, like phones */
 .rv-fcol-addr{grid-column:1 / span 4}
-.rv-fcol-nav{grid-column:5 / span 3}
-.rv-fcol-phone{grid-column:8 / span 3}
-.rv-fcol-social{grid-column:11 / span 2}
+.rv-fcol-nav{grid-column:5 / span 2}
+.rv-fcol-phone{grid-column:7 / span 3}
+.rv-fcol-social{grid-column:10 / span 3}
 .rv-fcol-addr .rv-addr{font-size:15.5px; color:var(--muted)}
 .rv-fhead{margin-block-end:14px; color:var(--muted)}
 .rv-flinks{display:flex; flex-direction:column; align-items:flex-start}
@@ -489,7 +563,9 @@ html:has(.rv-root){scroll-behavior:smooth}
 .rv-wa-list{padding:10px}
 .rv-wa-row{display:flex; align-items:center; gap:16px; min-height:68px; padding:10px 14px; color:var(--ink); text-decoration:none; transition:background-color .25s}
 .rv-wa-row:hover{background:var(--bg-2)}
-.rv-wa-row + .rv-wa-row{border-block-start:1px solid var(--line)}
+.rv-wa-li + .rv-wa-li{border-block-start:1px solid var(--line)}
+/* phone sheet only: a quiet sign-off at the foot, so the full-screen sheet ends on purpose */
+.rv-wa-foot{display:none}
 .rv-wa-ic{display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--sea); color:var(--navy); flex:none}
 .rv-wa-txt{display:flex; flex-direction:column; flex:1; min-width:0}
 .rv-wa-kicker{font-size:13px; color:var(--muted)}
@@ -527,12 +603,72 @@ html:has(.rv-root){scroll-behavior:smooth}
 /* ---------- 15. Container queries ---------- */
 @container rv (max-width: 1240px){
   .rv-hero-archbox{width:min(35%, 520px)}
-  .rv-copy-b{padding-inline-end:calc(35% + 24px)}
+  .rv-slide-copy{padding-inline-end:calc(35% + 24px)}
+  /* the panel stays clear of slide 2's arch and keeps the intro on two lines */
+  .rv-stage{--panel-w:560px}
+}
+/* Short windows (1366 x 657, 1536 x 730, 1920 x 860). The picture needs the hero's whole height for the plane, the
+   ship and the truck, so the bar under it cannot be on the first screen too, or the panel cannot stand under the
+   ship. Then the picture fills the first screen, the bar gives up its caption and its full width and stands on the
+   picture by the panel's foot, and the floating WhatsApp button shows its icon only (it stands on the picture, clear
+   of the truck). Beyond 2.55 : 1 under the header no cover picture holds the whole scene: the hero grows to the
+   scene's height and the window's foot crops the truck's wheels. The thresholds are the window heights under which
+   the panel (as in .rv-stage, with the Arabic line height) or the bar would not fit; 100vw counts a classic
+   scrollbar, so they err towards this layout. */
+@media (max-height: calc(33.5vw + 174px + clamp(20px, min(2.4vw, 3.4vh), 34px) + 3.4 * clamp(17px, 1.35vw, 19px))), (max-height: calc(39.17vw + 166px)){
+  @container rv (min-width: 1024px){
+    .rv-stage{--bar-h:0px; --gal-h:max(100svh - var(--hdr), 39.17cqi); --pad:20px; --fb:16px}
+    .rv-hero-bar{grid-row:3; align-self:end; justify-self:start; z-index:1; margin-block-end:calc(var(--gal-h) - var(--fsb)); border:0}
+    .rv-hero-bar-in{max-width:none; margin:0}
+    .rv-hero-cap{display:none}
+    .rv-fab{padding:0; width:56px}
+    .rv-fab-txt{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+    /* slide 2's arch keeps out of the button's lane */
+    .rv-arch-wrap{padding-inline-end:calc(var(--gutter) + max(0px, 108px - var(--wrap0)))}
+  }
+  /* up to 1700 px wide the panel is a column beside the ship's bow (32 px clear of it) and under both headlines,
+     its buttons stacked. The bar becomes a white ledge running on from the column's foot to just past the dots,
+     under the ship's keel; its middle line is the lower button's */
+  @container rv (min-width: 1024px) and (max-width: 1700px){
+    .rv-stage{--panel-w:clamp(250px, var(--ix) + .302 * var(--iw) - 32px - var(--wrap0), 360px); --ledge:64px; --keel-y:calc(var(--fsb) - var(--ledge))}
+    .rv-panel{min-height:0; padding-block-end:calc(var(--ledge) / 2 - var(--btn-h) / 2)}
+    .rv-actions{flex-direction:column; align-items:stretch; gap:8px; padding-block-start:14px}
+    .rv-slide-foot{padding-block-start:12px}
+    .rv-hero-bar{margin-inline-start:var(--wrap0)}
+    .rv-hero-bar-in{min-height:var(--ledge); padding-block:0; padding-inline:calc(var(--panel-w) + 28px) 28px}
+  }
+  /* wider, a column there would be too narrow: the panel lies under the keel, as wide as the intro's one line and
+     clear of the truck, and the count and the dots close the buttons' row inside it; slide 2's arch narrows to stay
+     clear of it */
+  @container rv (min-width: 1701px){
+    .rv-stage{--plh:1.5; --panel-w:min(940px, var(--ix) + .676 * var(--iw) - 24px - var(--wrap0)); --panel-h:calc(38px + var(--plh) * var(--fb) + var(--btn-h)); --keel-y:calc(var(--fsb) - var(--panel-h))}
+    .rv-root:lang(ar) .rv-stage{--plh:1.6}
+    .rv-panel{min-height:0; padding:16px 22px 12px}
+    .rv-actions{padding-block-start:10px}
+    .rv-hero-bar{z-index:2; width:var(--panel-w); margin-inline-start:var(--wrap0); background:transparent; pointer-events:none}
+    .rv-hero-bar-in{justify-content:flex-end; min-height:calc(var(--btn-h) + 12px); padding-block:0 12px; padding-inline:22px}
+    .rv-dots{pointer-events:auto}
+    .rv-hero-archbox{width:min(38%, 520px, 100% - var(--panel-w) - 32px)}
+  }
+}
+/* wider still and shorter (over 2.5 : 1 under the header) the intro gives way, so the buttons' row alone lies under
+   the keel; screen readers still read it */
+@media (max-height: calc(33.5vw + 210px)){
+  @container rv (min-width: 1701px){
+    .rv-stage{--panel-h:calc(24px + var(--btn-h))}
+    .rv-panel{padding-block-start:12px}
+    .rv-panel-body{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+    .rv-actions{padding-block-start:0}
+  }
 }
 @container rv (max-width: 1199px){
   /* values: below 1200 the heading sits above the 2 x 2 grid, so the title keeps its two-line shape */
   .rv-values-head{grid-column:1 / -1; position:static; margin-block-end:32px}
   .rv-vlist{grid-column:1 / -1}
+}
+@container rv (max-width: 1399px){
+  /* the bar between the panel and the WhatsApp button's lane is too short for the caption (it is aria-hidden) */
+  .rv-hero-cap{display:none}
 }
 @container rv (max-width: 1023px){
   /* the root is the query container and cannot restyle itself: set the header height on its children */
@@ -544,20 +680,6 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-nav{display:none}
   .rv-menubtn{display:inline-flex}
   .rv-brand{margin-inline-end:auto}
-  /* hero: stacked. Headline on the sea tint, the image, the pagination right under it, then the panel */
-  .rv-stage{display:flex; flex-direction:column}
-  .rv-copies{order:1}
-  .rv-gal{order:2; min-height:0; height:clamp(340px, 54cqi, 540px)}
-  .rv-hero-bar{order:3; background:transparent; border-block-end:0}
-  .rv-panels{order:4}
-  .rv-slide-copy{padding-block:clamp(36px, 5.4cqi, 56px) clamp(26px, 3.8cqi, 40px)}
-  .rv-copy-b{padding-inline-end:var(--gutter)}
-  .rv-gal-a .rv-slide-media::after{display:none}
-  .rv-slide-foot{padding-block:4px clamp(32px, 4.4cqi, 48px)}
-  .rv-copy-a .rv-hero-title,.rv-copy-b .rv-hero-title{max-width:none}
-  .rv-hero-title{font-size:calc(clamp(54px, 10cqi, 100px) * var(--ds))}
-  .rv-root:lang(ar) .rv-hero-title{font-size:clamp(44px, 8.4cqi, 84px)}
-  .rv-hero-archbox{width:auto; height:calc(100% - 32px); aspect-ratio:4 / 5}
   .rv-shead .rv-h2{grid-column:1 / -1}
   .rv-shead .rv-lede{grid-column:1 / span 9}
   .rv-zig{row-gap:28px}
@@ -592,6 +714,40 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-dedicated{grid-template-columns:auto minmax(0,1fr)}
   .rv-ded-body{grid-column:2}
 }
+@container rv (min-width: 641px) and (max-width: 1023px){
+  /* tablets keep the composition. The hero does not follow the window height (a portrait tablet has room to spare,
+     a phone on its side scrolls): it is a little taller than the picture at the page width, so the picture is
+     cropped at the start. The panel takes three lines of intro, keeps both buttons on one row and stays clear of
+     the truck; the headline keeps the tablet sizes as far as the room above the ship and before the plane allows;
+     the arch keeps its shape */
+  .rv-stage{--gal-h:min(600px, 50cqi + 136px); --fsb:calc(var(--gal-h) + var(--bar-h)); --lines:3; --pad:20px; --fb:17px; --pw:460px; --panel-w:min(var(--pw), var(--ix) + .676 * var(--iw) - 16px - var(--wrap0)); --hcap:9cqi; --hlo:44px; --hhi:92px}
+  .rv-root:lang(ar) .rv-stage{--hcap:7.6cqi; --hlo:36px; --hhi:78px}
+  .rv-hero-archbox{height:auto; aspect-ratio:5 / 8; max-height:88%}
+}
+@container rv (min-width: 744px) and (max-width: 1023px){
+  /* slide 2's arch, with its 20 px frame, keeps 24 px clear of the panel beside it */
+  .rv-hero-archbox{width:min(35%, 520px, 100% - var(--panel-w) - 44px)}
+}
+@container rv (min-width: 641px) and (max-width: 743px){
+  /* small tablets and phones on their side: left of the truck there is no room for the panel with its buttons on
+     one row, so the panel moves under the bar, onto the sea tint; the picture still covers the headline's band */
+  .rv-gal{grid-row:1 / 3}
+  .rv-hero-bar{grid-row:3}
+  .rv-panels{grid-row:4; margin-block-end:0}
+  .rv-stage{--keel-y:9999px; --pw:440px; --panel-w:var(--pw); --pad:24px}
+  .rv-hero-bar-in{padding-inline-start:var(--gutter)}
+  .rv-slide-foot{padding-block:24px 40px}
+  .rv-panel{min-height:0; padding:var(--pad)}
+  .rv-actions{padding-block-start:24px}
+}
+/* landscape tablets shorter than the hero (900 x 600): the floating button stands on the picture, so the picture
+   moves towards the inline start until the truck's tail is 84 px from the edge, clear of the button */
+@media (max-height: calc(140px + min(600px, 50vw + 136px))){
+  @container rv (min-width: 744px) and (max-width: 1023px){
+    .rv-stage{--ix:clamp(100cqi - var(--iw), min(100cqi - 16px - .951 * var(--iw), 100cqi - 84px - .918 * var(--iw)), 0px)}
+    .rv-media-photo img{object-position:clamp(100cqw - 1.7768 * max(56.28cqw, 100cqh), min(100cqw - 16px - 1.69 * max(56.28cqw, 100cqh), 100cqw - 84px - 1.6311 * max(56.28cqw, 100cqh)), 0px) clamp(100cqh - max(56.28cqw, 100cqh), var(--py), 0px)}
+  }
+}
 @container rv (max-width: 999px){
   .rv-arcade{grid-template-columns:repeat(2, minmax(0,1fr))}
   .rv-card-arch{aspect-ratio:1 / 1}
@@ -600,7 +756,7 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-zig,.rv-zig.is-flip{grid-template-columns:minmax(0,1fr)}
   .rv-zig-media,.rv-zig.is-flip .rv-zig-media{grid-column:1; grid-row:1}
   .rv-zig-text,.rv-zig.is-flip .rv-zig-text{grid-column:1; grid-row:2; max-width:620px}
-  .rv-panel{width:min(100%, 410px)}
+  .rv-stage{--pw:440px}
 }
 @container rv (max-width: 640px){
   .rv-root{--hdr:64px; font-size:16.5px}
@@ -619,23 +775,39 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-h-cta{display:none}
   .rv-langbtn{padding:0 12px}
   .rv-langbtn .rv-ic{display:none}
-  /* hero: headline, image, pagination, then the text and buttons */
-  .rv-slide-copy{padding-block:36px 24px}
-  .rv-gal{height:min(108cqi, 440px)}
-  .rv-slide-foot{padding-block:0 32px}
-  .rv-media-photo img{object-position:78% 50%}
+  /* hero: stacked. Headline on the sea tint, the image, the pagination right under it, then the text and the
+     buttons. Both headlines share one band (the taller one sets it): each sits at the foot of the band, right above
+     the image, so a shorter one leaves its spare room under the header, not a gap before the image */
+  .rv-stage{display:flex; flex-direction:column; --tm:18px}
+  .rv-root:lang(ar) .rv-stage{--plh:1.8}
+  .rv-copies{order:1}
+  .rv-slide-copy{display:flex; flex-direction:column; justify-content:flex-end; padding-block:36px 24px; padding-inline-end:var(--gutter)}
+  /* the image band: two thirds of the column plus 20 px (slide 2's arch and the buttons on a phone's first screen
+     depend on it); slide 1's picture fills it edge to edge, cropped at the inline start (sea), so the plane keeps
+     its wingtip */
+  .rv-gal{order:2; min-height:0; height:calc((100cqi - 2 * var(--gutter)) * .6634 + 20px)}
+  .rv-media-photo img{object-position:88% 60%}
+  .rv-gal::after{display:none}
+  .rv-gal-b .rv-media-tint{background:var(--sea)}
+  .rv-hero-bar{order:3; background:transparent; border-block-end:0}
+  .rv-panels{order:4; margin-block-end:0}
+  .rv-slide-foot{align-items:flex-end; padding-block:0 32px}
   .rv-hero-title{font-size:calc(clamp(44px, 13.4cqi, 64px) * var(--ds))}
-  .rv-root:lang(ar) .rv-hero-title{font-size:clamp(38px, 11.6cqi, 56px)}
+  .rv-root:lang(ar) .rv-hero-title{font-size:clamp(37px, 11.2cqi, 54px); max-inline-size:none}
+  .rv-copy-b .rv-hero-title{max-inline-size:none}
+  /* Arabic lines are taller (Amiri): a little less room around the headline keeps the band as tall as the English
+     one, so the buttons reach the first screen at 360 x 780 and the picture ends above the floating button at 320 */
+  .rv-root:lang(ar) .rv-slide-copy{padding-block:28px 18px}
   .rv-ht-accent{padding-inline-start:0}
   .rv-arch-wrap{justify-content:center}
-  .rv-hero-archbox{height:calc(100% - 24px); margin-block-start:24px}
+  .rv-hero-archbox{width:auto; height:calc(100% - 24px); aspect-ratio:4 / 5; margin-block-start:24px}
   .rv-hero-archbox::before{inset:-14px -14px 0 -14px}
-  .rv-panel{width:100%; padding:4px 0 0; background:transparent}
-  .rv-actions{flex-direction:column; align-items:stretch}
+  .rv-panel{display:block; width:100%; min-height:0; padding:4px 0 0; background:transparent}
+  .rv-actions{flex-direction:column; align-items:stretch; margin-block-start:24px; padding-block-start:0}
   .rv-actions .rv-btn{width:100%}
   /* the hero buttons often land at the foot of the first screen: keep them out of the floating button's lane */
   .rv-actions{padding-inline-end:max(0px, calc(var(--fab-room) - var(--gutter)))}
-  .rv-hero-bar-in{min-height:64px; gap:10px}
+  .rv-hero-bar-in{min-height:64px; gap:10px; padding-inline-start:var(--gutter)}
   .rv-hero-cap{display:none}
   .rv-count{min-width:0; font-size:20px}
   .rv-facts-grid{grid-template-columns:minmax(0,1fr)}
@@ -699,7 +871,9 @@ html:has(.rv-root){scroll-behavior:smooth}
   .rv-wa-list{padding:12px var(--gutter)}
   .rv-wa-row{min-height:76px; padding:12px 8px}
   .rv-wa-title{font-size:calc(34px * var(--ds))}
-  .rv-wa::after{content:''; position:absolute; z-index:-1; inset-inline:18%; bottom:0; height:min(42%, 340px); border:1px solid rgba(55,61,116,.16); border-bottom:0; border-radius:999px 999px 0 0; pointer-events:none}
+  .rv-wa-list{border-block-end:1px solid var(--line); margin-inline:var(--gutter); padding-inline:0}
+  .rv-wa-foot{display:block; margin-block-start:auto; padding:24px var(--gutter) 28px; font:italic 400 19px/1.2 'Instrument Serif',serif; color:var(--navy)}
+  .rv-root:lang(ar) .rv-wa-foot{font-family:'Amiri',serif; font-style:normal; font-size:20px; line-height:1.6}
 }
 @container rv (max-width: 520px){
   /* one field per row on phones: labels ("Phone number" + "Required") and the select placeholder fit */
@@ -773,7 +947,7 @@ html:has(.rv-root){scroll-behavior:smooth}
     <div class="rv-gal {{framesCls}}">
       <div class="rv-gal-item rv-gal-a {{fA.cls}}" aria-hidden="{{fA.hidden}}">
         <div class="rv-slide-media rv-media-photo">
-          <div class="rv-kb"><img class="rv-mirror" src="../img/s2-hero.webp" width="1672" height="941" alt="{{x.alt.hero}}" /></div>
+          <div class="rv-kb"><img class="rv-mirror" src="../img/s2-hero-nologo.webp" width="1672" height="941" alt="{{x.alt.hero}}" /></div>
         </div>
       </div>
       <div class="rv-gal-item rv-gal-b {{fB.cls}}" aria-hidden="{{fB.hidden}}">
@@ -846,10 +1020,10 @@ html:has(.rv-root){scroll-behavior:smooth}
       <p class="rv-lede">{{t.services.lede}}</p>
     </header>
 
-    <sc-for list="{{zig}}" as="z" hint-placeholder-count="3">
+    <sc-for list="{{zig}}" as="z" hint-placeholder-count="4">
       <article class="rv-zig {{z.cls}}" aria-labelledby="{{z.hid}}">
         <figure class="rv-zig-media">
-          <div class="rv-frame"><img class="{{z.imgCls}}" src="{{z.img}}" width="{{z.w}}" height="{{z.h}}" alt="{{z.alt}}" loading="lazy" decoding="async" /></div>
+          <div class="rv-frame"><img class="{{z.imgCls}}" src="{{z.img}}" width="{{z.w}}" height="{{z.h}}" alt="{{z.alt}}" loading="lazy" decoding="async" style="object-position: {{z.pos}}" /></div>
           <figcaption class="rv-cap" aria-hidden="true"><span class="rv-fig">{{x.fig}} {{z.fig}}</span><span>{{z.cap}}</span></figcaption>
         </figure>
         <div class="rv-zig-text">
@@ -1007,7 +1181,7 @@ html:has(.rv-root){scroll-behavior:smooth}
       <div class="rv-details">
         <div class="rv-dblock">
           <h3 class="rv-dlabel"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span class="rv-eyebrow">{{t.contactSection.officeTitle}}</span></h3>
-          <address class="rv-addr"><sc-for list="{{t.contactSection.address}}" as="ln" hint-placeholder-count="3"><span>{{ln}}</span></sc-for></address>
+          <address class="rv-addr"><sc-for list="{{t.contactSection.address}}" as="ln" hint-placeholder-count="3"><span>{{ln}} </span></sc-for></address>
           <a class="rv-link" href="{{c.mapsUrl}}" target="_blank" rel="noopener noreferrer">{{t.contactSection.maps}}<span class="rv-vh"> {{x.newTab}}</span><svg class="rv-ic rv-ic-sm rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
         </div>
         <div class="rv-dblock">
@@ -1035,8 +1209,10 @@ html:has(.rv-root){scroll-behavior:smooth}
           <div class="rv-mail"><sc-for list="{{emails}}" as="m" hint-placeholder-count="2"><a class="rv-link" href="{{m.href}}"><span class="rv-pin rv-wrapany" dir="ltr">{{m.addr}}</span></a></sc-for></div>
         </div>
         <div class="rv-dblock">
-          <h3 class="rv-dlabel"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg><span class="rv-eyebrow">{{x.instagram}}</span></h3>
-          <a class="rv-link" href="{{insta.url}}" target="_blank" rel="noopener noreferrer"><span class="rv-pin" dir="ltr">{{insta.handle}}</span><span class="rv-vh"> {{x.newTab}}</span><svg class="rv-ic rv-ic-sm rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+          <h3 class="rv-dlabel"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg><span class="rv-eyebrow">{{t.footer.follow}}</span></h3>
+          <ul class="rv-social">
+            <sc-for list="{{social}}" as="s" hint-placeholder-count="2"><li><a class="rv-link" href="{{s.url}}" target="_blank" rel="noopener noreferrer"><sc-if value="{{s.isInsta}}" hint-placeholder-val="{{ true }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></sc-if><sc-if value="{{s.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><span class="rv-pin" dir="ltr">{{s.handle}}</span><span class="rv-vh"> {{s.label}}, {{x.newTab}}</span><svg class="rv-ic rv-ic-sm rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a></li></sc-for>
+          </ul>
         </div>
       </div>
     </div>
@@ -1069,7 +1245,7 @@ html:has(.rv-root){scroll-behavior:smooth}
             <label class="rv-label" for="rv-f-service"><span>{{f.service}}</span><span class="rv-req">{{f.required}}</span></label>
             <select class="rv-input rv-select" id="rv-f-service" name="service" required="" value="{{form.service}}" onChange="{{on.service}}" aria-invalid="{{inv.service}}" aria-describedby="{{desc.service}}">
               <option value="">{{f.servicePlaceholder}}</option>
-              <sc-for list="{{svcOptions}}" as="o" hint-placeholder-count="7"><option value="{{o.value}}">{{o.label}}</option></sc-for>
+              <sc-for list="{{svcOptions}}" as="o" hint-placeholder-count="8"><option value="{{o.value}}">{{o.label}}</option></sc-for>
             </select>
             <sc-if value="{{err.service}}" hint-placeholder-val="{{ false }}"><p class="rv-err" id="rv-e-service"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg><span>{{err.service}}</span></p></sc-if>
           </div>
@@ -1102,7 +1278,7 @@ html:has(.rv-root){scroll-behavior:smooth}
     <div class="rv-foot-grid">
       <div class="rv-fcol rv-fcol-addr">
         <p class="rv-eyebrow rv-fhead">{{t.contactSection.officeTitle}}</p>
-        <address class="rv-addr"><sc-for list="{{t.contactSection.address}}" as="ln" hint-placeholder-count="3"><span>{{ln}}</span></sc-for></address>
+        <address class="rv-addr"><sc-for list="{{t.contactSection.address}}" as="ln" hint-placeholder-count="3"><span>{{ln}} </span></sc-for></address>
       </div>
       <nav class="rv-fcol rv-fcol-nav" aria-labelledby="rv-fnav-h">
         <p class="rv-eyebrow rv-fhead" id="rv-fnav-h">{{x.pages}}</p>
@@ -1114,7 +1290,7 @@ html:has(.rv-root){scroll-behavior:smooth}
       </div>
       <div class="rv-fcol rv-fcol-social">
         <p class="rv-eyebrow rv-fhead">{{t.footer.follow}}</p>
-        <ul class="rv-flinks"><li><a class="rv-flink" href="{{insta.url}}" target="_blank" rel="noopener noreferrer"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg><span class="rv-pin" dir="ltr">{{insta.handle}}</span><span class="rv-vh"> {{x.instagram}}, {{x.newTab}}</span></a></li></ul>
+        <ul class="rv-flinks"><sc-for list="{{social}}" as="s" hint-placeholder-count="2"><li><a class="rv-flink" href="{{s.url}}" target="_blank" rel="noopener noreferrer"><sc-if value="{{s.isInsta}}" hint-placeholder-val="{{ true }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg></sc-if><sc-if value="{{s.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="rv-ic rv-ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><span class="rv-pin" dir="ltr">{{s.handle}}</span><span class="rv-vh"> {{s.label}}, {{x.newTab}}</span></a></li></sc-for></ul>
       </div>
     </div>
     <div class="rv-foot-base">
@@ -1157,8 +1333,9 @@ html:has(.rv-root){scroll-behavior:smooth}
         <button type="button" class="rv-x" aria-label="{{t.whatsapp.close}}" onClick="{{closeLayer}}" ref="{{setWaClose}}"><svg class="rv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
       </div>
       <ul class="rv-wa-list">
-        <sc-for list="{{phones}}" as="p" hint-placeholder-count="2"><li><a class="rv-wa-row" href="{{p.wa}}" target="_blank" rel="noopener noreferrer" onClick="{{p.waGo}}"><span class="rv-wa-ic" aria-hidden="true"><svg class="rv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg></span><span class="rv-wa-txt"><span class="rv-wa-kicker">{{t.whatsapp.button}}</span><span class="rv-wa-num rv-pin rv-tel" dir="ltr">{{p.display}}</span></span><svg class="rv-ic rv-arrow rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></li></sc-for>
+        <sc-for list="{{phones}}" as="p" hint-placeholder-count="2"><li class="rv-wa-li"><a class="rv-wa-row" href="{{p.wa}}" target="_blank" rel="noopener noreferrer" onClick="{{p.waGo}}"><span class="rv-wa-ic" aria-hidden="true"><svg class="rv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg></span><span class="rv-wa-txt"><span class="rv-wa-kicker">{{t.whatsapp.button}}</span><span class="rv-wa-num rv-pin rv-tel" dir="ltr">{{p.display}}</span></span><svg class="rv-ic rv-arrow rv-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></li></sc-for>
       </ul>
+      <p class="rv-wa-foot" aria-hidden="true">{{t.tagline}}</p>
     </div>
   </sc-if>
   <button type="button" class="rv-fab" aria-haspopup="dialog" aria-expanded="{{waExp}}" onClick="{{openWa}}"><svg class="rv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path><path d="M9.2 9.4c.2-.8.9-1.2 1.4-.9l.7 1.5c.1.3 0 .6-.2.8l-.4.4c.4.9 1.2 1.7 2.1 2.1l.4-.4c.2-.2.5-.3.8-.2l1.5.7c.3.5-.1 1.2-.9 1.4-2.3.5-5.9-3.1-5.4-5.4z"></path></svg><span class="rv-fab-txt">{{t.whatsapp.button}}</span></button>
@@ -1190,12 +1367,17 @@ const COPY = {
       "info@freightnet-lb.com",
       "sales@freightnet-lb.com"
     ],
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mansour+Building+Choueifat+NSSF+Lebanon",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Fawaz+Building+Oumara+Road+Choueifat+Lebanon",
     "social": [
       {
         "name": "Instagram",
-        "handle": "@freightnetsarl",
-        "url": "https://www.instagram.com/freightnetsarl/"
+        "handle": "@freightnet2023",
+        "url": "https://www.instagram.com/freightnet2023/"
+      },
+      {
+        "name": "TikTok",
+        "handle": "@freight.net.sarl",
+        "url": "https://www.tiktok.com/@freight.net.sarl"
       }
     ],
     "phones": [
@@ -1232,8 +1414,8 @@ const COPY = {
           "body": "We move goods between Lebanon and anywhere in the world, and take care of the customs paperwork on the way."
         },
         {
-          "eyebrow": "Freight and logistics",
-          "title": "Cargo for every industry",
+          "eyebrow": "Freight forwarding",
+          "title": "Cargo & logistics solutions for every industry",
           "body": "From a single pallet to full containers, we plan the route, the transport and the customs clearance for you."
         }
       ],
@@ -1268,9 +1450,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "Ocean freight",
-          "short": "Ship a full container, or share one, to and from ports worldwide.",
+          "short": "Ship a full container (FCL) or share one (LCL), to and from ports worldwide.",
           "detailTitle": "Moving your cargo by sea",
-          "detail": "We arrange your sea shipment port to port or door to door. Take a full container for your own goods, or share container space when you ship smaller volumes."
+          "detail": "We arrange your sea shipment port to port or door to door. Take a full container (FCL) for your own goods, or share container space (LCL) when you ship smaller volumes."
         },
         {
           "id": "air",
@@ -1282,9 +1464,16 @@ const COPY = {
         {
           "id": "land",
           "title": "Land freight",
-          "short": "Road transport by truck, within Lebanon and across borders.",
+          "short": "Road transport within Lebanon, with a full truckload (FTL) or part of one (LTL).",
           "detailTitle": "Road transport from start to finish",
-          "detail": "We plan each road journey around your cargo: a suitable truck, a sensible route and the paperwork for any border crossings. We keep you updated from loading to delivery."
+          "detail": "We plan each road journey within Lebanon around your cargo, with a suitable truck and a sensible route. Take a full truckload (FTL) for your own goods, or share a truck (LTL) and pay only for the space you use. We keep you updated from loading to delivery."
+        },
+        {
+          "id": "crossborder",
+          "title": "Cross-border trucking",
+          "short": "Road transport across borders, door to door, with the border paperwork taken care of.",
+          "detailTitle": "Across the border, door to door",
+          "detail": "We collect your goods from the sender's door and deliver them across the border to the receiver's door. We prepare the paperwork for the border crossing and keep you updated along the way."
         },
         {
           "id": "customs",
@@ -1292,6 +1481,13 @@ const COPY = {
           "short": "Import and export paperwork, prepared and followed through to clearance.",
           "detailTitle": "Customs, handled for you",
           "detail": "We prepare and submit your import and export documents, then follow your file until the goods are cleared. If anything extra is needed, we tell you straight away."
+        },
+        {
+          "id": "buyship",
+          "title": "Buy & ship",
+          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
+          "detailTitle": "Buy abroad, receive at home",
+          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         },
         {
           "id": "warehousing",
@@ -1306,13 +1502,6 @@ const COPY = {
           "short": "Careful packing and repacking that protects your goods and saves space.",
           "detailTitle": "Packed to travel well",
           "detail": "Good packing protects your cargo and can cut your costs. We pack and repack shipments to make better use of each container and truck, so you pay for less space."
-        },
-        {
-          "id": "buyship",
-          "title": "Buy & ship",
-          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
-          "detailTitle": "Buy abroad, receive at home",
-          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         }
       ]
     },
@@ -1359,7 +1548,7 @@ const COPY = {
       "title": "Who we are",
       "body": "Freight Net SARL is a shipping, general trading and commercial brokerage company based in Lebanon. We handle shipments into and out of the country, wherever in the world they start or end. Our team has long experience in shipping, trade and transport. We were also among the first to receive TIR certification for international road transport.",
       "missionTitle": "Our mission",
-      "mission": "To take care of the whole journey for every client: ocean, air and land freight, customs clearance, warehousing, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
+      "mission": "To take care of the whole journey for every client: ocean, air and land freight, cross-border trucking, customs clearance, warehousing, packaging, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
     },
     "cta": {
       "title": "Ready to ship? Ask us for a quote.",
@@ -1372,8 +1561,8 @@ const COPY = {
       "lede": "Planning a shipment or have a question? Send us a message or reach us on WhatsApp, and our team will reply shortly.",
       "officeTitle": "Head office",
       "address": [
-        "Mansour Building, ground floor",
-        "Main road, near the NSSF",
+        "Fawaz Building, ground floor",
+        "Oumara Road, near the NSSF",
         "Choueifat, Beirut, Lebanon"
       ],
       "maps": "Open in Google Maps",
@@ -1435,8 +1624,8 @@ const COPY = {
           "body": "ننقل بضائعكم من لبنان إلى أي مكان في العالم، ومن العالم إلى لبنان، ونتولّى المعاملات الجمركية في كل مرحلة."
         },
         {
-          "eyebrow": "الشحن والخدمات اللوجستية",
-          "title": "شحنات لكل القطاعات",
+          "eyebrow": "نقل البضائع",
+          "title": "حلول الشحن والخدمات اللوجستية لكل القطاعات",
           "body": "من منصّة نقّالة واحدة إلى حاويات كاملة، نخطّط لكم المسار والنقل والتخليص الجمركي."
         }
       ],
@@ -1471,9 +1660,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "الشحن البحري",
-          "short": "حاوية كاملة أو شحنة أقل من حاوية، من موانئ العالم وإليها.",
+          "short": "حاوية كاملة (FCL) أو شحنة أقل من حاوية (LCL)، من موانئ العالم وإليها.",
           "detailTitle": "نقل بضائعكم بحرًا",
-          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية عندما تكون الكمية صغيرة."
+          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة (FCL) لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية (LCL) عندما تكون الكمية صغيرة."
         },
         {
           "id": "air",
@@ -1485,9 +1674,16 @@ const COPY = {
         {
           "id": "land",
           "title": "الشحن البري",
-          "short": "نقل بالشاحنات داخل لبنان وعبر الحدود.",
+          "short": "نقل بالشاحنات داخل لبنان، بحمولة شاحنة كاملة (FTL) أو بحمولة جزئية (LTL).",
           "detailTitle": "نقل بري من البداية إلى النهاية",
-          "detail": "نخطّط كل رحلة برية بحسب بضائعكم: الشاحنة المناسبة، والطريق الأنسب، والمستندات اللازمة لعبور الحدود. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+          "detail": "نخطّط كل رحلة برية داخل لبنان بحسب بضائعكم، مع الشاحنة المناسبة والطريق الأنسب. احجزوا شاحنة كاملة (FTL) لبضائعكم وحدها، أو اختاروا حمولة جزئية (LTL) تتشارك فيها بضائعكم الشاحنة مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+        },
+        {
+          "id": "crossborder",
+          "title": "النقل البري عبر الحدود",
+          "short": "نقل بالشاحنات عبر الحدود من الباب إلى الباب، ونتولّى مستندات العبور.",
+          "detailTitle": "عبر الحدود، من الباب إلى الباب",
+          "detail": "نستلم بضائعكم من باب المرسِل وننقلها عبر الحدود حتى باب المستلِم. نُعِدّ المستندات اللازمة لعبور الحدود، ونبقيكم على اطّلاع طوال الطريق."
         },
         {
           "id": "customs",
@@ -1495,6 +1691,13 @@ const COPY = {
           "short": "نُعِدّ مستندات الاستيراد والتصدير ونتابعها حتى إتمام التخليص.",
           "detailTitle": "نتولّى عنكم معاملات الجمارك",
           "detail": "نُعِدّ مستندات الاستيراد والتصدير ونقدّمها، ثم نتابع ملفكم حتى تخليص البضائع. وإذا تطلّب الأمر أي مستند إضافي، نبلغكم فورًا."
+        },
+        {
+          "id": "buyship",
+          "title": "الشراء والشحن",
+          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
+          "detailTitle": "من المورّد في الخارج إلى بابكم",
+          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         },
         {
           "id": "warehousing",
@@ -1509,13 +1712,6 @@ const COPY = {
           "short": "تغليف وإعادة تغليف بعناية يحميان بضائعكم ويوفّران المساحة.",
           "detailTitle": "تغليف يحمي بضائعكم في الطريق",
           "detail": "التغليف الجيد يحمي بضائعكم وقد يخفّض تكاليفكم. نغلّف الشحنات ونعيد تغليفها لنستفيد أكثر من مساحة كل حاوية وكل شاحنة، فتدفعون مقابل مساحة أقل."
-        },
-        {
-          "id": "buyship",
-          "title": "الشراء والشحن",
-          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
-          "detailTitle": "من المورّد في الخارج إلى بابكم",
-          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         }
       ]
     },
@@ -1562,7 +1758,7 @@ const COPY = {
       "title": "تعرّفوا إلينا",
       "body": "فريت نت ش.م.م. شركة شحن وتجارة عامة ووساطة تجارية مقرّها لبنان. نتولّى الشحنات الواردة إلى لبنان والصادرة منه، أيًّا كانت نقطة انطلاقها أو وجهتها في العالم. يتمتع فريقنا بخبرة طويلة في الشحن والتجارة والنقل، وكنّا من أوائل الحاصلين على شهادة TIR للنقل البري الدولي.",
       "missionTitle": "رسالتنا",
-      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والتخليص الجمركي، والتخزين، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
+      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والنقل بالشاحنات عبر الحدود، والتخليص الجمركي، والتخزين، والتغليف، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
     },
     "cta": {
       "title": "جاهزون للشحن؟ اطلبوا عرض سعر.",
@@ -1575,8 +1771,8 @@ const COPY = {
       "lede": "هل تخطّطون لشحنة أو لديكم سؤال؟ أرسلوا لنا رسالة أو راسلونا عبر واتساب، وسيردّ عليكم فريقنا قريبًا.",
       "officeTitle": "المكتب الرئيسي",
       "address": [
-        "مبنى منصور، الطابق الأرضي",
-        "الطريق العام، قرب الضمان الاجتماعي",
+        "مبنى فوّاز، الطابق الأرضي",
+        "طريق الأمراء، قرب الضمان الاجتماعي",
         "الشويفات، بيروت، لبنان"
       ],
       "maps": "فتح في خرائط Google",
@@ -1628,26 +1824,28 @@ const EXTRA = {
     callOnly: 'Calls only',
     or: 'or',
     fig: 'Fig.',
-    instagram: 'Instagram',
+    networks: { instagram: 'Instagram', tiktok: 'TikTok' },
     newTab: '(opens in a new tab)',
     sendAnother: 'Send another message',
     alt: {
-      hero: 'Aerial view of a container ship at sea off a green coast',
+      hero: 'A container ship, a plane in flight and a container truck at a port at sunset',
       port: 'Rows of containers in a port yard, seen from above',
-      ocean: 'Containers stacked on a quay by the sea, seen from above',
+      ocean: 'Aerial view of a container ship at sea off a green coast',
       air: 'Cargo being loaded into a freighter aircraft',
-      land: 'Truck on a coastal highway',
+      land: 'White truck with the Freight Net logo on its trailer, on a coastal road',
+      crossborder: 'White truck at a border checkpoint with a raised barrier, above the sea',
       customs: 'Hands holding a clipboard beside a container door',
       warehousing: 'Worker scanning boxes in a bright warehouse',
       packaging: 'Hands taping a cardboard box',
       contact: 'Person working on a laptop by a window over a harbour'
     },
     cap: {
-      hero: 'A container ship along the coast, from the air',
+      hero: 'Ship, plane and truck at the port at sunset',
       port: 'A container yard, seen from above',
-      ocean: 'Where the quay meets the sea, from above',
+      ocean: 'A container ship along the coast, from the air',
       air: 'Loading an air freighter',
       land: 'On the coastal road',
+      crossborder: 'At the border crossing',
       contact: 'At a desk above the harbour'
     }
   },
@@ -1662,48 +1860,57 @@ const EXTRA = {
     callOnly: 'للاتصال فقط',
     or: 'أو',
     fig: 'صورة',
-    instagram: 'إنستغرام',
+    networks: { instagram: 'إنستغرام', tiktok: 'تيك توك' },
     newTab: '(يفتح في علامة تبويب جديدة)',
     sendAnother: 'إرسال رسالة أخرى',
     alt: {
-      hero: 'منظر جوي لسفينة حاويات في البحر قرب ساحل أخضر',
+      hero: 'سفينة حاويات وطائرة في الجو وشاحنة حاويات في مرفأ عند الغروب',
       port: 'صفوف من الحاويات في ساحة مرفأ، من الأعلى',
-      ocean: 'حاويات مكدّسة على رصيف بجانب البحر، من الأعلى',
+      ocean: 'منظر جوي لسفينة حاويات في البحر قرب ساحل أخضر',
       air: 'تحميل بضائع في طائرة شحن',
-      land: 'شاحنة على طريق ساحلي',
+      land: 'شاحنة بيضاء يحمل جانب مقطورتها شعار فريت نت، على طريق ساحلي',
+      crossborder: 'شاحنة بيضاء عند نقطة عبور حدودية والحاجز مرفوع، فوق البحر',
       customs: 'يدان تمسكان لوحة أوراق قرب باب حاوية',
       warehousing: 'عامل يمسح الصناديق في مستودع مضيء',
       packaging: 'يدان تغلّفان صندوقًا من الكرتون',
       contact: 'شخص يعمل على حاسوب محمول قرب نافذة تطل على مرفأ'
     },
     cap: {
-      hero: 'سفينة حاويات على امتداد الساحل، من الجو',
+      hero: 'سفينة وطائرة وشاحنة في المرفأ عند الغروب',
       port: 'ساحة حاويات من الأعلى',
-      ocean: 'حيث يلتقي الرصيف بالبحر، من الأعلى',
+      ocean: 'سفينة حاويات على امتداد الساحل، من الجو',
       air: 'تحميل طائرة شحن',
       land: 'على الطريق الساحلي',
+      crossborder: 'عند المعبر الحدودي',
       contact: 'مكتب يطل على المرفأ'
     }
   }
 };
 
 const RV_IMG = {
-  hero: '../img/s2-hero.webp',
+  ship: '../img/s2-hero.webp',
   port: '../img/s2-port.webp',
   air: '../img/s2-air.webp',
-  land: '../img/s2-land.webp',
+  /* the same coastal-road truck with the client's logo on the trailer: never mirrored */
+  land: '../img/s2-land-logo.webp',
+  crossborder: '../img/s2-crossborder.webp',
   warehouse: '../img/s2-warehouse.webp',
   customs: '../img/s2-customs.webp',
   packaging: '../img/s2-packaging.webp'
 };
+/* How each service is shown. row: a large image row of the editorial zig-zag (the four ways to move goods: sea, air,
+   road, road across borders); the others are arcade cards (an arch photo, or the navy ampersand plate when img is
+   null). pos: the crop in the frame; rv-mirror: faces the other way in Arabic (photos without text only).
+   A service missing here becomes an ampersand card, never a borrowed photo. */
 const RV_SVC_MEDIA = {
-  ocean: { img: RV_IMG.port, w: 1200, h: 1200, imgCls: 'rv-crop-quay' },
-  air: { img: RV_IMG.air, w: 1200, h: 800, imgCls: '' },
-  land: { img: RV_IMG.land, w: 1200, h: 800, imgCls: '' },
+  ocean: { row: true, img: RV_IMG.ship, w: 1672, h: 941, pos: '70% 50%', imgCls: 'rv-mirror' },
+  air: { row: true, img: RV_IMG.air, w: 1200, h: 800, pos: '50% 50%' },
+  land: { row: true, img: RV_IMG.land, w: 1200, h: 800, pos: '56% 50%' },
+  crossborder: { row: true, img: RV_IMG.crossborder, w: 1200, h: 800, pos: '52% 50%' },
   customs: { img: RV_IMG.customs, w: 1200, h: 800, pos: '62% 50%' },
+  buyship: { img: null },
   warehousing: { img: RV_IMG.warehouse, w: 1200, h: 800, pos: '60% 50%' },
-  packaging: { img: RV_IMG.packaging, w: 960, h: 1200, pos: '50% 50%' },
-  buyship: null
+  packaging: { img: RV_IMG.packaging, w: 960, h: 1200, pos: '50% 50%' }
 };
 const RV_DELAY = 7000;
 const RV_SLIDE_MS = 300; /* the images' slide (CSS .rv-gal.is-moving) */
@@ -1711,18 +1918,29 @@ const RV_FIELDS = ['name', 'email', 'phone', 'service', 'message'];
 const RV_ERRKEY = { name: 'errName', email: 'errEmail', phone: 'errPhone', service: 'errService', message: 'errMessage' };
 
 /* Display titles get an accent on their second half: italic in Latin, a lighter weight in Arabic.
-   Split after a question, else after a linking word (for, or, behind, أو), else before the last words. */
+   Split after a question, else after a linking word (for, or, behind, أو), else before a word that opens the closing
+   phrase (Arabic لكل "for every", as للشحن opens slide 1's accent), else before the last words. */
 const RV_PIVOTS = ['for', 'or', 'behind', 'أو'];
+const RV_PIVOTS_BEFORE = ['لكل'];
+/* word pairs a display title never breaks between (a no-break space joins them): "logistics services" stays one
+   term on one line, and "&" never starts a line */
+const RV_KEEP = [['والخدمات', 'اللوجستية']];
+function rvKeep(str) {
+  let s = String(str || '').replace(/ &(?= )/g, '\u00A0&');
+  RV_KEEP.forEach((k) => { s = s.split(k[0] + ' ' + k[1]).join(k[0] + '\u00A0' + k[1]); });
+  return s;
+}
 function rvSplit(str) {
   const s = String(str || '').trim();
   const q = s.search(/[?؟]\s/);
-  if (q > 0) return { lead: s.slice(0, q + 1) + ' ', accent: s.slice(q + 2) };
+  if (q > 0) return { lead: rvKeep(s.slice(0, q + 1)) + ' ', accent: rvKeep(s.slice(q + 2)) };
   const w = s.split(/\s+/);
-  if (w.length < 2) return { lead: '', accent: s };
+  if (w.length < 2) return { lead: '', accent: rvKeep(s) };
   let cut = -1;
   for (let i = 1; i < w.length - 1; i++) { if (RV_PIVOTS.indexOf(w[i].toLowerCase()) >= 0) { cut = i + 1; break; } }
+  if (cut < 0) { for (let i = 1; i < w.length; i++) { if (RV_PIVOTS_BEFORE.indexOf(w[i]) >= 0) { cut = i; break; } } }
   if (cut < 0) cut = w.length >= 6 ? 2 : (w.length >= 3 ? w.length - 2 : w.length - 1);
-  return { lead: w.slice(0, cut).join(' ') + ' ', accent: w.slice(cut).join(' ') };
+  return { lead: rvKeep(w.slice(0, cut).join(' ')) + ' ', accent: rvKeep(w.slice(cut).join(' ')) };
 }
 function rvPad(n) { return (n < 10 ? '0' : '') + n; }
 
@@ -2230,22 +2448,24 @@ class Component extends DCLogic {
       sheetGo: (e) => { if (e && e.preventDefault) e.preventDefault(); this.closeLayer({ __rv: true, then: () => this.scrollToId(n.id) }); }
     }));
 
-    const items = (t.services && t.services.items) || [];
+    /* services in the copy's order, numbered from it (01 / 08); RV_SVC_MEDIA sends each to the image rows or the
+       arcade */
+    const items = ((t.services && t.services.items) || []).map((it, i) => ({ it, n: i + 1, m: RV_SVC_MEDIA[it.id] || { img: null } }));
     const total = items.length;
-    const zig = items.slice(0, 3).map((it, i) => {
-      const m = RV_SVC_MEDIA[it.id] || { img: RV_IMG.port, w: 1200, h: 1200, imgCls: '' };
+    const zig = items.filter((e) => e.m.row && e.m.img).map((e, i) => {
+      const it = e.it; const m = e.m;
       return Object.assign({}, it, {
-        num: rvPad(i + 1), fig: rvPad(nSlides + i + 1), cls: i % 2 ? 'is-flip' : '', hid: 'rv-svc-' + it.id,
-        img: m.img, w: m.w, h: m.h, imgCls: m.imgCls || '',
+        num: rvPad(e.n), fig: rvPad(nSlides + i + 1), cls: i % 2 ? 'is-flip' : '', hid: 'rv-svc-' + it.id,
+        img: m.img, w: m.w, h: m.h, imgCls: m.imgCls || '', pos: m.pos || '50% 50%',
         alt: (x.alt && x.alt[it.id]) || '', cap: (x.cap && x.cap[it.id]) || it.title,
         pick: () => this.pick(it.id)
       });
     });
-    const arc = items.slice(3).map((it, i) => {
-      const m = RV_SVC_MEDIA[it.id];
+    const arc = items.filter((e) => !(e.m.row && e.m.img)).map((e) => {
+      const it = e.it; const m = e.m.img ? e.m : null;
       const open = s.openCard === it.id;
       return Object.assign({}, it, {
-        num: rvPad(i + 4), hid: 'rv-svc-' + it.id, pid: 'rv-svc-d-' + it.id,
+        num: rvPad(e.n), hid: 'rv-svc-' + it.id, pid: 'rv-svc-d-' + it.id,
         hasImg: !!m, noImg: !m, archCls: m ? '' : 'is-plate', img: m ? m.img : '', w: m ? m.w : 1, h: m ? m.h : 1, pos: m ? m.pos : '50% 50%',
         alt: (x.alt && x.alt[it.id]) || '',
         cls: open ? 'is-open' : '', expanded: open ? 'true' : 'false', closed: !open,
@@ -2267,7 +2487,11 @@ class Component extends DCLogic {
       callLabel: x.callPrefix + ' ' + p.display
     }));
     const emails = (c.emails || []).map((m) => ({ addr: m, href: 'mailto:' + m }));
-    const insta = (c.social && c.social[0]) || { handle: '@freightnetsarl', url: 'https://www.instagram.com/freightnetsarl/' };
+    /* social accounts in the copy's order (Instagram, TikTok); the icon follows the network's name */
+    const social = (c.social || []).filter((so) => so && so.url && so.handle).map((so) => {
+      const key = String(so.name || '').toLowerCase();
+      return { url: so.url, handle: so.handle, label: (x.networks && x.networks[key]) || so.name || '', isInsta: key === 'instagram', isTiktok: key === 'tiktok' };
+    });
 
     const f = (t.contactSection && t.contactSection.form) || {};
     const err = {}; const inv = {}; const desc = {};
@@ -2310,12 +2534,12 @@ class Component extends DCLogic {
       hServices: rvSplit(t.services.title), hOcean: rvSplit(t.ocean.title), hValues: rvSplit(t.values.title),
       hAbout: rvSplit(t.about.title), hForm: rvSplit(f.title), hCta: rvSplit(t.cta.title), hContact: rvSplit(t.contactSection.title),
       zig, arc, svcTotal: rvPad(total), glyph: lang === 'ar' ? 'و' : '&',
-      values, phones, callOnly, emails, insta, figContact: rvPad(nSlides + Math.min(3, total) + 1),
+      values, phones, callOnly, emails, social, figContact: rvPad(nSlides + zig.length + 1),
       f, form: s.form, on: this.on, err, inv, desc, submit: this.submit,
       sent: s.sent, notSent: !s.sent, sending: s.sending ? 'true' : 'false',
       submitLabel: s.sending ? f.sending : f.submit,
       another: () => this.setState({ sent: false }, () => { const el = document.getElementById('rv-f-name'); if (el) el.focus(); }),
-      svcOptions: items.map((it) => ({ value: it.id, label: it.title }))
+      svcOptions: items.map((e) => ({ value: e.it.id, label: e.it.title }))
     };
   }
 }

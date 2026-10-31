@@ -213,7 +213,19 @@ body{margin:0;background:#0A0D1C}
 .sg-slide__eyebrow::before{content:"";width:10px;height:10px;background:var(--red);flex:none}
 .sg-slide__title{font-family:var(--f-display);font-weight:400;font-size:clamp(46px,7.2cqi,108px);line-height:.9;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance;color:#fff}
 .sg-root[dir="rtl"] .sg-slide__title{font-weight:800;font-size:clamp(40px,6.9cqi,104px);line-height:1.22;letter-spacing:0;text-transform:none}
-.sg-slide__text{margin-top:26px;max-width:34em;font-size:clamp(17px,1.4cqi,20px);line-height:1.55;color:var(--soft)}
+/* a long slide title (clearly longer than the shortest one, see renderVals) is set smaller, sized per breakpoint (here and in section 15) so that, with the
+   balanced wrap, it falls into whole phrases with no word left alone at the end, and its block is never taller than slide 1's (as tall wherever the
+   width allows): the hero keeps its height, and the buttons their place, on every slide. Slide 1 keeps its own size and lines.
+   The lines are fixed by a measure in em (10.6em), set for the current slide 2 title: it is wider than its longest line ("every industry", 9.8em;
+   "والخدمات اللوجستية", 10.2em) and narrower than the joins to avoid ("cargo & logistics", 11.5em; "حلول الشحن والخدمات", 11.2em). If that title
+   changes, check its lines again.
+   English: four lines, "cargo & / logistics / solutions for / every industry", where slide 1 takes three (up to 530 px and from 641 px), at three
+   quarters of slide 1's size; three, "cargo & logistics / solutions for / every industry", at 531-640 px, where slide 1 takes two (two thirds of its size).
+   Arabic: always three lines, "حلول الشحن / والخدمات اللوجستية / لكل القطاعات", so the noun and its adjective stay on one line; where slide 1
+   takes two lines (472-970 px) at two thirds of its size, so the two blocks are the same height */
+.sg-slide.is-long .sg-slide__title{font-size:min(5.4cqi,81px);max-width:10.6em}
+.sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{font-size:clamp(40px,5.3cqi,75px)}
+.sg-slide__text{margin-top:26px;max-width:34em;font-size:clamp(17px,1.4cqi,20px);line-height:1.55;color:var(--soft);text-wrap:pretty}
 .sg-root[dir="rtl"] .sg-slide__text{line-height:1.85}
 .sg-hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
 /* slide dots: one numbered tab per slide at the inline start (the floating WhatsApp button keeps to the inline end, so the two never meet).
@@ -283,7 +295,7 @@ body{margin:0;background:#0A0D1C}
 .sg-row__main{min-width:0;display:flex;flex-direction:column;gap:8px}
 .sg-row__title{font-family:var(--f-display);font-size:clamp(20px,2cqi,28px);line-height:1;letter-spacing:-.01em;text-transform:uppercase}
 .sg-root[dir="rtl"] .sg-row__title{font-weight:800;font-size:clamp(19px,1.75cqi,24px);line-height:1.4;letter-spacing:0}
-.sg-row__short{font-size:15px;line-height:1.5;color:var(--muted)}
+.sg-row__short{font-size:15px;line-height:1.5;color:var(--muted);text-wrap:pretty}
 .sg-row__no{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;color:var(--muted);direction:ltr;justify-self:end;white-space:nowrap}
 .sg-row__icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line-2);transition:background-color .15s ease,border-color .15s ease}
 .sg-row__icon svg{transition:transform .2s ease}
@@ -295,7 +307,7 @@ body{margin:0;background:#0A0D1C}
 .sg-row__panel[hidden]{display:none}
 .sg-row__media{display:none}
 .sg-row__dtitle{font-weight:700;font-size:19px;line-height:1.35;color:#fff;margin-bottom:10px}
-.sg-row__dtext{color:var(--soft);font-size:16px;line-height:1.65;max-width:58ch}
+.sg-row__dtext{color:var(--soft);font-size:16px;line-height:1.65;max-width:58ch;text-wrap:pretty}
 .sg-root[dir="rtl"] .sg-row__dtext{line-height:1.85}
 .sg-row__cta{margin-top:22px}
 .sg-row__cta .sg-btn{min-height:48px}
@@ -419,7 +431,8 @@ body{margin:0;background:#0A0D1C}
 .sg-bill__label{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-family:var(--f-mono);font-weight:500;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .sg-root[dir="rtl"] .sg-bill__label{font-family:var(--f-ar);font-weight:700;font-size:14px;letter-spacing:0}
 .sg-addr{font-style:normal;font-size:17px;line-height:1.55;color:var(--text)}
-.sg-addr span{display:block}
+/* one address line per row; a hanging indent marks a wrapped line (narrow phones) as the same line continuing, not a new one */
+.sg-addr span{display:block;text-wrap:pretty;padding-inline-start:1em;text-indent:-1em}
 .sg-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-top:10px;padding:0 12px;margin-inline-start:-12px;color:var(--red-t);text-decoration:none;font-weight:600;transition:background-color .15s ease,transform .12s ease}
 .sg-link:hover{background:var(--bg-2)}
 .sg-link:active,.sg-mail:active,.sg-flink:active,.sg-wa__row:active,.sg-sheet__tel:active,.sg-top:active{transform:scale(.98)}
@@ -575,6 +588,8 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-manifest__head,.sg-row__btn{grid-template-columns:72px minmax(0,1fr) 44px}
   .sg-manifest__head span:nth-child(3),.sg-row__no{display:none}
   .sg-row__panel{padding-inline-start:calc(14px + 72px + 20px)}
+  .sg-slide.is-long .sg-slide__title{font-size:5.3cqi}
+  .sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{font-size:4.9cqi}
 }
 @container sg (max-width: 1023px){
   .sg-strip{display:none}
@@ -583,6 +598,8 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-header__act{margin-inline-start:auto}
   .sg-hero__stack{max-width:min(720px,86%)}
   .sg-slide__title{font-size:clamp(46px,8.3cqi,128px)}
+  .sg-slide.is-long .sg-slide__title{font-size:6.2cqi}
+  .sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{font-size:6.4cqi}
   .sg-slide__media--b .sg-slide__img{left:0;width:100%;-webkit-mask-image:none;mask-image:none}
   .sg-hero__scrim{background:linear-gradient(90deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
   .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(270deg,rgba(10,13,28,.96) 0%,rgba(10,13,28,.9) 50%,rgba(10,13,28,.7) 78%,rgba(10,13,28,.5) 100%),linear-gradient(0deg,rgba(10,13,28,.94) 0%,rgba(10,13,28,0) 40%)}
@@ -606,6 +623,11 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-brand--lg .sg-brand__name{font-size:clamp(17px,2.1cqi,22px)}
   .sg-brand--lg .sg-brand__tag{font-size:clamp(10px,1.15cqi,12px)}
   .sg-dedicated__in{grid-template-columns:1fr;gap:8px}
+}
+/* Arabic, 472-970 px (phones too, see the 640 px block): slide 1's title takes two lines here (three again from 971 px), so the long one keeps its three
+   lines at two thirds of slide 1's size (6.9cqi, or 40px where that is larger), the same block height */
+@container sg (max-width: 970px){
+  .sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{font-size:max(26.6px,4.6cqi)}
 }
 @container sg (max-width: 860px){
   .sg-header__cta{display:none}
@@ -638,7 +660,14 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-root[dir="rtl"] .sg-hero__scrim{background:linear-gradient(180deg,rgba(10,13,28,.3) 0%,rgba(10,13,28,0) 20%,rgba(10,13,28,.72) 52%,rgba(10,13,28,.95) 76%,#0A0D1C 100%)}
   .sg-hero__inner{padding-top:calc(min(124cqi,540px) - 168px);padding-bottom:40px}
   .sg-hero__stack{max-width:none}
+  /* the slides hang from the top of their shared cell, right under the dots: a slide with less copy (a shorter body) keeps its eyebrow and title in the
+     same place and leaves the spare room above the buttons, instead of dropping away from the dots */
+  .sg-slide{align-self:start}
   .sg-slide__eyebrow{margin-bottom:16px}
+  /* 531-640 px: slide 1's title takes two lines here (46px, or 8.3cqi where that is larger), so the long English one takes three at two thirds of that
+     (the em measure is lifted for it); the Arabic one keeps its three lines and its size from the 970 px block */
+  .sg-slide.is-long .sg-slide__title{font-size:max(30.6px,5.5cqi);max-width:none}
+  .sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{max-width:10.6em}
   .sg-slide__text{margin-top:18px}
   .sg-hero__cta{flex-direction:column;align-items:stretch;margin-top:28px}
   .sg-hero__cta .sg-btn{width:100%}
@@ -681,6 +710,15 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-wa__row{min-height:84px;padding:14px 4px}
   .sg-wa__num{font-size:clamp(17px,5.4cqi,22px)}
 }
+/* phones where slide 1's title takes three lines (English up to 530 px, Arabic up to 471 px; the breakpoints sit exactly on those switches): the long title
+   takes four lines in English, at three quarters of slide 1's size (9.2cqi keeps "every industry" on one line at 320 px), and three in Arabic, as large
+   as "والخدمات اللوجستية" allows */
+@container sg (max-width: 530px){
+  .sg-slide.is-long .sg-slide__title{font-size:min(9.2cqi,34.5px);max-width:10.6em}
+}
+@container sg (max-width: 471px){
+  .sg-root[dir="rtl"] .sg-slide.is-long .sg-slide__title{font-size:min(8.6cqi,39px)}
+}
 @container sg (max-width: 400px){
   .sg-header__in{gap:8px}
   .sg-menu-btn,.sg-sheet__head .sg-x{width:44px}
@@ -713,6 +751,8 @@ textarea.sg-input{min-height:148px;resize:vertical}
   .sg-brand--lg .sg-brand__name{font-size:16.5px}
   .sg-brand--lg .sg-brand__tag{font-size:9.5px}
   .sg-tel__num{font-size:17px}
+  /* the Arabic address one size down, so each of its lines still fits one row (the second, "طريق الأمراء، قرب الضمان الاجتماعي", is the longest) */
+  .sg-root[dir="rtl"] .sg-addr{font-size:16px}
 }
 
 @media (hover:hover) and (pointer:fine){
@@ -821,7 +861,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
       <div class="sg-manifest__table" onMouseLeave="{{svcLeave}}">
         <div class="sg-manifest__head" aria-hidden="true"><span>{{x.colCode}}</span><span>{{x.colService}}</span><span>{{x.colRef}}</span><span></span></div>
         <ul class="sg-rows">
-          <sc-for list="{{services}}" as="s" hint-placeholder-count="7">
+          <sc-for list="{{services}}" as="s" hint-placeholder-count="8">
             <li class="sg-row {{s.cls}}" onMouseEnter="{{s.hover}}">
               <h3 class="sg-row__h">
                 <button type="button" class="sg-row__btn" id="{{s.btnId}}" aria-expanded="{{s.expanded}}" aria-controls="{{s.panelId}}" onClick="{{s.toggle}}">
@@ -846,7 +886,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
       <figure class="sg-viewer" aria-hidden="true">
         <div class="sg-viewer__frame sg-frame">
           <div class="sg-viewer__clip">
-            <sc-for list="{{viewer}}" as="v" hint-placeholder-count="7"><img class="sg-viewer__img {{v.cls}}" src="{{v.img}}" alt="" width="1200" height="800" loading="lazy" decoding="async" style="object-position: {{v.pos}}"/></sc-for>
+            <sc-for list="{{viewer}}" as="v" hint-placeholder-count="8"><img class="sg-viewer__img {{v.cls}}" src="{{v.img}}" alt="" width="1200" height="800" loading="lazy" decoding="async" style="object-position: {{v.pos}}"/></sc-for>
             <div class="sg-viewer__shade"></div>
             <span class="sg-viewer__code">{{viewerNow.code}}</span>
           </div>
@@ -952,7 +992,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
       <div class="sg-bill">
         <div class="sg-bill__cell">
           <h3 class="sg-bill__label">{{c.officeTitle}}</h3>
-          <address class="sg-addr"><sc-for list="{{address}}" as="line" hint-placeholder-count="3"><span>{{line}}</span></sc-for></address>
+          <address class="sg-addr"><sc-for list="{{address}}" as="line" hint-placeholder-count="3"><span>{{line}} </span></sc-for></address>
           <a class="sg-link" href="{{mapsUrl}}" target="_blank" rel="noopener noreferrer"><svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span>{{c.maps}}</span><span class="sg-vh">{{x.newTab}}</span></a>
         </div>
         <div class="sg-bill__cell">
@@ -986,7 +1026,9 @@ textarea.sg-input{min-height:148px;resize:vertical}
         </div>
         <div class="sg-bill__cell">
           <h3 class="sg-bill__label">{{t.footer.follow}}</h3>
-          <a class="sg-mail" href="{{insta.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{x.instaLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span dir="ltr" class="sg-pin">{{insta.handle}}</span></a>
+          <div class="sg-mails">
+            <sc-for list="{{social}}" as="so" hint-placeholder-count="2"><a class="sg-mail" href="{{so.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{so.label}}"><sc-if value="{{so.isInsta}}" hint-placeholder-val="{{ true }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg></sc-if><sc-if value="{{so.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path transform="translate(-1.44 -1.44) scale(1.12)" d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><sc-if value="{{so.isOther}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></sc-if><span dir="ltr" class="sg-pin">{{so.handle}}</span></a></sc-for>
+          </div>
         </div>
       </div>
 
@@ -1020,7 +1062,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
                 <div class="sg-selectbox">
                   <select class="sg-input {{selectCls}}" id="{{ids.service}}" name="service" value="{{form.service}}" onChange="{{onService}}" aria-required="true" aria-invalid="{{inv.service}}" aria-describedby="{{desc.service}}" ref="{{refService}}">
                     <option value="">{{f.servicePlaceholder}}</option>
-                    <sc-for list="{{serviceOptions}}" as="o" hint-placeholder-count="7"><option value="{{o.id}}">{{o.title}}</option></sc-for>
+                    <sc-for list="{{serviceOptions}}" as="o" hint-placeholder-count="8"><option value="{{o.id}}">{{o.title}}</option></sc-for>
                   </select>
                   <svg class="sg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
                 </div>
@@ -1069,7 +1111,7 @@ textarea.sg-input{min-height:148px;resize:vertical}
       <div>
         <p class="sg-footer__h">{{t.footer.follow}}</p>
         <ul class="sg-flinks">
-          <li><a class="sg-flink" href="{{insta.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{x.instaLabel}}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span dir="ltr" class="sg-pin">{{insta.handle}}</span></a></li>
+          <sc-for list="{{social}}" as="so" hint-placeholder-count="2"><li><a class="sg-flink" href="{{so.url}}" target="_blank" rel="noopener noreferrer" aria-label="{{so.label}}"><sc-if value="{{so.isInsta}}" hint-placeholder-val="{{ true }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg></sc-if><sc-if value="{{so.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path transform="translate(-1.44 -1.44) scale(1.12)" d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><sc-if value="{{so.isOther}}" hint-placeholder-val="{{ false }}"><svg class="sg-ico sg-ico--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></sc-if><span dir="ltr" class="sg-pin">{{so.handle}}</span></a></li></sc-for>
         </ul>
       </div>
     </div>
@@ -1153,12 +1195,17 @@ const COPY = {
       "info@freightnet-lb.com",
       "sales@freightnet-lb.com"
     ],
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mansour+Building+Choueifat+NSSF+Lebanon",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Fawaz+Building+Oumara+Road+Choueifat+Lebanon",
     "social": [
       {
         "name": "Instagram",
-        "handle": "@freightnetsarl",
-        "url": "https://www.instagram.com/freightnetsarl/"
+        "handle": "@freightnet2023",
+        "url": "https://www.instagram.com/freightnet2023/"
+      },
+      {
+        "name": "TikTok",
+        "handle": "@freight.net.sarl",
+        "url": "https://www.tiktok.com/@freight.net.sarl"
       }
     ],
     "phones": [
@@ -1195,8 +1242,8 @@ const COPY = {
           "body": "We move goods between Lebanon and anywhere in the world, and take care of the customs paperwork on the way."
         },
         {
-          "eyebrow": "Freight and logistics",
-          "title": "Cargo for every industry",
+          "eyebrow": "Freight forwarding",
+          "title": "Cargo & logistics solutions for every industry",
           "body": "From a single pallet to full containers, we plan the route, the transport and the customs clearance for you."
         }
       ],
@@ -1231,9 +1278,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "Ocean freight",
-          "short": "Ship a full container, or share one, to and from ports worldwide.",
+          "short": "Ship a full container (FCL) or share one (LCL), to and from ports worldwide.",
           "detailTitle": "Moving your cargo by sea",
-          "detail": "We arrange your sea shipment port to port or door to door. Take a full container for your own goods, or share container space when you ship smaller volumes."
+          "detail": "We arrange your sea shipment port to port or door to door. Take a full container (FCL) for your own goods, or share container space (LCL) when you ship smaller volumes."
         },
         {
           "id": "air",
@@ -1245,9 +1292,16 @@ const COPY = {
         {
           "id": "land",
           "title": "Land freight",
-          "short": "Road transport by truck, within Lebanon and across borders.",
+          "short": "Road transport within Lebanon, with a full truckload (FTL) or part of one (LTL).",
           "detailTitle": "Road transport from start to finish",
-          "detail": "We plan each road journey around your cargo: a suitable truck, a sensible route and the paperwork for any border crossings. We keep you updated from loading to delivery."
+          "detail": "We plan each road journey within Lebanon around your cargo, with a suitable truck and a sensible route. Take a full truckload (FTL) for your own goods, or share a truck (LTL) and pay only for the space you use. We keep you updated from loading to delivery."
+        },
+        {
+          "id": "crossborder",
+          "title": "Cross-border trucking",
+          "short": "Road transport across borders, door to door, with the border paperwork taken care of.",
+          "detailTitle": "Across the border, door to door",
+          "detail": "We collect your goods from the sender's door and deliver them across the border to the receiver's door. We prepare the paperwork for the border crossing and keep you updated along the way."
         },
         {
           "id": "customs",
@@ -1255,6 +1309,13 @@ const COPY = {
           "short": "Import and export paperwork, prepared and followed through to clearance.",
           "detailTitle": "Customs, handled for you",
           "detail": "We prepare and submit your import and export documents, then follow your file until the goods are cleared. If anything extra is needed, we tell you straight away."
+        },
+        {
+          "id": "buyship",
+          "title": "Buy & ship",
+          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
+          "detailTitle": "Buy abroad, receive at home",
+          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         },
         {
           "id": "warehousing",
@@ -1269,13 +1330,6 @@ const COPY = {
           "short": "Careful packing and repacking that protects your goods and saves space.",
           "detailTitle": "Packed to travel well",
           "detail": "Good packing protects your cargo and can cut your costs. We pack and repack shipments to make better use of each container and truck, so you pay for less space."
-        },
-        {
-          "id": "buyship",
-          "title": "Buy & ship",
-          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
-          "detailTitle": "Buy abroad, receive at home",
-          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         }
       ]
     },
@@ -1322,7 +1376,7 @@ const COPY = {
       "title": "Who we are",
       "body": "Freight Net SARL is a shipping, general trading and commercial brokerage company based in Lebanon. We handle shipments into and out of the country, wherever in the world they start or end. Our team has long experience in shipping, trade and transport. We were also among the first to receive TIR certification for international road transport.",
       "missionTitle": "Our mission",
-      "mission": "To take care of the whole journey for every client: ocean, air and land freight, customs clearance, warehousing, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
+      "mission": "To take care of the whole journey for every client: ocean, air and land freight, cross-border trucking, customs clearance, warehousing, packaging, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
     },
     "cta": {
       "title": "Ready to ship? Ask us for a quote.",
@@ -1335,8 +1389,8 @@ const COPY = {
       "lede": "Planning a shipment or have a question? Send us a message or reach us on WhatsApp, and our team will reply shortly.",
       "officeTitle": "Head office",
       "address": [
-        "Mansour Building, ground floor",
-        "Main road, near the NSSF",
+        "Fawaz Building, ground floor",
+        "Oumara Road, near the NSSF",
         "Choueifat, Beirut, Lebanon"
       ],
       "maps": "Open in Google Maps",
@@ -1398,8 +1452,8 @@ const COPY = {
           "body": "ننقل بضائعكم من لبنان إلى أي مكان في العالم، ومن العالم إلى لبنان، ونتولّى المعاملات الجمركية في كل مرحلة."
         },
         {
-          "eyebrow": "الشحن والخدمات اللوجستية",
-          "title": "شحنات لكل القطاعات",
+          "eyebrow": "نقل البضائع",
+          "title": "حلول الشحن والخدمات اللوجستية لكل القطاعات",
           "body": "من منصّة نقّالة واحدة إلى حاويات كاملة، نخطّط لكم المسار والنقل والتخليص الجمركي."
         }
       ],
@@ -1434,9 +1488,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "الشحن البحري",
-          "short": "حاوية كاملة أو شحنة أقل من حاوية، من موانئ العالم وإليها.",
+          "short": "حاوية كاملة (FCL) أو شحنة أقل من حاوية (LCL)، من موانئ العالم وإليها.",
           "detailTitle": "نقل بضائعكم بحرًا",
-          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية عندما تكون الكمية صغيرة."
+          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة (FCL) لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية (LCL) عندما تكون الكمية صغيرة."
         },
         {
           "id": "air",
@@ -1448,9 +1502,16 @@ const COPY = {
         {
           "id": "land",
           "title": "الشحن البري",
-          "short": "نقل بالشاحنات داخل لبنان وعبر الحدود.",
+          "short": "نقل بالشاحنات داخل لبنان، بحمولة شاحنة كاملة (FTL) أو بحمولة جزئية (LTL).",
           "detailTitle": "نقل بري من البداية إلى النهاية",
-          "detail": "نخطّط كل رحلة برية بحسب بضائعكم: الشاحنة المناسبة، والطريق الأنسب، والمستندات اللازمة لعبور الحدود. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+          "detail": "نخطّط كل رحلة برية داخل لبنان بحسب بضائعكم، مع الشاحنة المناسبة والطريق الأنسب. احجزوا شاحنة كاملة (FTL) لبضائعكم وحدها، أو اختاروا حمولة جزئية (LTL) تتشارك فيها بضائعكم الشاحنة مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+        },
+        {
+          "id": "crossborder",
+          "title": "النقل البري عبر الحدود",
+          "short": "نقل بالشاحنات عبر الحدود من الباب إلى الباب، ونتولّى مستندات العبور.",
+          "detailTitle": "عبر الحدود، من الباب إلى الباب",
+          "detail": "نستلم بضائعكم من باب المرسِل وننقلها عبر الحدود حتى باب المستلِم. نُعِدّ المستندات اللازمة لعبور الحدود، ونبقيكم على اطّلاع طوال الطريق."
         },
         {
           "id": "customs",
@@ -1458,6 +1519,13 @@ const COPY = {
           "short": "نُعِدّ مستندات الاستيراد والتصدير ونتابعها حتى إتمام التخليص.",
           "detailTitle": "نتولّى عنكم معاملات الجمارك",
           "detail": "نُعِدّ مستندات الاستيراد والتصدير ونقدّمها، ثم نتابع ملفكم حتى تخليص البضائع. وإذا تطلّب الأمر أي مستند إضافي، نبلغكم فورًا."
+        },
+        {
+          "id": "buyship",
+          "title": "الشراء والشحن",
+          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
+          "detailTitle": "من المورّد في الخارج إلى بابكم",
+          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         },
         {
           "id": "warehousing",
@@ -1472,13 +1540,6 @@ const COPY = {
           "short": "تغليف وإعادة تغليف بعناية يحميان بضائعكم ويوفّران المساحة.",
           "detailTitle": "تغليف يحمي بضائعكم في الطريق",
           "detail": "التغليف الجيد يحمي بضائعكم وقد يخفّض تكاليفكم. نغلّف الشحنات ونعيد تغليفها لنستفيد أكثر من مساحة كل حاوية وكل شاحنة، فتدفعون مقابل مساحة أقل."
-        },
-        {
-          "id": "buyship",
-          "title": "الشراء والشحن",
-          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
-          "detailTitle": "من المورّد في الخارج إلى بابكم",
-          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         }
       ]
     },
@@ -1525,7 +1586,7 @@ const COPY = {
       "title": "تعرّفوا إلينا",
       "body": "فريت نت ش.م.م. شركة شحن وتجارة عامة ووساطة تجارية مقرّها لبنان. نتولّى الشحنات الواردة إلى لبنان والصادرة منه، أيًّا كانت نقطة انطلاقها أو وجهتها في العالم. يتمتع فريقنا بخبرة طويلة في الشحن والتجارة والنقل، وكنّا من أوائل الحاصلين على شهادة TIR للنقل البري الدولي.",
       "missionTitle": "رسالتنا",
-      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والتخليص الجمركي، والتخزين، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
+      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والنقل بالشاحنات عبر الحدود، والتخليص الجمركي، والتخزين، والتغليف، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
     },
     "cta": {
       "title": "جاهزون للشحن؟ اطلبوا عرض سعر.",
@@ -1538,8 +1599,8 @@ const COPY = {
       "lede": "هل تخطّطون لشحنة أو لديكم سؤال؟ أرسلوا لنا رسالة أو راسلونا عبر واتساب، وسيردّ عليكم فريقنا قريبًا.",
       "officeTitle": "المكتب الرئيسي",
       "address": [
-        "مبنى منصور، الطابق الأرضي",
-        "الطريق العام، قرب الضمان الاجتماعي",
+        "مبنى فوّاز، الطابق الأرضي",
+        "طريق الأمراء، قرب الضمان الاجتماعي",
         "الشويفات، بيروت، لبنان"
       ],
       "maps": "فتح في خرائط Google",
@@ -1598,7 +1659,7 @@ const EXTRA = {
     waPrefix: 'WhatsApp',
     another: 'Send another message',
     newTab: '(opens in a new tab)',
-    instaLabel: 'Instagram @freightnetsarl',
+    net: { instagram: 'Instagram', tiktok: 'TikTok' },
     modes: 'Modes',
     toTop: 'Back to top',
     alt: {
@@ -1607,6 +1668,7 @@ const EXTRA = {
       ocean: 'Container ship at sea at dusk',
       air: 'Cargo being loaded onto a freighter aircraft at night',
       land: 'Truck on a winding mountain road at dusk',
+      crossborder: 'Truck leaving a border checkpoint at dusk',
       customs: 'Shipping documents and a stamp on a desk overlooking a port',
       warehousing: 'Warehouse aisle with tall racks and a forklift',
       packaging: 'Wrapped pallets and a truck at a loading dock at night',
@@ -1631,7 +1693,7 @@ const EXTRA = {
     waPrefix: 'واتساب',
     another: 'إرسال رسالة أخرى',
     newTab: '(يفتح في نافذة جديدة)',
-    instaLabel: 'إنستغرام @freightnetsarl',
+    net: { instagram: 'إنستغرام', tiktok: 'تيك توك' },
     modes: 'الوسائط',
     toTop: 'العودة إلى الأعلى',
     alt: {
@@ -1640,6 +1702,7 @@ const EXTRA = {
       ocean: 'سفينة حاويات في البحر عند الغسق',
       air: 'تحميل بضائع على طائرة شحن ليلًا',
       land: 'شاحنة على طريق جبلي متعرّج عند الغسق',
+      crossborder: 'شاحنة تغادر نقطة عبور حدودية عند الغسق',
       customs: 'مستندات شحن وختم على مكتب يطلّ على ميناء',
       warehousing: 'ممر في مستودع مع رفوف عالية ورافعة شوكية',
       packaging: 'منصّات مغلّفة وشاحنة عند رصيف تحميل ليلًا',
@@ -1653,13 +1716,14 @@ const SG_IMG = {
   ocean: '../img/s1-ocean.webp',
   air: '../img/s1-air.webp',
   land: '../img/s1-land.webp',
+  crossborder: '../img/s1-crossborder.webp',
   customs: '../img/s1-customs.webp',
   warehousing: '../img/s1-warehouse.webp',
   packaging: '../img/s1-packaging.webp',
   buyship: '../img/s1-hero.webp'
 };
-const SG_POS = { ocean: '45% 50%', air: '62% 50%', land: '62% 50%', customs: '58% 50%', warehousing: '50% 50%', packaging: '42% 50%', buyship: '70% 50%' };
-const SG_CODE = { ocean: 'OCN', air: 'AIR', land: 'LND', customs: 'CUS', warehousing: 'WRH', packaging: 'PKG', buyship: 'B&S' };
+const SG_POS = { ocean: '45% 50%', air: '62% 50%', land: '62% 50%', crossborder: '80% 50%', customs: '58% 50%', warehousing: '50% 50%', packaging: '42% 50%', buyship: '70% 50%' };
+const SG_CODE = { ocean: 'OCN', air: 'AIR', land: 'LND', crossborder: 'XBR', customs: 'CUS', warehousing: 'WRH', packaging: 'PKG', buyship: 'B&S' };
 const SG_SLIDES = [
   { img: SG_IMG.hero, pos: '58% 50%', alt: 'hero' },
   { img: SG_IMG.packaging, pos: '50% 50%', alt: 'slide2' }
@@ -2163,13 +2227,17 @@ class Component extends DCLogic {
     const animCls = s.anim % 2 ? 'sg-anim-b' : 'sg-anim-a';
     const stopped = !!(s.held || s.reduced);
 
+    // a title clearly longer (by more than a tenth) than the shortest slide title is "long" and set smaller (CSS .is-long), so its block stays within
+    // slide 1's height; a title about as long as the shortest keeps the full size, and with it the same lines and height
+    const titleLen = sc => String((sc && sc.title) || '').length;
+    const shortestTitle = Math.min.apply(null, slidesCopy.slice(0, nSlides).map(titleLen).filter(n => n > 0).concat([Infinity]));
     const slides = SG_SLIDES.slice(0, nSlides).map((d, i) => {
       const sc = slidesCopy[i] || {};
       const on = i === s.slide;
       return {
         img: d.img, pos: d.pos, alt: (x.alt && x.alt[d.alt]) || '',
         eyebrow: sc.eyebrow || '', title: sc.title || '', body: sc.body || '',
-        cls: on ? 'is-active' : '', mediaCls: on ? 'is-active' : (i === s.settle ? 'is-settling' : ''),
+        cls: (on ? 'is-active' : '') + (titleLen(sc) > shortestTitle * 1.1 ? ' is-long' : ''), mediaCls: on ? 'is-active' : (i === s.settle ? 'is-settling' : ''),
         ariaHidden: on ? undefined : 'true',
         label: (i + 1) + ' / ' + nSlides,
         dotCls: on ? 'is-active' : '', fillCls: on && !stopped ? animCls : '',
@@ -2224,7 +2292,13 @@ class Component extends DCLogic {
       callLabel: x.callPrefix + ' ' + n.display
     }));
     const emails = (C.emails || []).map(m => ({ addr: m, href: 'mailto:' + m }));
-    const insta = (C.social && C.social[0]) || { handle: '@freightnetsarl', url: 'https://www.instagram.com/freightnetsarl/' };
+    // social profiles straight from the copy, in its order (Instagram, then TikTok); the icon follows the network, the name reads "<network> <handle>"
+    const social = (C.social || []).filter(so => so && so.url).map(so => {
+      const net = String(so.name || '').toLowerCase();
+      const name = (x.net && x.net[net]) || so.name || '';
+      return { url: so.url, handle: so.handle || name, label: (name + ' ' + (so.handle || '')).trim(),
+        isInsta: net === 'instagram', isTiktok: net === 'tiktok', isOther: net !== 'instagram' && net !== 'tiktok' };
+    });
     const address = c.address || [];
     // the hero's manifest box reads only from the copy, so a copy update cannot leave it stale
     const heroLabel = [
@@ -2261,7 +2335,7 @@ class Component extends DCLogic {
       // the slide copy is announced only once a person drives the slides, never while it turns on its own
       heroLive: stopped ? 'polite' : 'off',
       facts, services, viewer, viewerNow: { code: vNow.code || '', no: vNow.no || '', title: vNow.title || '' },
-      values, tels, calls, emails, insta, ctaLines, address, mapsUrl: C.mapsUrl || '#',
+      values, tels, calls, emails, social, ctaLines, address, mapsUrl: C.mapsUrl || '#',
       aboutImg: { src: SG_IMG.land, alt: (x.alt && x.alt.land) || '' },
       serviceOptions: items.map(it => ({ id: it.id, title: it.title })),
       form: s.form, err, inv, desc,

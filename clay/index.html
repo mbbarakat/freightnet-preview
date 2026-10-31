@@ -211,6 +211,12 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 .cl-chip{display:inline-flex;align-items:center;gap:9px;padding-block:8px;padding-inline:10px 15px;background:#fff;border-radius:var(--pill);font:700 13px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink);box-shadow:0 3px 0 rgb(16 20 40 / .06)}
 .cl-chip::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--coral);box-shadow:inset -2px -2px 0 rgb(0 0 0 / .16)}
 .cl-hero__title{font:800 var(--t-hero)/.97 var(--f-display);letter-spacing:-.04em;color:var(--navy);text-wrap:balance;max-width:11.5em}
+/* a long headline (cl-slide--long, set from the title's length in the script) is set at .9 of the hero size, so the
+   two slides read as one headline: three balanced lines on phones and in the two-column hero, two from about 600 to
+   860px. The caps keep its longest line ("Cargo & logistics", about 7.4em) inside the copy column on the smallest
+   phones and just above 860px. */
+.cl-slide--long .cl-hero__title{font-size:min(calc(var(--t-hero) * .9),calc(13.3cqi - 10px));max-width:12.5em}
+@container cl (min-width:860px){ .cl-slide--long .cl-hero__title{font-size:min(calc(var(--t-hero) * .9),calc(6.3cqi - 2.5px))} }
 .cl-hero__body{font-size:clamp(1.05rem,.95rem + .45cqi,1.28rem);line-height:1.55;color:var(--body);max-width:31em}
 .cl-hero__actions{grid-area:actions;display:flex;flex-direction:column;gap:22px;margin-top:16px;position:relative;z-index:1}
 .cl-hero__ctas{display:flex;flex-wrap:wrap;gap:12px}
@@ -275,6 +281,14 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-slide{gap:14px}
 }
 .cl-root[lang="ar"] .cl-hero__title{font-weight:700;letter-spacing:0;line-height:1.28;font-size:calc(var(--t-hero) * .84)}
+/* Arabic long headline: .85 of the first slide's size (never smaller than a section title). Its phrases are short, so
+   it breaks into three (حلول الشحن / والخدمات اللوجستية / لكل القطاعات) where the middle one fits the copy column,
+   and into four, the middle phrase split in two, where it does not: under about 375px and in the two-column hero up
+   to 1180px. text-wrap:balance keeps each phrase whole, and in both places the first slide's longer text sets the
+   panel's height, so the fourth line costs none. From 1180px the four lines would add height, so it stays on three,
+   capped so that the middle phrase (about 10em) fits the column. */
+.cl-root[lang="ar"] .cl-slide--long .cl-hero__title{font-size:calc(var(--t-hero) * .84 * .85);max-width:11.5em}
+@container cl (min-width:1180px){ .cl-root[lang="ar"] .cl-slide--long .cl-hero__title{font-size:min(calc(var(--t-hero) * .84 * .85),calc(4.6cqi - 3px))} }
 .cl-root[lang="ar"] .cl-chip{letter-spacing:0;text-transform:none;font-weight:500;font-size:14px}
 
 /* ---------- 7. Facts ---------- */
@@ -317,14 +331,15 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 .cl-svc:nth-child(5) .cl-svc__art{animation-delay:.32s}
 .cl-svc:nth-child(6) .cl-svc__art{animation-delay:.4s}
 .cl-svc:nth-child(7) .cl-svc__art{animation-delay:.48s}
+.cl-svc:nth-child(8) .cl-svc__art{animation-delay:.56s}
 .cl-svc__art img{width:92px;height:92px;object-fit:contain;filter:drop-shadow(0 12px 12px rgb(16 20 40 / .18));transition:transform .45s var(--bounce)}
 .cl-svc__text{min-width:0}
-.cl-svc__title{font:700 var(--t-h3)/1.15 var(--f-display);letter-spacing:-.02em;color:var(--ink)}
+.cl-svc__title{font:700 var(--t-h3)/1.15 var(--f-display);letter-spacing:-.02em;color:var(--ink);text-wrap:balance}
 .cl-svc__short{margin-top:6px;font-size:15.5px;line-height:1.55;color:var(--muted)}
 .cl-svc__back{display:none;margin-top:16px;padding-top:16px;border-top:2px dashed var(--line)}
 .cl-svc.is-open .cl-svc__back{display:flex;flex-direction:column;align-items:flex-start;animation:cl-rise .3s var(--out) both}
 .cl-svc__mini{display:none}
-.cl-svc__dtitle{font:700 clamp(1.1rem,1rem + .4cqi,1.3rem)/1.22 var(--f-display);letter-spacing:-.015em;color:var(--ink)}
+.cl-svc__dtitle{font:700 clamp(1.1rem,1rem + .4cqi,1.3rem)/1.22 var(--f-display);letter-spacing:-.015em;color:var(--ink);text-wrap:balance}
 .cl-svc__detail{margin:8px 0 18px;font-size:16px;line-height:1.62;color:var(--body)}
 .cl-svc__toggle{position:absolute;inset:0;z-index:2;margin:0;padding:0;border:0;border-radius:inherit;background:transparent;cursor:pointer}
 .cl-svc__ico{position:absolute;inset-block-start:14px;inset-inline-end:14px;width:42px;height:42px;border-radius:50%;background:var(--bg-3);color:var(--ink);display:grid;place-items:center;transition:transform .4s var(--bounce),background-color .2s,color .2s}
@@ -362,7 +377,13 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-svc__ico{inset-block-start:12px;inset-inline-end:12px}
   .cl-svc.is-open .cl-svc__toggle{inset-block-start:8px;inset-inline-end:8px}
 }
-/* phone: ocean and buy & ship stay big feature cards; the five rows between get tinted clay plates */
+/* smallest phones: a slightly smaller picture, so a long one-word title ("Cross-border", "Warehousing") keeps its line */
+@container cl (max-width:359px){
+  .cl-svc__front{grid-template-columns:68px minmax(0,1fr);column-gap:12px}
+  .cl-svc__art img{width:68px;height:68px}
+  .cl-svc__title{padding-inline-end:46px}
+}
+/* phone: ocean and buy & ship stay big feature cards; the six other rows get tinted clay plates, sky, sun and coral in turn */
 @container cl (max-width:599px){
   .cl-svc--ocean,.cl-svc--buyship{padding:18px 20px 24px}
   .cl-svc--ocean .cl-svc__front,.cl-svc--buyship .cl-svc__front{display:flex;flex-direction:column;align-items:stretch;gap:0;padding-inline-end:0}
@@ -374,9 +395,9 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-svc__art{position:relative}
   .cl-svc__art img{position:relative}
   .cl-svc:not(.cl-svc--ocean):not(.cl-svc--buyship) .cl-svc__art::before{content:"";position:absolute;inset:4px;border-radius:26px;background:var(--plate,var(--bg-3));box-shadow:inset -3px -4px 0 rgb(16 20 40 / .05)}
-  .cl-svc--air,.cl-svc--warehousing{--plate:var(--sky-soft)}
-  .cl-svc--land,.cl-svc--packaging{--plate:var(--sun-soft)}
-  .cl-svc--customs{--plate:#FDE3E0}
+  .cl-svc--air,.cl-svc--customs{--plate:var(--sky-soft)}
+  .cl-svc--land,.cl-svc--warehousing{--plate:var(--sun-soft)}
+  .cl-svc--crossborder,.cl-svc--packaging{--plate:#FDE3E0}
 }
 .cl-root[lang="ar"] .cl-svc--ocean .cl-svc__title,.cl-root[lang="ar"] .cl-svc--buyship .cl-svc__title{letter-spacing:0}
 .cl-root[lang="ar"] .cl-svc__title,.cl-root[lang="ar"] .cl-svc__dtitle{letter-spacing:0;line-height:1.4}
@@ -395,6 +416,10 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-svc__back,.cl-svc.is-open .cl-svc__back{display:flex;flex-direction:column;align-items:flex-start;margin:0;padding:0;border:0;animation:none}
   .cl-svc__back{opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .25s var(--out),transform .4s var(--bounce),visibility 0s linear .4s}
   .cl-svc.is-open .cl-svc__back{opacity:1;visibility:visible;transform:none;transition-delay:.06s,.06s,0s}
+  /* a closed card is as tall as its front: the hidden detail takes no room (size containment lets it stretch to the
+     card and clips it as it fades out), so a long detail (Arabic land freight) never leaves a gap above the title;
+     the card grows when it opens if its detail needs more room */
+  .cl-svc:not(.is-open) .cl-svc__back{contain:size;overflow:hidden}
   .cl-svc.is-open .cl-svc__front{opacity:0;visibility:hidden;transform:translateY(-12px) scale(.97);transition:opacity .2s var(--out),transform .3s var(--out),visibility 0s linear .3s}
   /* single-column cards: mini art on its own line beside the close button, so the title gets the full width */
   .cl-svc__bhead{display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:4px}
@@ -409,13 +434,25 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-svc--ocean{grid-column:1 / -1}
   .cl-svc--ocean .cl-svc__title{font-size:clamp(1.6rem,1rem + 1.5cqi,2.5rem);letter-spacing:-.03em}
   .cl-svc--ocean .cl-svc__short{font-size:17px;max-width:42ch}
+  /* cross-border trucking is the wide card at every multi-column width: a row with its picture beside the words */
+  .cl-svc--crossborder{grid-column:1 / -1}
+  .cl-svc--crossborder .cl-svc__front{flex-direction:row;align-items:center;gap:clamp(20px,2.6cqi,32px)}
+  .cl-svc--crossborder .cl-svc__art{flex:0 0 40%;margin:0;min-height:0}
+  .cl-svc--crossborder .cl-svc__art img{width:min(100%,230px)}
+  .cl-root .cl-svc--crossborder .cl-svc__text{flex:1;align-self:center;min-height:0}
+  .cl-svc--crossborder .cl-svc__title{font-size:clamp(1.5rem,.9rem + 1cqi,1.85rem);letter-spacing:-.03em}
+  .cl-svc--crossborder .cl-svc__short{font-size:17px;max-width:36ch;margin-top:10px}
+  .cl-svc--crossborder .cl-svc__bhead{flex-direction:row;align-items:center;gap:16px;padding-inline-end:46px}
 }
-/* wide cards: ocean at 2 cols, buy & ship at 3 cols, air + buy & ship at 4 cols */
+/* the wide cards. 2 columns: ocean, then cross-border two rows lower, their pictures on opposite sides.
+   3 columns: ocean spans two rows, cross-border two columns, three single cards close the grid.
+   4 columns: ocean spans two rows, cross-border fills the two columns beside it under air and land, then a row of four. */
 @container cl (min-width:600px) and (max-width:899px){
   .cl-svc--ocean .cl-svc__front{flex-direction:row;align-items:center;gap:24px}
   .cl-svc--ocean .cl-svc__art{order:2;flex:0 0 44%;margin:0;min-height:0}
   .cl-svc--ocean .cl-svc__art img{width:min(100%,240px)}
   .cl-svc--ocean .cl-svc__text{flex:1;min-height:0}
+  .cl-svc--crossborder .cl-svc__text{padding-inline-end:44px}
 }
 @container cl (min-width:900px){
   .cl-bento{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -426,27 +463,16 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-svc--ocean .cl-svc__mini{width:88px;height:88px}
   .cl-svc--ocean .cl-svc__dtitle{font-size:clamp(1.7rem,1rem + 1.3cqi,2.3rem);letter-spacing:-.03em}
   .cl-svc--ocean .cl-svc__detail{font-size:18px;max-width:46ch}
-  .cl-svc--buyship{grid-column:1 / -1}
-  .cl-svc--buyship .cl-svc__bhead{flex-direction:row;align-items:center;gap:16px;padding-inline-end:46px}
-}
-@container cl (min-width:900px) and (max-width:1179px){
-  .cl-svc--buyship .cl-svc__front{flex-direction:row;align-items:center;gap:32px}
-  .cl-svc--buyship .cl-svc__art{order:2;flex:0 0 34%;margin:0;min-height:0}
-  .cl-svc--buyship .cl-svc__art img{width:min(100%,210px)}
-  .cl-svc--buyship .cl-svc__text{flex:1;min-height:0}
+  .cl-svc--crossborder{grid-column:span 2}
+  .cl-svc--crossborder .cl-svc__art{order:2;flex-basis:44%}
+  .cl-svc--crossborder .cl-svc__art img{width:min(100%,270px)}
 }
 @container cl (min-width:1180px){
   .cl-bento{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
-  .cl-svc--air,.cl-svc--buyship{grid-column:span 2}
-  .cl-svc--air .cl-svc__front,.cl-svc--buyship .cl-svc__front{flex-direction:row;align-items:center;gap:28px}
-  .cl-svc--air .cl-svc__art,.cl-svc--buyship .cl-svc__art{order:2;flex:0 0 46%;margin:0;min-height:0}
-  .cl-svc--air .cl-svc__art img,.cl-svc--buyship .cl-svc__art img{width:min(100%,230px)}
-  .cl-svc--air .cl-svc__text,.cl-svc--buyship .cl-svc__text{flex:1;align-self:center;min-height:0;padding-block-start:28px}
-  .cl-svc--air .cl-svc__title,.cl-svc--buyship .cl-svc__title{font-size:clamp(1.5rem,.9rem + 1cqi,2rem);letter-spacing:-.03em}
-  .cl-svc--air .cl-svc__short,.cl-svc--buyship .cl-svc__short{font-size:17px;max-width:34ch;margin-top:10px}
-  .cl-svc--air .cl-svc__bhead{flex-direction:row;align-items:center;gap:16px;padding-inline-end:46px}
+  .cl-svc--crossborder .cl-svc__front{gap:28px}
+  .cl-svc--crossborder .cl-svc__art img{width:min(100%,250px)}
 }
-.cl-root[lang="ar"] .cl-svc--ocean .cl-svc__title,.cl-root[lang="ar"] .cl-svc--ocean .cl-svc__dtitle,.cl-root[lang="ar"] .cl-svc--air .cl-svc__title,.cl-root[lang="ar"] .cl-svc--buyship .cl-svc__title{letter-spacing:0}
+.cl-root[lang="ar"] .cl-svc--ocean .cl-svc__title,.cl-root[lang="ar"] .cl-svc--ocean .cl-svc__dtitle,.cl-root[lang="ar"] .cl-svc--crossborder .cl-svc__title,.cl-root[lang="ar"] .cl-svc--buyship .cl-svc__title{letter-spacing:0}
 
 /* ---------- 9. Ocean FCL / LCL ---------- */
 .cl-ocean{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
@@ -596,6 +622,8 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
 .cl-num__call{flex:none;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;box-shadow:var(--clay-soft);transition:background-color .2s,color .2s,transform .25s var(--bounce)}
 .cl-num__call:active,.cl-num__wa:active,.cl-num__tel:active{transform:scale(.98)}
 .cl-addr{font-style:normal;color:var(--body);line-height:1.65;display:flex;flex-direction:column}
+/* an address line that has to wrap (narrow cards) continues indented, so it never reads as a line of its own */
+.cl-addr > span{padding-inline-start:1em;text-indent:-1em;text-wrap:balance}
 .cl-chiplink{display:inline-flex;align-items:center;gap:9px;min-height:46px;margin-top:16px;padding-inline:16px 18px;border-radius:var(--pill);background:var(--bg-3);color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;transition:background-color .2s,transform .25s var(--bounce)}
 .cl-chiplink:active{transform:scale(.97)}
 .cl-links{list-style:none;margin:0;padding:0;display:grid;gap:2px}
@@ -615,6 +643,12 @@ html.cl-locked,html.cl-locked body{overflow:hidden}
   .cl-num__ico .cl-i{width:18px;height:18px}
   .cl-num__val{font-size:15px}
   .cl-num__call{width:46px;height:46px}
+}
+/* smallest phones: slimmer side padding in the contact cards and a 15px address, so each address line (the longest
+   is "طريق الأمراء، قرب الضمان الاجتماعي") stays on one line */
+@container cl (max-width:359px){
+  .cl-card{padding-inline:16px}
+  .cl-addr{font-size:15px}
 }
 /* form */
 .cl-formcard{position:relative;background:var(--bg-2);border-radius:var(--r-xl);padding:clamp(20px,3.6cqi,48px);box-shadow:var(--sh-1);min-width:0}
@@ -887,7 +921,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
       <p class="cl-lede">{{t.services.lede}}</p>
     </div>
     <ul class="cl-bento">
-      <sc-for list="{{services}}" as="s" hint-placeholder-count="7">
+      <sc-for list="{{services}}" as="s" hint-placeholder-count="8">
         <li class="cl-svc {{s.cls}}">
           <div class="cl-svc__front">
             <div class="cl-svc__art"><img src="{{s.img}}" alt="{{s.alt}}" width="800" height="800" loading="lazy" decoding="async"></div>
@@ -1075,7 +1109,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
         <div class="cl-card">
           <h3 class="cl-card__title"><span class="cl-card__chip cl-card__chip--coral"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg></span>{{t.contactSection.officeTitle}}</h3>
           <address class="cl-addr">
-            <sc-for list="{{t.contactSection.address}}" as="line" hint-placeholder-count="3"><span>{{line}}</span></sc-for>
+            <sc-for list="{{addrLines}}" as="line" hint-placeholder-count="3"><span>{{line}}</span></sc-for>
           </address>
           <a class="cl-chiplink" href="{{c.mapsUrl}}" target="_blank" rel="noopener">{{t.contactSection.maps}}<span class="cl-sr"> ({{x.newTab}})</span><svg class="cl-i cl-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
         </div>
@@ -1087,7 +1121,11 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
             </sc-for>
           </ul>
           <h3 class="cl-card__sub">{{t.footer.follow}}</h3>
-          <a class="cl-link" href="{{insta.url}}" target="_blank" rel="noopener"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span class="cl-sr">{{x.instagram}} </span><span class="cl-pin" dir="ltr">{{insta.handle}}</span><span class="cl-sr"> ({{x.newTab}})</span></a>
+          <ul class="cl-links">
+            <sc-for list="{{socials}}" as="so" hint-placeholder-count="2">
+              <li><a class="cl-link" href="{{so.url}}" target="_blank" rel="noopener noreferrer"><sc-if value="{{so.isInstagram}}" hint-placeholder-val="{{ true }}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg></sc-if><sc-if value="{{so.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="cl-i" viewBox="1.2 1.2 21.6 21.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><sc-if value="{{so.isOther}}" hint-placeholder-val="{{ false }}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></sc-if><span class="cl-sr">{{so.network}} </span><span class="cl-pin" dir="ltr">{{so.handle}}</span><span class="cl-sr"> ({{x.newTab}})</span></a></li>
+            </sc-for>
+          </ul>
         </div>
       </div>
 
@@ -1116,13 +1154,7 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
                 <div class="cl-select {{flashCls}}">
                   <select class="cl-input" id="cl-f-service" name="service" value="{{form.service}}" onChange="{{onService}}" aria-invalid="{{fe.service.invalid}}" aria-describedby="{{fe.service.desc}}" aria-required="true">
                     <option value="" label="{{F.servicePlaceholder}}">{{F.servicePlaceholder}}</option>
-                    <option value="ocean" label="{{svc.ocean}}">{{svc.ocean}}</option>
-                    <option value="air" label="{{svc.air}}">{{svc.air}}</option>
-                    <option value="land" label="{{svc.land}}">{{svc.land}}</option>
-                    <option value="customs" label="{{svc.customs}}">{{svc.customs}}</option>
-                    <option value="warehousing" label="{{svc.warehousing}}">{{svc.warehousing}}</option>
-                    <option value="packaging" label="{{svc.packaging}}">{{svc.packaging}}</option>
-                    <option value="buyship" label="{{svc.buyship}}">{{svc.buyship}}</option>
+                    <sc-for list="{{services}}" as="o" hint-placeholder-count="8"><option value="{{o.id}}" label="{{o.title}}">{{o.title}}</option></sc-for>
                   </select>
                   <svg class="cl-select__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
                 </div>
@@ -1194,7 +1226,9 @@ textarea.cl-input{min-height:148px;resize:vertical;line-height:1.55}
       <div>
         <h2 class="cl-foot__h">{{t.footer.follow}}</h2>
         <ul class="cl-foot__list">
-          <li><a class="cl-foot__a" href="{{insta.url}}" target="_blank" rel="noopener"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg><span class="cl-sr">{{x.instagram}} </span><span class="cl-pin" dir="ltr">{{insta.handle}}</span><span class="cl-sr"> ({{x.newTab}})</span></a></li>
+          <sc-for list="{{socials}}" as="so" hint-placeholder-count="2">
+            <li><a class="cl-foot__a" href="{{so.url}}" target="_blank" rel="noopener noreferrer"><sc-if value="{{so.isInstagram}}" hint-placeholder-val="{{ true }}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><path d="M17.5 6.5h.01"></path></svg></sc-if><sc-if value="{{so.isTiktok}}" hint-placeholder-val="{{ false }}"><svg class="cl-i" viewBox="1.2 1.2 21.6 21.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 7.917v4.034a9.948 9.948 0 0 1-5-1.951v4.5a6.5 6.5 0 1 1-8-6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z"></path></svg></sc-if><sc-if value="{{so.isOther}}" hint-placeholder-val="{{ false }}"><svg class="cl-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></sc-if><span class="cl-sr">{{so.network}} </span><span class="cl-pin" dir="ltr">{{so.handle}}</span><span class="cl-sr"> ({{x.newTab}})</span></a></li>
+          </sc-for>
         </ul>
       </div>
     </div>
@@ -1294,12 +1328,17 @@ const COPY = {
       "info@freightnet-lb.com",
       "sales@freightnet-lb.com"
     ],
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Mansour+Building+Choueifat+NSSF+Lebanon",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Fawaz+Building+Oumara+Road+Choueifat+Lebanon",
     "social": [
       {
         "name": "Instagram",
-        "handle": "@freightnetsarl",
-        "url": "https://www.instagram.com/freightnetsarl/"
+        "handle": "@freightnet2023",
+        "url": "https://www.instagram.com/freightnet2023/"
+      },
+      {
+        "name": "TikTok",
+        "handle": "@freight.net.sarl",
+        "url": "https://www.tiktok.com/@freight.net.sarl"
       }
     ],
     "phones": [
@@ -1336,8 +1375,8 @@ const COPY = {
           "body": "We move goods between Lebanon and anywhere in the world, and take care of the customs paperwork on the way."
         },
         {
-          "eyebrow": "Freight and logistics",
-          "title": "Cargo for every industry",
+          "eyebrow": "Freight forwarding",
+          "title": "Cargo & logistics solutions for every industry",
           "body": "From a single pallet to full containers, we plan the route, the transport and the customs clearance for you."
         }
       ],
@@ -1372,9 +1411,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "Ocean freight",
-          "short": "Ship a full container, or share one, to and from ports worldwide.",
+          "short": "Ship a full container (FCL) or share one (LCL), to and from ports worldwide.",
           "detailTitle": "Moving your cargo by sea",
-          "detail": "We arrange your sea shipment port to port or door to door. Take a full container for your own goods, or share container space when you ship smaller volumes."
+          "detail": "We arrange your sea shipment port to port or door to door. Take a full container (FCL) for your own goods, or share container space (LCL) when you ship smaller volumes."
         },
         {
           "id": "air",
@@ -1386,9 +1425,16 @@ const COPY = {
         {
           "id": "land",
           "title": "Land freight",
-          "short": "Road transport by truck, within Lebanon and across borders.",
+          "short": "Road transport within Lebanon, with a full truckload (FTL) or part of one (LTL).",
           "detailTitle": "Road transport from start to finish",
-          "detail": "We plan each road journey around your cargo: a suitable truck, a sensible route and the paperwork for any border crossings. We keep you updated from loading to delivery."
+          "detail": "We plan each road journey within Lebanon around your cargo, with a suitable truck and a sensible route. Take a full truckload (FTL) for your own goods, or share a truck (LTL) and pay only for the space you use. We keep you updated from loading to delivery."
+        },
+        {
+          "id": "crossborder",
+          "title": "Cross-border trucking",
+          "short": "Road transport across borders, door to door, with the border paperwork taken care of.",
+          "detailTitle": "Across the border, door to door",
+          "detail": "We collect your goods from the sender's door and deliver them across the border to the receiver's door. We prepare the paperwork for the border crossing and keep you updated along the way."
         },
         {
           "id": "customs",
@@ -1396,6 +1442,13 @@ const COPY = {
           "short": "Import and export paperwork, prepared and followed through to clearance.",
           "detailTitle": "Customs, handled for you",
           "detail": "We prepare and submit your import and export documents, then follow your file until the goods are cleared. If anything extra is needed, we tell you straight away."
+        },
+        {
+          "id": "buyship",
+          "title": "Buy & ship",
+          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
+          "detailTitle": "Buy abroad, receive at home",
+          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         },
         {
           "id": "warehousing",
@@ -1410,13 +1463,6 @@ const COPY = {
           "short": "Careful packing and repacking that protects your goods and saves space.",
           "detailTitle": "Packed to travel well",
           "detail": "Good packing protects your cargo and can cut your costs. We pack and repack shipments to make better use of each container and truck, so you pay for less space."
-        },
-        {
-          "id": "buyship",
-          "title": "Buy & ship",
-          "short": "Buy from suppliers in China, Turkey, Europe and elsewhere, and we ship the goods to you.",
-          "detailTitle": "Buy abroad, receive at home",
-          "detail": "Found a supplier in China, Turkey or Europe? We help you complete the purchase and bring the goods all the way to your door."
         }
       ]
     },
@@ -1463,7 +1509,7 @@ const COPY = {
       "title": "Who we are",
       "body": "Freight Net SARL is a shipping, general trading and commercial brokerage company based in Lebanon. We handle shipments into and out of the country, wherever in the world they start or end. Our team has long experience in shipping, trade and transport. We were also among the first to receive TIR certification for international road transport.",
       "missionTitle": "Our mission",
-      "mission": "To take care of the whole journey for every client: ocean, air and land freight, customs clearance, warehousing, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
+      "mission": "To take care of the whole journey for every client: ocean, air and land freight, cross-border trucking, customs clearance, warehousing, packaging, subcontracting, and buying and shipping goods from China, Turkey, Europe and further afield. We aim for on-time delivery at competitive rates, with personal service and a choice of payment options."
     },
     "cta": {
       "title": "Ready to ship? Ask us for a quote.",
@@ -1476,8 +1522,8 @@ const COPY = {
       "lede": "Planning a shipment or have a question? Send us a message or reach us on WhatsApp, and our team will reply shortly.",
       "officeTitle": "Head office",
       "address": [
-        "Mansour Building, ground floor",
-        "Main road, near the NSSF",
+        "Fawaz Building, ground floor",
+        "Oumara Road, near the NSSF",
         "Choueifat, Beirut, Lebanon"
       ],
       "maps": "Open in Google Maps",
@@ -1539,8 +1585,8 @@ const COPY = {
           "body": "ننقل بضائعكم من لبنان إلى أي مكان في العالم، ومن العالم إلى لبنان، ونتولّى المعاملات الجمركية في كل مرحلة."
         },
         {
-          "eyebrow": "الشحن والخدمات اللوجستية",
-          "title": "شحنات لكل القطاعات",
+          "eyebrow": "نقل البضائع",
+          "title": "حلول الشحن والخدمات اللوجستية لكل القطاعات",
           "body": "من منصّة نقّالة واحدة إلى حاويات كاملة، نخطّط لكم المسار والنقل والتخليص الجمركي."
         }
       ],
@@ -1575,9 +1621,9 @@ const COPY = {
         {
           "id": "ocean",
           "title": "الشحن البحري",
-          "short": "حاوية كاملة أو شحنة أقل من حاوية، من موانئ العالم وإليها.",
+          "short": "حاوية كاملة (FCL) أو شحنة أقل من حاوية (LCL)، من موانئ العالم وإليها.",
           "detailTitle": "نقل بضائعكم بحرًا",
-          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية عندما تكون الكمية صغيرة."
+          "detail": "ننظّم شحنتكم البحرية من ميناء إلى ميناء أو من الباب إلى الباب. احجزوا حاوية كاملة (FCL) لبضائعكم وحدها، أو اختاروا شحنة أقل من حاوية (LCL) عندما تكون الكمية صغيرة."
         },
         {
           "id": "air",
@@ -1589,9 +1635,16 @@ const COPY = {
         {
           "id": "land",
           "title": "الشحن البري",
-          "short": "نقل بالشاحنات داخل لبنان وعبر الحدود.",
+          "short": "نقل بالشاحنات داخل لبنان، بحمولة شاحنة كاملة (FTL) أو بحمولة جزئية (LTL).",
           "detailTitle": "نقل بري من البداية إلى النهاية",
-          "detail": "نخطّط كل رحلة برية بحسب بضائعكم: الشاحنة المناسبة، والطريق الأنسب، والمستندات اللازمة لعبور الحدود. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+          "detail": "نخطّط كل رحلة برية داخل لبنان بحسب بضائعكم، مع الشاحنة المناسبة والطريق الأنسب. احجزوا شاحنة كاملة (FTL) لبضائعكم وحدها، أو اختاروا حمولة جزئية (LTL) تتشارك فيها بضائعكم الشاحنة مع بضائع أخرى، فتدفعون فقط مقابل المساحة التي تشغلها. ونبقيكم على اطّلاع من التحميل حتى التسليم."
+        },
+        {
+          "id": "crossborder",
+          "title": "النقل البري عبر الحدود",
+          "short": "نقل بالشاحنات عبر الحدود من الباب إلى الباب، ونتولّى مستندات العبور.",
+          "detailTitle": "عبر الحدود، من الباب إلى الباب",
+          "detail": "نستلم بضائعكم من باب المرسِل وننقلها عبر الحدود حتى باب المستلِم. نُعِدّ المستندات اللازمة لعبور الحدود، ونبقيكم على اطّلاع طوال الطريق."
         },
         {
           "id": "customs",
@@ -1599,6 +1652,13 @@ const COPY = {
           "short": "نُعِدّ مستندات الاستيراد والتصدير ونتابعها حتى إتمام التخليص.",
           "detailTitle": "نتولّى عنكم معاملات الجمارك",
           "detail": "نُعِدّ مستندات الاستيراد والتصدير ونقدّمها، ثم نتابع ملفكم حتى تخليص البضائع. وإذا تطلّب الأمر أي مستند إضافي، نبلغكم فورًا."
+        },
+        {
+          "id": "buyship",
+          "title": "الشراء والشحن",
+          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
+          "detailTitle": "من المورّد في الخارج إلى بابكم",
+          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         },
         {
           "id": "warehousing",
@@ -1613,13 +1673,6 @@ const COPY = {
           "short": "تغليف وإعادة تغليف بعناية يحميان بضائعكم ويوفّران المساحة.",
           "detailTitle": "تغليف يحمي بضائعكم في الطريق",
           "detail": "التغليف الجيد يحمي بضائعكم وقد يخفّض تكاليفكم. نغلّف الشحنات ونعيد تغليفها لنستفيد أكثر من مساحة كل حاوية وكل شاحنة، فتدفعون مقابل مساحة أقل."
-        },
-        {
-          "id": "buyship",
-          "title": "الشراء والشحن",
-          "short": "اشتروا من موردين في الصين وتركيا وأوروبا وغيرها، ونحن نشحن البضائع إليكم.",
-          "detailTitle": "من المورّد في الخارج إلى بابكم",
-          "detail": "وجدتم موردًا في الصين أو تركيا أو أوروبا؟ نساعدكم على إتمام الشراء وننقل البضائع حتى باب منزلكم أو مؤسستكم."
         }
       ]
     },
@@ -1666,7 +1719,7 @@ const COPY = {
       "title": "تعرّفوا إلينا",
       "body": "فريت نت ش.م.م. شركة شحن وتجارة عامة ووساطة تجارية مقرّها لبنان. نتولّى الشحنات الواردة إلى لبنان والصادرة منه، أيًّا كانت نقطة انطلاقها أو وجهتها في العالم. يتمتع فريقنا بخبرة طويلة في الشحن والتجارة والنقل، وكنّا من أوائل الحاصلين على شهادة TIR للنقل البري الدولي.",
       "missionTitle": "رسالتنا",
-      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والتخليص الجمركي، والتخزين، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
+      "mission": "أن نتولّى الرحلة كاملة عن كل عميل: الشحن البحري والجوي والبري، والنقل بالشاحنات عبر الحدود، والتخليص الجمركي، والتخزين، والتغليف، والتعاقد من الباطن، وشراء البضائع وشحنها من الصين وتركيا وأوروبا وغيرها. ونسعى إلى التسليم في الموعد وبأسعار تنافسية، مع خدمة شخصية وخيارات دفع متعددة."
     },
     "cta": {
       "title": "جاهزون للشحن؟ اطلبوا عرض سعر.",
@@ -1679,8 +1732,8 @@ const COPY = {
       "lede": "هل تخطّطون لشحنة أو لديكم سؤال؟ أرسلوا لنا رسالة أو راسلونا عبر واتساب، وسيردّ عليكم فريقنا قريبًا.",
       "officeTitle": "المكتب الرئيسي",
       "address": [
-        "مبنى منصور، الطابق الأرضي",
-        "الطريق العام، قرب الضمان الاجتماعي",
+        "مبنى فوّاز، الطابق الأرضي",
+        "طريق الأمراء، قرب الضمان الاجتماعي",
         "الشويفات، بيروت، لبنان"
       ],
       "maps": "فتح في خرائط Google",
@@ -1729,6 +1782,7 @@ const EXTRA = {
       ocean: 'Container ship stacked with colourful containers',
       air: 'Cargo plane',
       land: 'Truck with a box trailer',
+      crossborder: 'Truck at a border checkpoint with a raised barrier',
       customs: 'Stamped document next to a shield with a check mark',
       warehousing: 'Warehouse with boxes at its loading door',
       packaging: 'Taped boxes on a pallet',
@@ -1740,7 +1794,7 @@ const EXTRA = {
     call: 'Call',
     callOnly: 'Calls only',
     newTab: 'opens in a new tab',
-    instagram: 'Instagram',
+    network: { instagram: 'Instagram', tiktok: 'TikTok' },
     sendAnother: 'Send another message'
   },
   ar: {
@@ -1751,6 +1805,7 @@ const EXTRA = {
       ocean: 'سفينة محمّلة بحاويات ملوّنة',
       air: 'طائرة شحن',
       land: 'شاحنة بمقطورة مغلقة',
+      crossborder: 'شاحنة عند نقطة عبور حدودية والحاجز مرفوع',
       customs: 'مستند مختوم بجانب درع عليه علامة صح',
       warehousing: 'مستودع وصناديق عند باب التحميل',
       packaging: 'صناديق مغلّفة على منصّة نقّالة',
@@ -1763,7 +1818,7 @@ const EXTRA = {
     callOnly: 'للاتصال فقط',
     langShort: 'EN',
     newTab: 'يفتح في علامة تبويب جديدة',
-    instagram: 'إنستغرام',
+    network: { instagram: 'إنستغرام', tiktok: 'تيك توك' },
     sendAnother: 'إرسال رسالة أخرى'
   }
 };
@@ -1775,11 +1830,15 @@ const CL_IMG = {
   ocean: '../img/s3-ocean.webp',
   air: '../img/s3-air.webp',
   land: '../img/s3-land.webp',
+  crossborder: '../img/s3-crossborder.webp',
   customs: '../img/s3-customs.webp',
   warehousing: '../img/s3-warehouse.webp',
   packaging: '../img/s3-packaging.webp',
   buyship: '../img/s3-buyship.webp'
 };
+/* a hero title longer than this (in characters) is set a size smaller (cl-slide--long), so both slides stay about
+   the same height and the buttons keep their place on a phone's first screen */
+const CL_LONG_TITLE = 38;
 const CL_FIELDS = ['name', 'email', 'phone', 'service', 'message'];
 const CL_EMPTY = { name: '', email: '', phone: '', service: '', message: '' };
 
@@ -2293,7 +2352,7 @@ class Component extends DCLogic {
     const nb = s.nb != null && s.nb !== slideIdx && s.nb < n && s.nbSide ? s.nb : -1;
     const slides = ((t.hero && t.hero.slides) || []).map((sl, i) => ({
       eyebrow: sl.eyebrow, title: sl.title, body: sl.body,
-      cls: i === slideIdx ? 'is-active' : '',
+      cls: [i === slideIdx ? 'is-active' : '', String(sl.title || '').length > CL_LONG_TITLE ? 'cl-slide--long' : ''].join(' ').trim(),
       picCls: i === slideIdx ? 'is-active' : (i === nb ? (s.nbSide > 0 ? 'is-nb-r' : 'is-nb-l') : ''),
       ariaHidden: i === slideIdx ? undefined : 'true',
       label: (i + 1) + ' / ' + n,
@@ -2319,8 +2378,9 @@ class Component extends DCLogic {
         quote: (e) => this.quoteFor(it.id, e)
       };
     });
-    const svc = {};
-    ((t.services && t.services.items) || []).forEach(it => { svc[it.id] = it.title; });
+    /* the office address, one line per element: every line but the last ends in a line break, so the lines never
+       run together in the address's text (copy and paste, screen readers); it collapses away on screen */
+    const addrLines = ((t.contactSection && t.contactSection.address) || []).map((l, i, a) => (i < a.length - 1 ? l + '\n' : l));
 
     const numbers = (c.whatsapp || []).map(w => ({
       display: w.display, wa: w.wa, tel: 'tel:' + (w.e164 || ''),
@@ -2330,7 +2390,15 @@ class Component extends DCLogic {
     const phones = (c.phones || []).filter(p => p && p.display).map(p => ({
       display: p.display, tel: p.tel || ('tel:' + (p.e164 || ''))
     }));
-    const insta = (c.social && c.social[0]) || { name: 'Instagram', handle: '@freightnetsarl', url: 'https://www.instagram.com/freightnetsarl/' };
+    /* social accounts in the copy's order, each with its network's icon and its name in the current language */
+    const socials = (c.social || []).filter(so => so && so.url).map(so => {
+      const k = String(so.name || '').toLowerCase();
+      return {
+        url: so.url, handle: so.handle || so.name || '',
+        network: (x.network && x.network[k]) || so.name || '',
+        isInstagram: k === 'instagram', isTiktok: k === 'tiktok', isOther: k !== 'instagram' && k !== 'tiktok'
+      };
+    });
 
     const fe = {};
     CL_FIELDS.forEach(k => {
@@ -2343,7 +2411,7 @@ class Component extends DCLogic {
 
     return {
       lang, dir: lang === 'ar' ? 'rtl' : 'ltr', otherLang: lang === 'ar' ? 'en' : 'ar',
-      t, x, c, F, insta, numbers, phones, svc,
+      t, x, c, F, socials, numbers, phones, addrLines,
       langShort: x.langShort || (t.nav && t.nav.lang) || '',
       rootCls,
       h1: (t.legal || '') + ' — ' + (t.tagline || ''),
